@@ -3,6 +3,15 @@
 > Registro de cambios de arquitectura de la plataforma Agency Tool (compartida: Valuo.pro + arroba.com + Platform Console).
 
 
+## 2026-09-25 — Precalentamiento de descripciones como CRON de plataforma (reemplaza al worker de 12h)
+El worker continuo de supervisor era frágil (el pod de Preview se suspende por inactividad y el deadline es de reloj de pared; en el run anterior solo generó 568/22.5k antes de suspenderse). Sustituido por una tarea programada nativa de Emergent, robusta para producción (servidor siempre activo).
+- **`.emergent/crons.yml`**: `prewarm-descrip`, `*/15 * * * *`, `POST {{BASE_URL}}/api/cron/prewarm-descriptions`. Se sincroniza sola al desplegar.
+- **`backend/routes/cron_prewarm.py`** (`/api/cron/prewarm-descriptions`): valida `Authorization: Bearer WEBHOOK_CRON_SECRET` (comparación en tiempo constante, 401 si falta/incorrecto), **ACK 2xx inmediato** y procesa el lote en `asyncio.create_task`. Lote configurable `PREWARM_CRON_BATCH` (40) / `PREWARM_CRON_DELAY` (2). **Lock por lease en Mongo** (`prewarm_cron_lock`, 14 min) evita solapamiento entre disparos; **soft-stop a 12 min** corta el lote antes de que expire el lease. Registra cada corrida en `prewarm_cron_runs` (attempted/generadas/fallidas/reparto_por_modelo/fallback_used/motivos/pendientes_restantes/cache_total). Reanudable e idempotente (caché excluye lo hecho); no-op cuando no quedan pendientes (0 coste). Reutiliza `resolve_description` (guarda de calidad + trazabilidad).
+- **`backend/.env`**: nuevo `WEBHOOK_CRON_SECRET` (secreto). Retirado el programa de supervisor `prewarm` (superado).
+- **Verificado en Preview:** ruta registrada en OpenAPI; 401 sin/मal auth; ciclo completo con lote de prueba (generadas 3/3, `pendientes_restantes=21962`, cache 671→674, lock liberado al terminar); doble disparo simultáneo → el segundo no-op por lock; `crons.yml` válido. Restaurado a batch=40/delay=2.
+- **Para producción:** el `crons.yml` y el endpoint se despliegan con la app; el pipeline debe asegurar `WEBHOOK_CRON_SECRET` (y opcional `PREWARM_CRON_BATCH`/`PREWARM_CRON_DELAY`) en el entorno de producción. Autorizado consumir presupuesto NVIDIA de forma continua hasta agotar ~22.5k y luego no-op.
+
+
 ## 2026-09-16 — Semáforo de concurrencia LLM + paquete de despliegue Market (para el pipeline de producción)
 - **Semáforo (`model_provider.py`):** `_send_message_threaded` ahora limita la concurrencia con `_get_llm_semaphore()` (asyncio.Semaphore lazy). Configurable con **`LLM_MAX_CONCURRENCY`** (por defecto **2**). Evita saturar el threadpool/proveedor cuando varias fichas/lecturas se generan a la vez. Validado: /market pending 0,37 s → ready → cache, sin regresión.
 - **Smoke OpenAI:** `_call_openai` (gpt-5.2, aislado en hilo) devuelve JSON válido en ~3 s y NO bloquea el loop (56 ticks durante la llamada). Nota: ninguna ruta actual pasa `provider="openai"` (todos los `generate_*` usan claude por defecto).

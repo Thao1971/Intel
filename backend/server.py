@@ -60,6 +60,7 @@ from routes.skills import router as skills_router
 from routes.data_layer import router as data_layer_router
 from routes.financial_intelligence import router as financial_intelligence_router
 from routes.company_ficha import router as company_ficha_router
+from routes.cron_prewarm import router as cron_prewarm_router
 from routes.investment_intelligence import router as investment_intelligence_router
 from routes.signal_intelligence import router as signal_intelligence_router
 from routes.semantic_intelligence import router as semantic_intelligence_router
@@ -171,6 +172,7 @@ app.include_router(skills_router)
 app.include_router(data_layer_router)
 app.include_router(financial_intelligence_router)
 app.include_router(company_ficha_router)
+app.include_router(cron_prewarm_router)
 app.include_router(investment_intelligence_router)
 app.include_router(signal_intelligence_router)
 app.include_router(semantic_intelligence_router)
