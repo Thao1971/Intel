@@ -2,6 +2,17 @@
 
 > Registro de cambios de arquitectura de la plataforma Agency Tool (compartida: Valuo.pro + arroba.com + Platform Console).
 
+## 2026-09-25 — Aplicación ZIP `ARROBA_INTEL_EMERGENT_20260925_REVISADO_CODEX` (Preview) ✅
+- **SHA-256 verificado** (`425afe3f…eecba5b`). Entrega consolidada completa del backend aplicada sobre `/app/backend` conservando `.env`, datos y config de despliegue. Backup: `/app/memory/backups/backend_pre_codex_20260925_192538.tar.gz`. Sin commit/push/reset.
+- **Novedades del ZIP**: motor de valoración avanzada (`services/engines/valuation/*`), `screener`, `sector_market`, sistema `my_space_*` (services+routes) con **protección de concurrencia** en solicitudes/NDA, `config_guard.py`, tests.
+- **Concurrencia my_space_requests**: índice único `uniq_listing_buyer (listing_id, buyer_id)` creado en arranque; `DuplicateKeyError` → `ValidationError` (sin exponer Mongo); cambios de estado condicionales por `expected_status` (segundo actor concurrente recibe error claro).
+- **Cron conservado (autorizado)**: `routes/cron_prewarm.py` + `.emergent/crons.yml` intactos; `cron_prewarm` re-registrado en `server.py` del ZIP. Verificado: ruta en OpenAPI, 401 sin/mal auth, tanda limpia (acquire→genera→run record→release) y protección de solapamiento.
+- **Desviaciones**: (1) 3 líneas en `tests/test_my_space.py` (f-string 3.12 → compat 3.11, sin lógica); (2) `xlrd==2.0.1` instalado (declarado en requirements del ZIP); (3) cron conservado.
+- **Validación**: `py_compile` todo el backend 0 errores (py3.11); `pytest` solicitudes+my_space+delivery_hardening **27 passed**; smoke en vivo 200 de valoración (contrato Beta), analyze, ficha, market async, sector, geo.
+- **Observación**: NVIDIA primario `mistral-nemotron` con ReadTimeout intermitente; failover `llama-3.2-11b-vision` OK (disponibilidad del proveedor, no del ZIP).
+- **Pendiente producción**: `ARROBA_ENV=production` exige `CORS_ORIGINS` exacto; repetir preflight de duplicados en Mongo prod antes de crear `uniq_listing_buyer`; `WEBHOOK_CRON_SECRET` en el entorno.
+
+
 
 ## 2026-09-25 — Precalentamiento de descripciones como CRON de plataforma (reemplaza al worker de 12h)
 El worker continuo de supervisor era frágil (el pod de Preview se suspende por inactividad y el deadline es de reloj de pared; en el run anterior solo generó 568/22.5k antes de suspenderse). Sustituido por una tarea programada nativa de Emergent, robusta para producción (servidor siempre activo).

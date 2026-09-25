@@ -58,7 +58,8 @@ from routes.taxonomy_intelligence import router as taxonomy_intelligence_router
 from routes.platform_stats import router as platform_stats_router
 from routes.skills import router as skills_router
 from routes.data_layer import router as data_layer_router
-from routes.financial_intelligence import router as financial_intelligence_router
+from routes.financial_intelligence import (router as financial_intelligence_router,
+                                             inputs_router as financial_inputs_router)
 from routes.company_ficha import router as company_ficha_router
 from routes.cron_prewarm import router as cron_prewarm_router
 from routes.investment_intelligence import router as investment_intelligence_router
@@ -82,6 +83,9 @@ from routes.cnmv import router as cnmv_router
 from docstudio.routes import router as docstudio_router
 from routes.bme import router as bme_router
 from routes.valuations import router as valuations_router
+from routes.company_screener import router as company_screener_router
+from routes.sector_market import router as sector_market_router
+from routes.my_space import router as my_space_router
 from routes.jobs import router as jobs_router
 from routes.config import router as config_router
 from routes.stats import router as stats_router
@@ -171,6 +175,7 @@ app.include_router(platform_stats_router)
 app.include_router(skills_router)
 app.include_router(data_layer_router)
 app.include_router(financial_intelligence_router)
+app.include_router(financial_inputs_router)
 app.include_router(company_ficha_router)
 app.include_router(cron_prewarm_router)
 app.include_router(investment_intelligence_router)
@@ -194,6 +199,9 @@ app.include_router(cnmv_router)
 app.include_router(docstudio_router)
 app.include_router(bme_router)
 app.include_router(valuations_router)
+app.include_router(company_screener_router)
+app.include_router(sector_market_router)
+app.include_router(my_space_router)
 app.include_router(jobs_router)
 app.include_router(config_router)
 app.include_router(stats_router)
@@ -246,7 +254,8 @@ ARROBA_ENGINE_PREFIXES = (
 # arroba.v2 = the six v1 engines (now with typed response DTOs) + the new public
 # Company/Identity capability. v1 stays frozen byte-identical (responses stripped below);
 # v2 is the typed superset for SDK generation.
-ARROBA_V2_PREFIXES = ARROBA_ENGINE_PREFIXES + ("/api/v2/company-intelligence",)
+ARROBA_V2_PREFIXES = ARROBA_ENGINE_PREFIXES + (
+    "/api/v2/company-intelligence", "/api/v2/financial-intelligence")
 
 import copy as _copy
 import json as _json
@@ -343,7 +352,7 @@ def _build_arroba_v2_openapi() -> dict:
             "description": (
                 "Contrato público v2 para arroba.com. Superset TIPADO de v1: los 6 motores de "
                 "inteligencia con DTO de respuesta explícitos + la capacidad pública "
-                "Company/Identity (/api/v2/company-intelligence). Auth: cabecera X-API-Key. "
+                "Company/Identity y captura de evidencia de valoración. Auth: cabecera X-API-Key. "
                 "Runtime idéntico a v1 (los DTO documentan, no filtran). Permite generar SDK tipado."
             ),
         },
@@ -632,6 +641,10 @@ async def startup():
     # the startup event before the server became ready. The body is fully idempotent.
     import asyncio as _boot_aio
 
+    # Falla el arranque si ARROBA_ENV=production con configuración insegura.
+    from config_guard import assert_production_config
+    assert_production_config()
+
     async def _boot():
         try:
             await _run_startup_init()
@@ -785,7 +798,7 @@ async def _run_startup_init():
             "last_upload_at": None,
             "created_at": datetime.now(timezone.utc).isoformat(),
         })
-        logger.info(f"Iberinform provider seeded with key: {api_key[:12]}...")
+        logger.info("Iberinform provider seeded (API key not logged)")
     else:
         # If env var set and different from stored, update stored key
         env_key = os.environ.get("IBERINFORM_UPLOAD_API_KEY")
@@ -1041,6 +1054,37 @@ async def _run_startup_init():
     await db.category_valuations.create_index("category")
     await db.category_valuations_meta.create_index("last_rebuilt")
     await db.valuation_rebuild_logs.create_index("log_id", unique=True)
+    await db.valuation_company_inputs.create_index("master_id", unique=True)
+    await db.valuation_company_inputs.create_index("cif_normalized")
+    await db.valuation_input_audit.create_index("audit_id", unique=True)
+    await db.valuation_input_audit.create_index([("master_id", 1), ("created_at", -1)])
+    await db.valuation_advanced_runs.create_index([("user_id", 1), ("created_at", -1)])
+    await db.valuation_advanced_runs.create_index([("identifier", 1), ("created_at", -1)])
+    await db.my_space_pipeline.create_index([("owner_id", 1), ("role", 1), ("last_activity_at", -1)])
+    await db.my_space_pipeline.create_index([("id", 1), ("owner_id", 1)], unique=True)
+    await db.my_space_profiles.create_index([("owner_id", 1)], unique=True)
+    await db.my_space_objects.create_index([("owner_id", 1), ("role", 1)], unique=True)
+    await db.my_space_portfolio.create_index([("owner_id", 1), ("updated_at", -1)])
+    await db.my_space_portfolio.create_index([("id", 1), ("owner_id", 1)], unique=True)
+    await db.my_space_requests.create_index([("id", 1)], unique=True)
+    # Nombre propio: puede coexistir con el índice no único usado en previews anteriores.
+    await db.my_space_requests.create_index(
+        [("listing_id", 1), ("buyer_id", 1)], unique=True, name="uniq_listing_buyer"
+    )
+    await db.my_space_requests.create_index([("seller_id", 1), ("updated_at", -1)])
+    await db.my_space_requests.create_index([("buyer_id", 1), ("updated_at", -1)])
+    await db.my_space_objects.create_index([("listing_id", 1)], sparse=True)
+    await db.my_space_pipeline.create_index([("owner_id", 1), ("request_id", 1)], sparse=True)
+    await db.valuation_sector_calibration_runs.create_index("run_id", unique=True)
+    await db.valuation_sector_rule_candidates.create_index([("run_id", 1), ("cohort_key", 1)], unique=True)
+    await db.valuation_sector_rules.create_index([("ruleset_version", 1), ("cohort_key", 1)], unique=True)
+    await db.valuation_sector_rules.create_index([("active", 1), ("cohort_key", 1)])
+    await db.valuation_sector_rule_versions.create_index("ruleset_version", unique=True)
+    await db.valuation_sector_rule_versions.create_index("active")
+    await db.valuation_public_comparable_snapshots.create_index(
+        [("provider", 1), ("region", 1), ("archetype", 1), ("as_of", -1)])
+    await db.valuation_public_comparable_snapshots.create_index(
+        [("active", 1), ("archetype", 1)])
     # Ranking (arroba.v2 company relative position) — support indexes
     await db.master_companies.create_index([("classification.cnae_section", 1), ("financials.latest.revenue", 1)])
     await db.master_companies.create_index([("location.municipio", 1), ("classification.cnae_section", 1), ("financials.latest.revenue", 1)])
@@ -1245,11 +1289,13 @@ async def _recover_stuck_valuo_requests():
 async def _auto_bootstrap_data_layer_if_empty():
     """Reconstruct the canonical Master Layer from official sources if empty (self-healing).
 
-    Enabled by default; set AUTO_BOOTSTRAP_DATA_LAYER=0 to disable. Runs the full reproducible
+    Disabled by default; set AUTO_BOOTSTRAP_DATA_LAYER=1 to enable (development only). Runs the full reproducible
     bootstrap (ingestion→master→ownership→signals→semantic→verify→canonical set) in background.
     """
     try:
-        if os.environ.get("AUTO_BOOTSTRAP_DATA_LAYER", "1") not in ("1", "true", "True"):
+        # Seguro por defecto: apagado. Solo se activa con AUTO_BOOTSTRAP_DATA_LAYER=1
+        # (entornos de desarrollo con base vacía). En producción NUNCA debe generar datos.
+        if os.environ.get("AUTO_BOOTSTRAP_DATA_LAYER", "0") not in ("1", "true", "True"):
             return
         if await db.master_companies.count_documents({}) > 0:
             return
@@ -1279,16 +1325,27 @@ async def _auto_populate_intelligence_core():
 
     logger.info(f"Auto-populating core intelligence (sector={si_count}, geo={gi_count}, cross={cx_count}, econ={econ_count})...")
 
+    allow_synthetic = os.environ.get("AUTO_BOOTSTRAP_DATA_LAYER", "0") in ("1", "true", "True")
+    iberinform_ready = True
+
     try:
         # Step 1: Ensure Iberinform data exists (for size_score)
         ib_count = await db.iberinform_companies.count_documents({})
         if ib_count == 0:
-            from services.iberinform_processor import generate_synthetic_dataset
-            result = await generate_synthetic_dataset(count=5000)
-            logger.info(f"Iberinform synthetic: {result['companies_imported']} companies, {result['fiscal_years_imported']} FY")
+            if os.environ.get("AUTO_BOOTSTRAP_DATA_LAYER", "0") in ("1", "true", "True"):
+                from services.iberinform_processor import generate_synthetic_dataset
+                result = await generate_synthetic_dataset(count=5000)
+                logger.info(f"Iberinform synthetic: {result['companies_imported']} companies, {result['fiscal_years_imported']} FY")
+            else:
+                # Producción: base vacía NO se rellena con datos inventados.
+                logger.error(
+                    "iberinform_companies vacía y AUTO_BOOTSTRAP_DATA_LAYER!=1: "
+                    "no se genera ningún dato sintético. Cargar los datos reales de Iberinform."
+                )
+                iberinform_ready = False
 
         # Step 2: Sector Intelligence
-        if si_count == 0:
+        if si_count == 0 and iberinform_ready:
             from services.sector_intelligence_v2 import compute_sector_intelligence_v2
             si_result = await compute_sector_intelligence_v2()
             logger.info(f"Sector Intelligence: {si_result['total']} entries computed")
@@ -1296,7 +1353,7 @@ async def _auto_populate_intelligence_core():
             await log_manual_sync("sector_intelligence", si_result["total"])
 
         # Step 3: Geo Intelligence
-        if gi_count == 0:
+        if gi_count == 0 and iberinform_ready:
             from services.geo_intelligence import compute_geo_intelligence
             gi_result = await compute_geo_intelligence()
             logger.info(f"Geo Intelligence: {gi_result['total']} entries computed")
@@ -1304,7 +1361,7 @@ async def _auto_populate_intelligence_core():
             await _log2("geo_intelligence", gi_result["total"])
 
         # Step 4: Cross Intelligence
-        if cx_count == 0:
+        if cx_count == 0 and iberinform_ready:
             from services.sector_geo_cross import compute_sector_geo_cross
             cx_result = await compute_sector_geo_cross()
             logger.info(f"Cross Intelligence: {cx_result['combinations']} combinations computed")
@@ -1316,8 +1373,11 @@ async def _auto_populate_intelligence_core():
         if econ_count == 0:
             # Seed DataComex trade data as development/emergency fallback (if empty)
             dcx_count = await db.datacomex_raw_data.count_documents({})
+            if dcx_count == 0 and not allow_synthetic:
+                logger.error("DataComex vacío y AUTO_BOOTSTRAP_DATA_LAYER!=1: no se siembran datos de comercio exterior sintéticos. Ejecutar /datacomex/sync.")
+                dcx_count = -1
             if dcx_count == 0:
-                logger.info("DataComex: no real data found. Using seed as fallback (production should run /datacomex/sync)")
+                logger.info("DataComex: no real data found. Using seed as fallback (DEV ONLY: AUTO_BOOTSTRAP_DATA_LAYER=1)")
                 from services.datacomex_connector import generate_seed_trade_data, rebuild_trade_metrics, rebuild_signals
                 seed = await generate_seed_trade_data()
                 logger.info(f"DataComex seed fallback: {seed['records']} records")
@@ -1325,17 +1385,20 @@ async def _auto_populate_intelligence_core():
                 logger.info(f"DataComex metrics: {metrics['metrics_computed']}")
                 signals = await rebuild_signals()
                 logger.info(f"DataComex signals: {signals['signals_generated']}")
+            elif dcx_count < 0:
+                pass  # sin datos reales y sin permiso sintético: no se calcula nada
             else:
                 logger.info(f"DataComex: {dcx_count} raw records found, rebuilding metrics")
                 from services.datacomex_connector import rebuild_trade_metrics, rebuild_signals
                 await rebuild_trade_metrics()
                 await rebuild_signals()
 
-            from services.economic_intelligence import rebuild_economic_metrics, rebuild_economic_signals
-            econ_result = await rebuild_economic_metrics()
-            logger.info(f"Economic Intelligence: {econ_result['total_metrics']} metrics")
-            sig_result = await rebuild_economic_signals()
-            logger.info(f"Economic Signals: {sig_result['signals_generated']} signals")
+            if dcx_count >= 0:
+                from services.economic_intelligence import rebuild_economic_metrics, rebuild_economic_signals
+                econ_result = await rebuild_economic_metrics()
+                logger.info(f"Economic Intelligence: {econ_result['total_metrics']} metrics")
+                sig_result = await rebuild_economic_signals()
+                logger.info(f"Economic Signals: {sig_result['signals_generated']} signals")
 
         logger.info("Core intelligence auto-population completed")
 

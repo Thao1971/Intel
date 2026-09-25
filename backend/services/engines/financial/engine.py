@@ -14,6 +14,12 @@ from services.engines.financial import ratios_library as R
 from services.engines.financial import market_multiples as MM
 from services.engines.financial import iberinform_ratios as IR
 from services.engines.financial import pgc_account_labels as PGC
+from services.engines.valuation import (adjust_public_multiple, build_valuation_package, calculate_dcf, reconcile_valuation,
+                                         calculate_wacc, resolve_sector_rule)
+from services.engines.valuation.private_company_adjustments import extract_private_company_evidence
+from services.engines.valuation.calibrated_rules import resolve_calibrated_sector_rule
+from services.engines.valuation.conventions import apply_equity_bridge_to_scenarios, equity_bridge
+from services.engines.valuation.market_inputs import resolve_market_inputs, resolve_valuation_multiple
 
 ENGINE_VERSION = "financial-intelligence-v1"
 
@@ -162,11 +168,8 @@ def _financial_narrative(quality: Dict, kpis: Dict, evolution: Dict,
 
 
 def _net_debt(m: Dict) -> Optional[float]:
-    """Deuda neta = deuda financiera - caja. None si no consta la deuda financiera."""
-    fd = m.get("financial_debt")
-    if fd is None:
-        return None
-    return round(fd - (m.get("cash") or 0), 2)
+    """Canonical net debt: available only when both debt and cash are reported."""
+    return equity_bridge(m)["net_debt"]
 
 
 def compute_kpis(series: List[Dict], employees: Optional[int]) -> Dict:
@@ -384,7 +387,7 @@ async def ranking(master: Dict, latest: Optional[Dict] = None) -> Dict:
     return out
 
 
-async def valuation(master: Dict, latest: Dict) -> Dict:
+async def valuation(master: Dict, latest: Dict, sector_rule: Optional[Dict] = None) -> Dict:
     """EV/EBITDA → EV/revenue → book value → insufficient_data. Consumes Master Layer.
 
     Q6: for companies in the marketing-agency CNAE set (Division 73), tries a REAL,
@@ -397,65 +400,112 @@ async def valuation(master: Dict, latest: Dict) -> Dict:
     cnae_code = (master.get("classification") or {}).get("cnae_code")
     revenue, ebitda = latest.get("revenue"), latest.get("ebitda")
     equity = latest.get("equity")
-    # Honest net-debt handling: if the balance doesn't report financial debt
+    # Honest net-debt handling: if the balance does not report debt and cash
     # (typical of abbreviated/PYME accounts), do NOT silently assume 0 debt and
     # net the cash — that would inflate equity. Treat net debt as "not applied",
     # flag it, and lower confidence so the ficha can warn of possible overvaluation.
-    debt_known = latest.get("financial_debt") is not None
-    net_debt = ((latest.get("financial_debt") or 0) - (latest.get("cash") or 0)) if debt_known else 0
+    bridge = equity_bridge(latest)
+    debt_known = bridge["net_debt_known"]
+    net_debt = bridge["net_debt"]
 
     def _nd_hyp() -> str:
         if debt_known:
             return (f"Se ha restado la deuda financiera neta (deuda − caja: {_fmt_eur(net_debt)}) "
                     "del Enterprise Value para llegar al Equity Value.")
-        return ("No hay dato de deuda financiera para esta empresa: el Equity Value coincide con "
-                "el Enterprise Value. Si la empresa tiene deuda no reflejada en sus cuentas "
-                "depositadas, el valor real para el accionista podría ser algo menor.")
+        missing = ", ".join(bridge["missing_fields"])
+        return (f"No se calcula el Equity Value porque faltan datos del puente de deuda neta: "
+                f"{missing}. Se mantiene el Enterprise Value como referencia operativa.")
 
     _cadj = 0.0 if debt_known else 0.1  # penaliza la confianza cuando falta la deuda
 
     hypotheses, lineage = [], {"financials_source": "master_companies.financials.latest",
                                "basis": latest.get("basis"), "year": latest.get("year")}
+    private_evidence = extract_private_company_evidence(master, latest)
 
     if ebitda and ebitda > 0:
         real = await MM.real_multiple_for_company(cnae_code)
         if real:
             mult = real["ev_ebitda_median"]
             ev = ebitda * mult
-            equity_value = ev - net_debt
+            equity_value = equity_bridge(latest, ev)["equity_value"]
             hypotheses = [f"El múltiplo de {mult:.1f}× es la mediana real observada en "
                           f"{real['sample_size']} transacciones de agencias de publicidad "
                           f"(M&A Radar de Arroba).",
                           _nd_hyp()]
             return {"method": "ev_ebitda", "multiple": mult, "multiple_basis": "market_observed",
-                    "enterprise_value": round(ev, 0), "equity_value": round(equity_value, 0),
+                    "enterprise_value": round(ev, 0), "equity_value": round(equity_value, 0) if equity_value is not None else None,
                     "net_debt_known": debt_known,
+                    "equity_bridge": equity_bridge(latest, ev),
+                    "warnings": bridge["warnings"],
                     "range": {"low": round(ebitda * real.get("ev_ebitda_p25", mult), 0),
                               "central": round(ev, 0),
                               "high": round(ebitda * real.get("ev_ebitda_p75", mult), 0)},
                     "confidence": round(0.8 - _cadj, 2), "hypotheses": hypotheses,
                     "lineage": {**lineage, "source": real}}
+        rule = sector_rule or await resolve_calibrated_sector_rule(db, cnae_code, revenue)
+        benchmark = await resolve_valuation_multiple(db, rule["archetype"], "ev_ebitda")
+        if benchmark:
+            adjustment = adjust_public_multiple(
+                benchmark["multiple"], rule["size_band"], evidence=private_evidence["values"])
+            adjustment["evidence_lineage"] = private_evidence["lineage"]
+            mult = adjustment["adjusted_multiple"]
+            ev = ebitda * mult
+            equity_value = equity_bridge(latest, ev)["equity_value"]
+            hypotheses = [
+                f"Se parte de {benchmark['multiple']:.1f}× observado en cotizadas "
+                f"({benchmark['source_level']}) y se aplica un ajuste trazable por tamaño "
+                f"hasta {mult:.1f}×.",
+                _nd_hyp(),
+            ]
+            return {"method":"ev_ebitda","multiple_basis":"observed_public_adjusted",
+                    "multiple":mult,"unadjusted_multiple":benchmark["multiple"],
+                    "multiple_benchmark":benchmark,"private_company_adjustment":adjustment,
+                    "enterprise_value":round(ev,0),
+                    "equity_value":round(equity_value,0) if equity_value is not None else None,
+                    "net_debt_known":debt_known,"equity_bridge":equity_bridge(latest,ev),
+                    "warnings":bridge["warnings"],
+                    "range":{"low":round(ev*.85,0),"central":round(ev,0),"high":round(ev*1.15,0)},
+                    "confidence":round(.7-_cadj,2),"hypotheses":hypotheses,
+                    "lineage":{**lineage,"source":benchmark}}
         mult = _SECTION_EV_EBITDA.get(section, _DEFAULT_EV_EBITDA)
         ev = ebitda * mult
-        equity_value = ev - net_debt
+        equity_value = equity_bridge(latest, ev)["equity_value"]
         hypotheses = [f"El múltiplo de {mult:.1f}× es una referencia sectorial (sección CNAE "
                       f"{section}) inferida por Arroba, pendiente de contraste con transacciones "
                       f"reales.",
                       _nd_hyp()]
         return {"method": "ev_ebitda", "multiple_basis": "inferred_reference", "multiple": mult,
-                "enterprise_value": round(ev, 0), "equity_value": round(equity_value, 0),
+                "enterprise_value": round(ev, 0), "equity_value": round(equity_value, 0) if equity_value is not None else None,
                 "net_debt_known": debt_known,
+                "equity_bridge": equity_bridge(latest, ev),
+                "warnings": bridge["warnings"],
                 "range": {"low": round(ev * 0.85, 0), "central": round(ev, 0), "high": round(ev * 1.15, 0)},
                 "confidence": round(0.6 - _cadj, 2), "hypotheses": hypotheses, "lineage": lineage}
     if revenue and revenue > 0:
-        mult = _DEFAULT_EV_REVENUE
+        rule = sector_rule or await resolve_calibrated_sector_rule(db, cnae_code, revenue)
+        benchmark = await resolve_valuation_multiple(db, rule["archetype"], "ev_revenue")
+        adjustment = (adjust_public_multiple(benchmark["multiple"], rule["size_band"], evidence=private_evidence["values"])
+                      if benchmark else None)
+        if adjustment:
+            adjustment["evidence_lineage"] = private_evidence["lineage"]
+        mult = adjustment["adjusted_multiple"] if adjustment else _DEFAULT_EV_REVENUE
         ev = revenue * mult
-        hypotheses = [f"Al no disponer de EBITDA positivo, se ha aplicado un múltiplo de "
-                      f"{mult:.1f}× sobre ingresos como referencia inferida por Arroba.",
-                      _nd_hyp()]
-        return {"method": "ev_revenue", "multiple": mult, "multiple_basis": "inferred_reference",
-                "enterprise_value": round(ev, 0), "equity_value": round(ev - net_debt, 0),
+        hypotheses = [
+            (f"Se parte de {benchmark['multiple']:.1f}× VE/ventas observado en cotizadas "
+             f"y se ajusta por tamaño hasta {mult:.1f}×."
+             if benchmark else
+             f"Al no disponer de EBITDA positivo, se aplica {mult:.1f}× sobre ingresos "
+             "como referencia provisional de Arroba."),
+            _nd_hyp()]
+        return {"method": "ev_revenue", "multiple": mult,
+                "multiple_basis": ("observed_public_adjusted" if benchmark else "inferred_reference"),
+                "unadjusted_multiple": benchmark["multiple"] if benchmark else None,
+                "multiple_benchmark": benchmark,
+                "private_company_adjustment": adjustment,
+                "enterprise_value": round(ev, 0), "equity_value": equity_bridge(latest, ev)["equity_value"],
                 "net_debt_known": debt_known,
+                "equity_bridge": equity_bridge(latest, ev),
+                "warnings": bridge["warnings"],
                 "range": {"low": round(ev * 0.7, 0), "central": round(ev, 0), "high": round(ev * 1.3, 0)},
                 "confidence": round(0.4 - _cadj, 2), "hypotheses": hypotheses, "lineage": lineage}
     if equity and equity > 0:
@@ -523,24 +573,22 @@ def _valuation_full(val: Dict, latest: Dict, comparables: Dict) -> Dict:
     mult = val.get("multiple")
     rng = val.get("range") or {}
     lo, hi = rng.get("low"), rng.get("high")
-    # Honest net-debt handling (mirrors valuation()): if financial debt isn't reported,
+    # Honest net-debt handling (mirrors valuation()): if debt or cash is not reported,
     # don't assume 0 and net the cash — that would inflate equity in the scenarios too.
     # Only the net-debt treatment changes here; multiples, ranges and scenario structure intact.
-    debt_known = latest.get("financial_debt") is not None
-    net_debt = ((latest.get("financial_debt") or 0) - (latest.get("cash") or 0)) if debt_known else 0
+    bridge = equity_bridge(latest)
+    debt_known = bridge["net_debt_known"]
+    net_debt = bridge["net_debt"]
 
     def _mult_for(x):
         return round(mult * x / ev, 2) if (mult and ev) else None
 
     if method in ("ev_ebitda", "ev_revenue") and None not in (ev, lo, hi):
-        out["scenarios"] = [
-            {"name": "conservador", "multiple": _mult_for(lo),
-             "enterprise_value": lo, "equity_value": round(lo - net_debt, 0)},
-            {"name": "base", "multiple": mult,
-             "enterprise_value": ev, "equity_value": round(ev - net_debt, 0)},
-            {"name": "optimista", "multiple": _mult_for(hi),
-             "enterprise_value": hi, "equity_value": round(hi - net_debt, 0)},
-        ]
+        out["scenarios"] = apply_equity_bridge_to_scenarios([
+            {"name": "conservador", "multiple": _mult_for(lo), "enterprise_value": lo},
+            {"name": "base", "multiple": mult, "enterprise_value": ev},
+            {"name": "optimista", "multiple": _mult_for(hi), "enterprise_value": hi},
+        ], latest)
 
     peers = (comparables or {}).get("peers") or []
     pmargins = sorted([p["ebitda_margin"] for p in peers if p.get("ebitda_margin") is not None])
@@ -618,9 +666,71 @@ async def _ratio_sector_percentiles(section: Optional[str], ratios: Dict) -> Non
         subj = (r or {}).get("value")
         vals = dists.get(k) or []
         if subj is not None and len(vals) >= 20:
-            below = sum(1 for x in vals if x < subj)
-            r["percentile"] = round(below / len(vals) * 100)
-            r["percentile_sample"] = len(vals)
+            ordered = sorted(float(x) for x in vals)
+            def _pct(probability: float) -> float:
+                position = (len(ordered) - 1) * probability
+                lower = int(position)
+                upper = min(lower + 1, len(ordered) - 1)
+                fraction = position - lower
+                return round(ordered[lower] * (1 - fraction) + ordered[upper] * fraction, 4)
+            below = sum(1 for x in ordered if x < subj)
+            r["percentile"] = round(below / len(ordered) * 100)
+            r["percentile_sample"] = len(ordered)
+            r["sector_distribution"] = {
+                "p25": _pct(.25), "median": _pct(.50), "p75": _pct(.75),
+            }
+
+
+_SECTOR_METRIC_DIRECTIONS = {
+    "ebitda_margin": "higher_is_better", "ebit_margin": "higher_is_better",
+    "net_margin": "higher_is_better", "roa": "higher_is_better",
+    "roe": "higher_is_better", "current_ratio": "higher_is_better",
+    "solvency": "higher_is_better", "interest_coverage": "higher_is_better",
+    "revenue_per_employee": "higher_is_better", "debt_ratio": "lower_is_better",
+    "debt_to_equity": "lower_is_better", "capital_intensity": "contextual",
+}
+
+
+def _build_sector_positioning(master: Dict, latest: Dict, ratios: Dict,
+                              ranking_block: Dict, comparables: Dict) -> Dict:
+    """Presentation-ready sector evidence; never invents a percentile or ranking."""
+    metrics = []
+    for key, direction in _SECTOR_METRIC_DIRECTIONS.items():
+        ratio = ratios.get(key) or {}
+        distribution = ratio.get("sector_distribution") or {}
+        if ratio.get("value") is None or ratio.get("percentile") is None:
+            continue
+        percentile = ratio["percentile"]
+        favorable = percentile >= 60 if direction == "higher_is_better" else percentile <= 40
+        caution = percentile <= 25 if direction == "higher_is_better" else percentile >= 75
+        interpretation = ("Posicion favorable frente a la cohorte" if favorable else
+                          "Posicion a validar frente a la cohorte" if caution else
+                          "Posicion proxima al rango central de la cohorte")
+        metrics.append({
+            "metric": key, "label": ratio.get("name") or key,
+            "company_value": ratio.get("value"), **distribution,
+            "percentile": percentile, "sample_size": ratio.get("percentile_sample"),
+            "direction": direction, "interpretation": interpretation,
+        })
+    criteria = comparables.get("criteria") or {}
+    peers = []
+    for peer in comparables.get("peers") or []:
+        peers.append({key: peer.get(key) for key in
+                      ("name", "cnae_code", "provincia", "revenue", "ebitda", "ebitda_margin")})
+    return {
+        "status": "available" if metrics or ranking_block or peers else "insufficient_sample",
+        "cohort": {
+            "label": "Sector y banda de tamano",
+            "cnae_scope": criteria.get("cnae_section") or (master.get("classification") or {}).get("cnae_section"),
+            "size_band": criteria.get("size_band"), "geography": criteria.get("geography") or "Espana",
+            "as_of": latest.get("year"),
+            "sample_size": max([m.get("sample_size") or 0 for m in metrics] or [comparables.get("count") or 0]),
+        },
+        "metrics": metrics,
+        "rankings": ranking_block,
+        "peer_groups": [{"criterion": "actividad, tamano y proximidad geografica",
+                         "count": len(peers), "peers": peers}] if peers else [],
+    }
 
 
 async def analyze(identifier: str) -> Optional[Dict]:
@@ -637,6 +747,11 @@ async def analyze(identifier: str) -> Optional[Dict]:
 
     series = M.build_series(norm)
     if not series:
+        empty_valuation = {"method": "insufficient_data", "confidence": 0.0,
+                           "hypotheses": ["Sin estados financieros normalizados"], "lineage": {}}
+        generated_at = now_iso()
+        empty_valuation["package"] = build_valuation_package(
+            empty_valuation, {}, generated_at=generated_at)
         return {
             "master_id": master["master_id"], "cif_normalized": cif,
             "identity": {"name": (master.get("identity") or {}).get("legal_name"),
@@ -646,9 +761,8 @@ async def analyze(identifier: str) -> Optional[Dict]:
             "has_financials": False,
             "provenance": {},
             "ranking": await ranking(master, {}),
-            "valuation": {"method": "insufficient_data", "confidence": 0.0,
-                          "hypotheses": ["Sin estados financieros normalizados"], "lineage": {}},
-            "engine_version": ENGINE_VERSION, "generated_at": now_iso(), "confidence": 0.0,
+            "valuation": empty_valuation,
+            "engine_version": ENGINE_VERSION, "generated_at": generated_at, "confidence": 0.0,
         }
 
     latest = series[0]
@@ -668,8 +782,20 @@ async def analyze(identifier: str) -> Optional[Dict]:
     evolution = compute_evolution(series)
     quality = financial_quality(series, audited)
     comparables = await financial_comparables(master, latest)
-    val = await valuation(master, latest)
+    sector_rule = await resolve_calibrated_sector_rule(
+        db, (master.get("classification") or {}).get("cnae_code"), latest.get("revenue"))
+    val = await valuation(master, latest, sector_rule)
     val = {**val, **_valuation_full(val, latest, comparables)}
+    market_snapshot, comparable_beta, _public_peers = await resolve_market_inputs(
+        db, sector_rule["archetype"])
+    wacc_analysis = calculate_wacc(
+        latest, sector_rule, market_snapshot=market_snapshot,
+        comparable_beta=comparable_beta)
+    val["dcf"] = calculate_dcf(
+        series, sector_rule=sector_rule, wacc_analysis=wacc_analysis)
+    # Intel owns the final method reconciliation. TTR is deliberately absent
+    # until a dated, traceable private-transactions dataset is connected.
+    val["reconciliation"] = reconcile_valuation(val, latest, sector_rule=sector_rule)
 
     statements = M.statements(latest, employees)
     _cf = M.cashflow_statement(series)
@@ -694,7 +820,7 @@ async def analyze(identifier: str) -> Optional[Dict]:
     d2e = kpis.get("debt_to_equity")
     ni = latest.get("net_income")
     ebitda = latest.get("ebitda")
-    net_debt = (latest.get("financial_debt") or 0) - (latest.get("cash") or 0)
+    net_debt = _net_debt(latest)
     wc = (latest["current_assets"] - latest["current_liabilities"]
           if latest.get("current_assets") is not None and latest.get("current_liabilities") is not None else None)
 
@@ -705,7 +831,7 @@ async def analyze(identifier: str) -> Optional[Dict]:
         strengths.append("Crecimiento de ingresos superior al 10% en el último año.")
     if cr is not None and cr >= 1.5:
         strengths.append("Liquidez holgada: el activo corriente cubre con amplitud el pasivo a corto plazo.")
-    if ebitda and ebitda > 0 and net_debt <= 0:
+    if ebitda and ebitda > 0 and net_debt is not None and net_debt <= 0:
         strengths.append("Posición de caja neta positiva, sin deuda financiera neta.")
 
     # weaknesses
@@ -725,7 +851,7 @@ async def analyze(identifier: str) -> Optional[Dict]:
         risks.append("Resultado neto negativo en el último ejercicio.")
     if evolution.get("trend") == "deterioration":
         risks.append("Tendencia de ingresos a la baja.")
-    if ebitda and ebitda > 0 and net_debt > 0 and (net_debt / ebitda) > 4:
+    if ebitda and ebitda > 0 and net_debt is not None and net_debt > 0 and (net_debt / ebitda) > 4:
         risks.append("Apalancamiento elevado: la deuda financiera neta supera cuatro veces el EBITDA.")
     if d2e is not None and d2e > 3:
         risks.append("Endeudamiento elevado en relación con los fondos propios.")
@@ -765,6 +891,13 @@ async def analyze(identifier: str) -> Optional[Dict]:
         )
         statements_consolidated["detail"] = PGC.curate_breakdown((_latest_c_doc or {}).get("accounts"))
 
+    generated_at = now_iso()
+    sector_positioning = _build_sector_positioning(
+        master, latest, ratios, ranking_block, comparables)
+    val["package"] = build_valuation_package(
+        val, latest, sector_rule=sector_rule, generated_at=generated_at,
+        sector_positioning=sector_positioning)
+
     return {
         "master_id": master["master_id"], "cif_normalized": cif,
         "identity": {"name": (master.get("identity") or {}).get("legal_name"),
@@ -775,6 +908,7 @@ async def analyze(identifier: str) -> Optional[Dict]:
         "has_financials": True,
         "ranking": ranking_block,
         "statements": statements,
+        "statements_history": [M.statements(row, employees) for row in series],
         "statements_consolidated": statements_consolidated,
         "kpis": kpis,
         "kpis_prior": kpis_prior,
@@ -795,5 +929,5 @@ async def analyze(identifier: str) -> Optional[Dict]:
             "rules_applied": "KPIs/ratios/quality deterministas; valoración por múltiplos inferidos",
             "ai_used": False,
         },
-        "engine_version": ENGINE_VERSION, "generated_at": now_iso(), "confidence": overall_conf,
+        "engine_version": ENGINE_VERSION, "generated_at": generated_at, "confidence": overall_conf,
     }

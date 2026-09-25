@@ -24,7 +24,7 @@ for _p in (_GOLDEN_DIR, _BACKEND_ROOT):
 BASE_URL = os.environ.get("GOLDEN_BASE_URL",
                           os.environ.get("BASE_URL", "http://localhost:8001")).rstrip("/")
 EMAIL = os.environ.get("SMOKE_TEST_EMAIL", "daniel@wearebudadvisors.com")
-PASSWORD = os.environ.get("SMOKE_TEST_PASSWORD", "Thao1971@")
+PASSWORD = os.environ.get("SMOKE_TEST_PASSWORD", "")
 
 TIMEOUT = 60
 

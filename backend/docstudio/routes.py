@@ -856,6 +856,16 @@ async def ext_preview(document_id: str, _key=Depends(require_service_key)):
     return HTMLResponse(content=render_html(doc, resolve_doc_brand(doc)))
 
 
+async def _render_document_pdf(doc: dict, brand: dict) -> bytes:
+    """Use Intel's canonical valuation renderer inside Document Intelligence Studio."""
+    metadata = doc.get("metadata") or {}
+    payload = metadata.get("canonical_pdf_payload")
+    if metadata.get("type") == "valuation_advanced" and payload:
+        from documents.renderers.advanced_valuation_pdf import build_advanced_valuation_pdf
+        return build_advanced_valuation_pdf(payload)
+    return await export_to_pdf(doc, brand)
+
+
 @router.get("/ext/documents/{document_id}/export/pdf")
 async def ext_export_pdf(document_id: str, _key=Depends(require_service_key)):
     from fastapi.responses import Response
@@ -863,7 +873,7 @@ async def ext_export_pdf(document_id: str, _key=Depends(require_service_key)):
     if not doc:
         raise HTTPException(404, "Document not found")
     brand = await db.docstudio_brands.find_one({"brand_id": doc.get("brand_id", "brand_bud")}, {"_id": 0}) or BRANDS["bud_advisors"]
-    pdf_bytes = await export_to_pdf(doc, brand)
+    pdf_bytes = await _render_document_pdf(doc, brand)
     fn = ''.join(ch for ch in (doc.get("title", "documento").replace(" ", "_")[:50]) if ch.isascii() and ch not in '<>:"/\\|?*')
     return Response(content=pdf_bytes, media_type="application/pdf",
                     headers={"Content-Disposition": f'attachment; filename="{fn}.pdf"'})
@@ -1048,7 +1058,7 @@ async def export_pdf(document_id: str, user=Depends(get_current_user)):
     if not brand:
         brand = BRANDS["bud_advisors"]
 
-    pdf_bytes = await export_to_pdf(doc, brand)
+    pdf_bytes = await _render_document_pdf(doc, brand)
 
     # Log export
     await db.docstudio_exports.insert_one({

@@ -14,7 +14,7 @@ import httpx
 
 API_URL = os.environ.get("API_URL", "https://data-factory-hub.preview.emergentagent.com")
 EMAIL = "daniel@wearebudadvisors.com"
-PASSWORD = "Thao1971@"
+PASSWORD = __import__("os").environ.get("SMOKE_TEST_PASSWORD", "")
 
 
 async def get_token():

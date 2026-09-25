@@ -4,7 +4,7 @@ import requests
 import pytest
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "http://localhost:8001").rstrip("/")
-CREDS = {"email": "daniel@wearebudadvisors.com", "password": "Thao1971@"}
+CREDS = {"email": "daniel@wearebudadvisors.com", "password": __import__("os").environ.get("SMOKE_TEST_PASSWORD", "")}
 
 
 @pytest.fixture(scope="module")

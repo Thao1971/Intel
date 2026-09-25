@@ -1,0 +1,273 @@
+{
+  "$defs": {
+    "ValuationPackage": {
+      "additionalProperties": true,
+      "properties": {
+        "contract_version": {
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "summary": {
+          "$ref": "#/$defs/ValuationPackageSummary"
+        },
+        "methods": {
+          "$ref": "#/$defs/ValuationPackageMethods"
+        },
+        "scenarios": {
+          "additionalProperties": true,
+          "title": "Scenarios",
+          "type": "object"
+        },
+        "assumptions": {
+          "additionalProperties": true,
+          "title": "Assumptions",
+          "type": "object"
+        },
+        "comparables": {
+          "additionalProperties": true,
+          "title": "Comparables",
+          "type": "object"
+        },
+        "sensitivity": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Sensitivity",
+          "type": "array"
+        },
+        "confidence": {
+          "$ref": "#/$defs/ValuationPackageConfidence"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        },
+        "methodology_narrative": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Methodology Narrative",
+          "type": "array"
+        },
+        "sources_and_versions": {
+          "additionalProperties": true,
+          "title": "Sources And Versions",
+          "type": "object"
+        }
+      },
+      "required": [
+        "contract_version",
+        "status",
+        "summary",
+        "methods",
+        "scenarios",
+        "assumptions",
+        "comparables",
+        "confidence",
+        "sources_and_versions"
+      ],
+      "title": "ValuationPackage",
+      "type": "object"
+    },
+    "ValuationPackageConfidence": {
+      "additionalProperties": true,
+      "properties": {
+        "score": {
+          "default": 0.0,
+          "title": "Score",
+          "type": "number"
+        },
+        "grade": {
+          "default": "screen_grade",
+          "title": "Grade",
+          "type": "string"
+        },
+        "weighting_rule": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Weighting Rule"
+        },
+        "method_count": {
+          "default": 0,
+          "title": "Method Count",
+          "type": "integer"
+        }
+      },
+      "title": "ValuationPackageConfidence",
+      "type": "object"
+    },
+    "ValuationPackageMethods": {
+      "additionalProperties": true,
+      "properties": {
+        "applied": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Applied",
+          "type": "array"
+        },
+        "excluded": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Excluded",
+          "type": "array"
+        }
+      },
+      "title": "ValuationPackageMethods",
+      "type": "object"
+    },
+    "ValuationPackageSummary": {
+      "additionalProperties": true,
+      "properties": {
+        "currency": {
+          "default": "EUR",
+          "title": "Currency",
+          "type": "string"
+        },
+        "as_of": {
+          "anyOf": [
+            {},
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "As Of"
+        },
+        "enterprise_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Enterprise Value"
+        },
+        "enterprise_value_range": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "number"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Enterprise Value Range"
+        },
+        "equity_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Equity Value"
+        },
+        "equity_value_range": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "number"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Equity Value Range"
+        },
+        "equity_value_available": {
+          "default": false,
+          "title": "Equity Value Available",
+          "type": "boolean"
+        }
+      },
+      "title": "ValuationPackageSummary",
+      "type": "object"
+    }
+  },
+  "additionalProperties": true,
+  "properties": {
+    "master_id": {
+      "title": "Master Id",
+      "type": "string"
+    },
+    "cif_normalized": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cif Normalized"
+    },
+    "valuation": {
+      "$ref": "#/$defs/ValuationPackage"
+    },
+    "engine_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Engine Version"
+    },
+    "generated_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Generated At"
+    }
+  },
+  "required": [
+    "master_id",
+    "valuation"
+  ],
+  "title": "ValuationPackageResponse",
+  "type": "object",
+  "$id": "https://arroba.com/contracts/intel-beta-valuation.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

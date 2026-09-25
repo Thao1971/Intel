@@ -10,7 +10,7 @@ import requests
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://data-factory-hub.preview.emergentagent.com").rstrip("/")
 ADMIN_EMAIL = "daniel@wearebudadvisors.com"
-ADMIN_PASS = "Thao1971@"
+ADMIN_PASS = __import__("os").environ.get("SMOKE_TEST_PASSWORD", "")
 API_KEY = "as_TGx2m4UaXc25lsYv_Ep5_w7niWJCA3q-SjU4I9mSmvk"
 
 

@@ -5,7 +5,7 @@ import requests
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://data-factory-hub.preview.emergentagent.com").rstrip("/")
 EMAIL = "daniel@wearebudadvisors.com"
-PASSWORD = "Thao1971@"
+PASSWORD = __import__("os").environ.get("SMOKE_TEST_PASSWORD", "")
 
 
 # ---- Fixtures ----

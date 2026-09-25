@@ -1,6 +1,7 @@
 """Valuation Report renderer — builds HTML from canonical CIS payload with charts."""
 
 import logging
+from html import escape
 from typing import Dict, Optional
 from datetime import datetime
 from pathlib import Path
@@ -15,7 +16,17 @@ def build_valuation_report(payload: Dict, brand: Optional[Dict] = None) -> tuple
 
     company = payload.get("company", {})
     kpis = payload.get("kpis", {})
-    valuation = payload.get("valuation", {})
+    valuation = dict(payload.get("valuation", {}) or {})
+    # Accept the Financial Intelligence Engine contract directly.
+    val_range = valuation.get("range") or {}
+    valuation.setdefault("ev_low", val_range.get("low"))
+    valuation.setdefault("ev_mid", val_range.get("central") or valuation.get("enterprise_value"))
+    valuation.setdefault("ev_high", val_range.get("high"))
+    valuation.setdefault("equity_mid", valuation.get("equity_value"))
+    valuation.setdefault("multiple_mid", valuation.get("multiple"))
+    if valuation.get("multiple"):
+        valuation.setdefault("multiple_low", round(valuation["multiple"] * .85, 2))
+        valuation.setdefault("multiple_high", round(valuation["multiple"] * 1.15, 2))
     quality = payload.get("quality_breakdown", {})
     benchmark = payload.get("benchmark", {})
     fin_history = payload.get("financial_history", [])
@@ -106,6 +117,10 @@ def build_valuation_report(payload: Dict, brand: Optional[Dict] = None) -> tuple
         if ebitda_used:
             val_block += f'<p><strong>EBITDA used:</strong> {_fmt_money(ebitda_used)}</p>'
         val_block += '</div>'
+
+        trace = _valuation_trace_block(valuation)
+        if trace:
+            val_block += trace
 
         # EV to Equity bridge
         if net_debt and eq_mid:
@@ -291,3 +306,65 @@ def _fmt_money(value, suffix="M") -> str:
     if abs(value) >= 1_000:
         return f"{value / 1_000:.0f}K"
     return f"{value:.0f}"
+
+
+_FACTOR_LABELS = {
+    "size": "Tamaño de la empresa",
+    "recurring_revenue": "Ingresos recurrentes",
+    "customer_concentration": "Concentración de clientes",
+    "key_person_dependency": "Dependencia de persona clave",
+    "audited_accounts": "Cuentas auditadas",
+}
+_FIELD_LABELS = {
+    "recurring_revenue_pct": "porcentaje de ingresos recurrentes",
+    "largest_customer_pct": "peso del principal cliente",
+    "key_person_dependency": "dependencia de persona clave",
+    "audited_accounts": "situación de auditoría de las cuentas",
+}
+
+def _fmt_basis(value) -> str:
+    if isinstance(value, bool):
+        return "Sí" if value else "No"
+    if isinstance(value, (int, float)) and 0 <= value <= 1:
+        return f"{value * 100:.1f}%".replace(".", ",")
+    return escape(str(value if value is not None else "—"))
+
+def _valuation_trace_block(valuation: Dict) -> str:
+    """Financially readable audit trail for public-comparable adjustments."""
+    adjustment=valuation.get("private_company_adjustment") or {}
+    benchmark=valuation.get("multiple_benchmark") or {}
+    if not adjustment:
+        return ""
+    metric=(benchmark.get("metric") or valuation.get("method") or "múltiplo").replace("_", "/").upper()
+    public_multiple=adjustment.get("public_multiple")
+    adjusted=adjustment.get("adjusted_multiple")
+    source_level=benchmark.get("source_level") or benchmark.get("status") or "cotizadas comparables"
+    providers=", ".join(benchmark.get("providers") or [])
+    regions=", ".join(benchmark.get("regions") or [])
+    industries=", ".join(benchmark.get("industries") or [])
+    rows=[]
+    for item in adjustment.get("components") or []:
+        label=_FACTOR_LABELS.get(item.get("factor"),str(item.get("factor","")).replace("_"," ").title())
+        pct=float(item.get("adjustment") or 0)*100
+        rows.append(f'<tr><td>{escape(label)}</td><td>{_fmt_basis(item.get("basis"))}</td><td class="number">{pct:+.1f}%</td></tr>')
+    block='<div class="subsection-heading">Trazabilidad del múltiplo</div>'
+    block+='<div class="body-text"><p>La valoración parte de un múltiplo de cotizadas comparables y lo adapta a las características observadas de la empresa privada. Los datos no disponibles no generan ajustes.</p></div>'
+    block+='<table class="val-table"><thead><tr><th>Concepto</th><th>Base observada</th><th>Ajuste</th></tr></thead><tbody>'
+    block+=f'<tr><td>Múltiplo público de referencia ({escape(metric)})</td><td>{public_multiple:.2f}x</td><td class="number">—</td></tr>' if isinstance(public_multiple,(int,float)) else ''
+    block+=''.join(rows)
+    total=float(adjustment.get("total_adjustment") or 0)*100
+    block+=f'<tr class="highlight"><td>Múltiplo ajustado de empresa privada</td><td>{adjusted:.2f}x</td><td class="number">{total:+.1f}%</td></tr>' if isinstance(adjusted,(int,float)) else ''
+    block+='</tbody></table>'
+    details=[]
+    if source_level: details.append(f'nivel de fuente: {escape(str(source_level))}')
+    if providers: details.append(f'proveedor: {escape(providers)}')
+    if regions: details.append(f'región: {escape(regions)}')
+    if benchmark.get("company_count"): details.append(f'muestra: {int(benchmark["company_count"])} compañías')
+    if benchmark.get("as_of"): details.append(f'fecha de referencia: {escape(str(benchmark["as_of"]))}')
+    if industries: details.append(f'sectores comparables: {escape(industries)}')
+    if details: block+='<div class="body-text"><p><strong>Fuente del benchmark:</strong> '+ '; '.join(details)+'.</p></div>'
+    missing=[_FIELD_LABELS.get(x,x) for x in adjustment.get("unavailable_evidence") or []]
+    if missing:
+        block+='<div class="body-text"><p><strong>Información no disponible:</strong> '+escape(', '.join(missing))+'. Estos factores se mantienen neutrales.</p></div>'
+    block+='<div class="body-text"><p><strong>Liquidez:</strong> no se aplica descuento por falta de liquidez al Enterprise Value. Solo se estudiaría, de forma separada, para una participación minoritaria.</p></div>'
+    return block

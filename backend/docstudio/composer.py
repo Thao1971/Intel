@@ -3824,8 +3824,12 @@ async def compose_valuation_advanced(company_id: str = None, cif: str = None,
         s5["blocks"].append(b)
 
     doc["sections"] = [s for s in [s1, s2, s3, s4, s5] if s]
+    from documents.renderers.advanced_valuation_pdf import build_advanced_valuation_payload
+    canonical_pdf_payload = build_advanced_valuation_payload(bundle)
     doc["metadata"] = {"type": "valuation_advanced", "master_id": bundle["master_id"],
-                       "valuation_method": val.get("method"), "fact_locked": True, "schema": "modern"}
+                       "valuation_method": val.get("method"), "fact_locked": True,
+                       "schema": "modern", "pdf_renderer": "advanced_valuation_pdf_v1",
+                       "canonical_pdf_payload": canonical_pdf_payload}
     doc["status"] = "generated"; doc["updated_at"] = now_iso()
     await db.docstudio_documents.insert_one(doc)
     return doc

@@ -1,0 +1,19 @@
+{
+  "provider": "MarketScreener",
+  "source_file": "Multiplos_Espana_2025.xlsx",
+  "sha256": "209b4eb1166a4271eb2b33256774f3d1e750120fcd9bbf71b3fbf4b5761a1b72",
+  "source_sheet": "Empresas",
+  "header_row": 6,
+  "valuation_period": "2025",
+  "retrieved_on": "2026-09-20",
+  "record_count": 113,
+  "multiples_ready_count": 108,
+  "beta_ready_count": 0,
+  "fields": [
+    "PER",
+    "VE/EBITDA",
+    "VE/ventas",
+    "P/VC"
+  ],
+  "note": "Original preserved without modification. Normalized file is reproducible with import_public_comparables.py."
+}

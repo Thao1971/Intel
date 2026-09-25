@@ -1,0 +1,98 @@
+{
+  "status": "passed",
+  "basket_version": "valuation-validation-basket-v1",
+  "as_of": "2025-12-31",
+  "sector_coverage": [
+    "distribucion",
+    "industria",
+    "inmobiliario",
+    "medios",
+    "servicios",
+    "software"
+  ],
+  "cases": [
+    {
+      "id": "real_estate_merlin",
+      "company": "MERLIN PROPERTIES, SOCIMI, S.A.",
+      "sector": "inmobiliario",
+      "enterprise_value": 2351.86,
+      "manual_low": 2200,
+      "manual_high": 2600,
+      "manual_match": true,
+      "baseline_ev": 2351.86,
+      "regression_pct": 0.0,
+      "regression_ok": true,
+      "methods": 2
+    },
+    {
+      "id": "media_atresmedia",
+      "company": "ATRESMEDIA CORP. DE MEDIOS DE COM. S.A.",
+      "sector": "medios",
+      "enterprise_value": 1642.51,
+      "manual_low": 1500,
+      "manual_high": 1800,
+      "manual_match": true,
+      "baseline_ev": 1642.51,
+      "regression_pct": 0.0,
+      "regression_ok": true,
+      "methods": 2
+    },
+    {
+      "id": "industry_acerinox",
+      "company": "ACERINOX, S.A.",
+      "sector": "industria",
+      "enterprise_value": 6002.71,
+      "manual_low": 5500,
+      "manual_high": 6500,
+      "manual_match": true,
+      "baseline_ev": 6002.71,
+      "regression_pct": 0.0,
+      "regression_ok": true,
+      "methods": 2
+    },
+    {
+      "id": "distribution_dia",
+      "company": "DIA-DISTRIBUIDORA INT. DE ALIMENT. S.A.",
+      "sector": "distribucion",
+      "enterprise_value": 1599.71,
+      "manual_low": 1450,
+      "manual_high": 1750,
+      "manual_match": true,
+      "baseline_ev": 1599.71,
+      "regression_pct": 0.0,
+      "regression_ok": true,
+      "methods": 2
+    },
+    {
+      "id": "services_prosegur",
+      "company": "PROSEGUR, CIA. DE SEGURIDAD, S.A.",
+      "sector": "servicios",
+      "enterprise_value": 1944.26,
+      "manual_low": 1750,
+      "manual_high": 2150,
+      "manual_match": true,
+      "baseline_ev": 1944.26,
+      "regression_pct": 0.0,
+      "regression_ok": true,
+      "methods": 2
+    },
+    {
+      "id": "software_indra",
+      "company": "INDRA SISTEMAS, S.A., SERIE A",
+      "sector": "software",
+      "enterprise_value": 7762.6,
+      "manual_low": 7200,
+      "manual_high": 8300,
+      "manual_match": true,
+      "baseline_ev": 7762.6,
+      "regression_pct": 0.0,
+      "regression_ok": true,
+      "methods": 2
+    }
+  ],
+  "extreme_checks": {
+    "missing_debt_blocks_equity": true,
+    "negative_range_is_rejected": true,
+    "weights_sum_to_one": true
+  }
+}

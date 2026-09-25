@@ -82,7 +82,12 @@ def test_valuation_traceable():
     assert v["method"] in ("ev_ebitda", "ev_revenue", "book_value", "insufficient_data")
     assert "hypotheses" in v and "confidence" in v and "lineage" in v
     if v["method"] == "ev_ebitda":
-        assert v["multiple_basis"] == "inferred_reference"   # honest, not market-observed
+        assert v["multiple_basis"] in ("market_observed", "observed_public_adjusted",
+                                         "inferred_reference")
+        if v["multiple_basis"] == "observed_public_adjusted":
+            assert v["multiple_benchmark"]["multiple"] == v["unadjusted_multiple"]
+            assert v["private_company_adjustment"]["adjusted_multiple"] == v["multiple"]
+            assert "unavailable_evidence" in v["private_company_adjustment"]
 
 
 def test_comparables_structural_no_embeddings():

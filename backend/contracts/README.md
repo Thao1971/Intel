@@ -28,3 +28,13 @@ Snapshots documentales versionados del contrato de integración que consume arro
 BASE=<base_url>
 curl -s "$BASE/api/v1/openapi/arroba.v1.json" -o backend/contracts/arroba.v1.json
 ```
+
+## Contrato especializado de valoración Intel–Beta
+
+- **`intel-beta-valuation.v1.schema.json`** — esquema JSON congelado del paquete de valoración.
+- **`INTEL_BETA_VALUATION_CONTRACT.md`** — reglas funcionales y de consumo por Beta.
+- **Endpoint:** `POST /api/v2/financial-intelligence/valuation`.
+
+Este contrato especializado puede evolucionar sin alterar el contrato general congelado de
+los seis motores. Los cambios incompatibles requieren una nueva versión del archivo y de
+`contract_version`.

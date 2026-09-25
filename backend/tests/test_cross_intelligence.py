@@ -10,7 +10,7 @@ import requests
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://data-factory-hub.preview.emergentagent.com").rstrip("/")
 
 LOGIN_EMAIL = "daniel@wearebudadvisors.com"
-LOGIN_PASSWORD = "Thao1971@"
+LOGIN_PASSWORD = __import__("os").environ.get("SMOKE_TEST_PASSWORD", "")
 
 # Required field sets (per review_request)
 SECTORS_IN_FIELDS = {"cnae_section", "cnae_label", "estimated_companies", "borme_events", "concentration_index"}

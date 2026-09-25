@@ -1,0 +1,21 @@
+{
+  "snapshot_version": "market-premia-2026-01-05-v1",
+  "observation_date": "2026-01-05",
+  "currency": "EUR",
+  "geography": "Spain",
+  "mature_market_equity_risk_premium": {
+    "value": 0.0423,
+    "series_key": "ERP.MATURE_MARKET",
+    "source": "Aswath Damodaran — Country Risk Premiums",
+    "source_url": "https://pages.stern.nyu.edu/adamodar/New_Home_Page/datafile/ctryprem.html"
+  },
+  "spain_country_risk_premium": {
+    "value": 0.0155,
+    "series_key": "CRP.ESP",
+    "source": "Aswath Damodaran — Country Risk Premiums",
+    "source_url": "https://pages.stern.nyu.edu/adamodar/New_Home_Page/datafile/ctryprem.html"
+  },
+  "spain_total_equity_risk_premium": 0.0578,
+  "formula": "mature market ERP + Spain country risk premium",
+  "status": "external_reference"
+}

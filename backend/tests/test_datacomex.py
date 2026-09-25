@@ -7,7 +7,7 @@ BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://data-factory-hub.pre
 API = f"{BASE_URL}/api/v1/datacomex"
 
 EMAIL = "daniel@wearebudadvisors.com"
-PASSWORD = "Thao1971@"
+PASSWORD = __import__("os").environ.get("SMOKE_TEST_PASSWORD", "")
 
 
 @pytest.fixture(scope="session")

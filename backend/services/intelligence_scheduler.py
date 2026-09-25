@@ -5,6 +5,7 @@ Schedule (Europe/Madrid timezone, UTC+1/+2):
   - Sector Intelligence: Daily 04:00 Madrid (~02:00-03:00 UTC)
   - Geo Intelligence: Daily 04:05 Madrid
   - Cross Intelligence: Daily 04:10 Madrid
+  - ECB risk-free snapshot: Daily after intelligence refresh
 
 These modules are derived layers from BORME, INE and other sources.
 They must recalculate every night after data updates.
@@ -130,6 +131,16 @@ async def _run_full_sync():
         logger.info(f"  BME Enrichment: {bme.get('enriched', 0)} companies enriched")
     except Exception as bme_err:
         logger.warning(f"  BME Enrichment skipped: {bme_err}")
+
+    # Step 6: dated ECB EUR AAA 10-year spot rate for WACC.
+    try:
+        from services.engines.valuation.ecb_risk_free import refresh_ecb_risk_free
+        ecb = await refresh_ecb_risk_free(db)
+        await _log_sync("ecb_risk_free", "completed", 1)
+        logger.info(f"  ECB risk-free: {ecb['observation_date']} {ecb['raw_percent']:.4f}%")
+    except Exception as ecb_err:
+        logger.error(f"  ECB risk-free refresh failed: {ecb_err}")
+        await _log_sync("ecb_risk_free", "failed", 0, str(ecb_err))
 
 
 async def _log_sync(module: str, status: str, entries: int, error: str = None):

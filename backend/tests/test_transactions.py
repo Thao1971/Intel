@@ -15,7 +15,7 @@ if not BASE_URL:
 
 # Test credentials
 TEST_EMAIL = "daniel@wearebudadvisors.com"
-TEST_PASSWORD = "Thao1971@"
+TEST_PASSWORD = __import__("os").environ.get("SMOKE_TEST_PASSWORD", "")
 
 
 class TestTransactionsAuth:

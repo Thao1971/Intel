@@ -6,6 +6,10 @@ The engine is the boundary: it reads norm_financials (statement detail) + master
 
 from typing import Dict, List, Optional
 
+from services.engines.valuation.conventions import (
+    accounting_working_capital, calculated_ebitda, operating_working_capital,
+)
+
 # Iberinform Valu8 account codes → canonical line.
 CODES = {
     "revenue": "40100", "operating_income": "49100", "depreciation": "40800",
@@ -33,7 +37,7 @@ def _year_metrics(acc: Dict) -> Dict[str, Optional[float]]:
     """Canonical figures for one fiscal year from its account map."""
     op = _g(acc, "operating_income")
     dep = _g(acc, "depreciation")
-    ebitda = round(op + abs(dep), 2) if (op is not None and dep is not None) else None
+    ebitda = calculated_ebitda(op, dep)
     lt, st = _g(acc, "lt_debt"), _g(acc, "st_debt")
     fin_debt = None
     if lt is not None or st is not None:
@@ -45,6 +49,9 @@ def _year_metrics(acc: Dict) -> Dict[str, Optional[float]]:
     cf_op, cf_inv = _g(acc, "cf_operating"), _g(acc, "cf_investing")
     fcf = round(cf_op + cf_inv, 2) if (cf_op is not None and cf_inv is not None) else None
     cash_conv = round(cf_op / ebitda, 4) if (cf_op is not None and ebitda not in (None, 0)) else None
+    accounting_nwc = accounting_working_capital(_g(acc, "current_assets"), _g(acc, "current_liabilities"))
+    operating_nwc = operating_working_capital(
+        _g(acc, "trade_debtors"), _g(acc, "inventories"), _g(acc, "suppliers"))
     return {
         "revenue": _g(acc, "revenue"), "supplies": _g(acc, "supplies"),
         "personnel_costs": _g(acc, "personnel_costs"),
@@ -63,6 +70,12 @@ def _year_metrics(acc: Dict) -> Dict[str, Optional[float]]:
         "free_cash_flow": fcf, "cash_conversion": cash_conv,
         "trade_debtors": _g(acc, "trade_debtors"), "inventories": _g(acc, "inventories"),
         "suppliers": _g(acc, "suppliers"),
+        "operating_working_capital": operating_nwc,
+        "working_capital": operating_nwc if operating_nwc is not None else accounting_nwc,
+        "working_capital_definition": ("trade_debtors_plus_inventories_minus_suppliers"
+                                       if operating_nwc is not None
+                                       else ("current_assets_minus_current_liabilities"
+                                             if accounting_nwc is not None else "unavailable")),
     }
 
 

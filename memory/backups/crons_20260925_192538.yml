@@ -1,0 +1,8 @@
+crons:
+  - name: prewarm-descrip
+    description: "Genera descripciones IA de compañías por lotes de 40 cada 15 min hasta agotar pendientes"
+    cron: "*/15 * * * *"
+    endpoint: "{{BASE_URL}}/api/cron/prewarm-descriptions"
+    method: POST
+    # Cron endpoints must ack 2xx immediately; enqueue/background the actual work.
+    enabled: true

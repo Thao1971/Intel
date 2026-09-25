@@ -11,7 +11,7 @@ BASE_URL = os.environ.get(
 ).rstrip("/")
 
 EMAIL = os.environ.get("SMOKE_TEST_EMAIL", "daniel@wearebudadvisors.com")
-PASSWORD = os.environ.get("SMOKE_TEST_PASSWORD", "Thao1971@")
+PASSWORD = os.environ.get("SMOKE_TEST_PASSWORD", "")
 
 
 @pytest.fixture(scope="session")

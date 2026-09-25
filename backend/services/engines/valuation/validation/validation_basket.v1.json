@@ -1,0 +1,14 @@
+{
+  "version": "valuation-validation-basket-v1",
+  "as_of": "2025-12-31",
+  "currency": "EUR_millions",
+  "purpose": "Stable regression basket using real Spanish listed companies and frozen manual benchmark ranges.",
+  "cases": [
+    {"id":"real_estate_merlin","sector":"inmobiliario","company":"MERLIN PROPERTIES, SOCIMI, S.A.","archetype":"real_estate","ebitda":120,"observed_ev_ebitda":26.9,"private_adjustment":0.75,"dcf_central":2300,"manual_ev_range":{"low":2200,"high":2600},"baseline_ev":2351.86},
+    {"id":"media_atresmedia","sector":"medios","company":"ATRESMEDIA CORP. DE MEDIOS DE COM. S.A.","archetype":"media","ebitda":180,"observed_ev_ebitda":11.8,"private_adjustment":0.80,"dcf_central":1600,"manual_ev_range":{"low":1500,"high":1800},"baseline_ev":1642.51},
+    {"id":"industry_acerinox","sector":"industria","company":"ACERINOX, S.A.","archetype":"industrial","ebitda":600,"observed_ev_ebitda":12.3,"private_adjustment":0.85,"dcf_central":5800,"manual_ev_range":{"low":5500,"high":6500},"baseline_ev":6002.71},
+    {"id":"distribution_dia","sector":"distribucion","company":"DIA-DISTRIBUIDORA INT. DE ALIMENT. S.A.","archetype":"distribution","ebitda":350,"observed_ev_ebitda":5.95,"private_adjustment":0.80,"dcf_central":1550,"manual_ev_range":{"low":1450,"high":1750},"baseline_ev":1599.71},
+    {"id":"services_prosegur","sector":"servicios","company":"PROSEGUR, CIA. DE SEGURIDAD, S.A.","archetype":"professional_services","ebitda":480,"observed_ev_ebitda":4.91,"private_adjustment":0.85,"dcf_central":1900,"manual_ev_range":{"low":1750,"high":2150},"baseline_ev":1944.26},
+    {"id":"software_indra","sector":"software","company":"INDRA SISTEMAS, S.A., SERIE A","archetype":"software","ebitda":620,"observed_ev_ebitda":14.3,"private_adjustment":0.90,"dcf_central":7600,"manual_ev_range":{"low":7200,"high":8300},"baseline_ev":7762.60}
+  ]
+}

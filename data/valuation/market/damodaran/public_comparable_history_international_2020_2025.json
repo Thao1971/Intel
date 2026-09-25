@@ -1,0 +1,1667 @@
+{
+  "history_version": "public-comparable-history-v1",
+  "provider": "damodaran",
+  "source": {
+    "title": "Archived Enterprise Value/EBITDA multiples by industry sector",
+    "url": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/dataarchived.html",
+    "cadence": "annual",
+    "retrieved_at": "2026-09-22",
+    "methodology": "Each category point is the median of the published aggregate EV/EBITDA multiples of its mapped subindustries. P25 and P75 measure dispersion across subindustries, not across individual companies."
+  },
+  "coverage": {
+    "regions": [
+      "europe",
+      "united_states"
+    ],
+    "years": [
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "points": [
+    {
+      "as_of": "2020-01-05",
+      "region": "united_states",
+      "archetype": "real_estate",
+      "category": "Inmobiliario",
+      "metric": "ev_ebitda",
+      "median": 17.6243,
+      "p25": 11.3717,
+      "p75": 23.5101,
+      "subindustry_count": 4,
+      "company_count": 323,
+      "observations": [
+        {
+          "industry": "R.E.I.T.",
+          "multiple": 22.644782,
+          "company_count": 234
+        },
+        {
+          "industry": "Real Estate (Development)",
+          "multiple": 26.105982,
+          "company_count": 20
+        },
+        {
+          "industry": "Real Estate (General/Diversified)",
+          "multiple": 7.675302,
+          "company_count": 12
+        },
+        {
+          "industry": "Real Estate (Operations & Services)",
+          "multiple": 12.603885,
+          "company_count": 57
+        }
+      ],
+      "source_file": "vebitda19.xls"
+    },
+    {
+      "as_of": "2020-01-05",
+      "region": "united_states",
+      "archetype": "media_content",
+      "category": "Medios y publicidad",
+      "metric": "ev_ebitda",
+      "median": 9.1901,
+      "p25": 9.1486,
+      "p75": 12.3636,
+      "subindustry_count": 4,
+      "company_count": 212,
+      "observations": [
+        {
+          "industry": "Advertising",
+          "multiple": 9.201469,
+          "company_count": 47
+        },
+        {
+          "industry": "Broadcasting",
+          "multiple": 9.058434,
+          "company_count": 27
+        },
+        {
+          "industry": "Entertainment",
+          "multiple": 21.849891,
+          "company_count": 107
+        },
+        {
+          "industry": "Publishing & Newspapers",
+          "multiple": 9.178703,
+          "company_count": 31
+        }
+      ],
+      "source_file": "vebitda19.xls"
+    },
+    {
+      "as_of": "2020-01-05",
+      "region": "united_states",
+      "archetype": "construction",
+      "category": "Construcción e ingeniería",
+      "metric": "ev_ebitda",
+      "median": 10.1257,
+      "p25": 9.9392,
+      "p75": 10.3122,
+      "subindustry_count": 2,
+      "company_count": 98,
+      "observations": [
+        {
+          "industry": "Construction Supplies",
+          "multiple": 10.498742,
+          "company_count": 44
+        },
+        {
+          "industry": "Engineering/Construction",
+          "multiple": 9.752651,
+          "company_count": 54
+        }
+      ],
+      "source_file": "vebitda19.xls"
+    },
+    {
+      "as_of": "2020-01-05",
+      "region": "united_states",
+      "archetype": "energy_utilities",
+      "category": "Energía",
+      "metric": "ev_ebitda",
+      "median": 14.1255,
+      "p25": 12.0303,
+      "p75": 17.1519,
+      "subindustry_count": 5,
+      "company_count": 129,
+      "observations": [
+        {
+          "industry": "Coal & Related Energy",
+          "multiple": 2.251603,
+          "company_count": 22
+        },
+        {
+          "industry": "Green & Renewable Energy",
+          "multiple": 17.15186,
+          "company_count": 22
+        },
+        {
+          "industry": "Power",
+          "multiple": 12.030276,
+          "company_count": 52
+        },
+        {
+          "industry": "Utility (General)",
+          "multiple": 14.125544,
+          "company_count": 16
+        },
+        {
+          "industry": "Utility (Water)",
+          "multiple": 19.018675,
+          "company_count": 17
+        }
+      ],
+      "source_file": "vebitda19.xls"
+    },
+    {
+      "as_of": "2021-01-05",
+      "region": "united_states",
+      "archetype": "real_estate",
+      "category": "Inmobiliario",
+      "metric": "ev_ebitda",
+      "median": 23.9857,
+      "p25": 20.7439,
+      "p75": 30.8342,
+      "subindustry_count": 4,
+      "company_count": 335,
+      "observations": [
+        {
+          "industry": "R.E.I.T.",
+          "multiple": 22.71725,
+          "company_count": 238
+        },
+        {
+          "industry": "Real Estate (Development)",
+          "multiple": 47.574356,
+          "company_count": 25
+        },
+        {
+          "industry": "Real Estate (General/Diversified)",
+          "multiple": 25.25417,
+          "company_count": 11
+        },
+        {
+          "industry": "Real Estate (Operations & Services)",
+          "multiple": 14.823667,
+          "company_count": 61
+        }
+      ],
+      "source_file": "vebitda20.xls"
+    },
+    {
+      "as_of": "2021-01-05",
+      "region": "united_states",
+      "archetype": "media_content",
+      "category": "Medios y publicidad",
+      "metric": "ev_ebitda",
+      "median": 9.3145,
+      "p25": 8.6061,
+      "p75": 16.3906,
+      "subindustry_count": 4,
+      "company_count": 237,
+      "observations": [
+        {
+          "industry": "Advertising",
+          "multiple": 8.860314,
+          "company_count": 61
+        },
+        {
+          "industry": "Broadcasting",
+          "multiple": 7.843594,
+          "company_count": 29
+        },
+        {
+          "industry": "Entertainment",
+          "multiple": 36.25678,
+          "company_count": 118
+        },
+        {
+          "industry": "Publishing & Newspapers",
+          "multiple": 9.768589,
+          "company_count": 29
+        }
+      ],
+      "source_file": "vebitda20.xls"
+    },
+    {
+      "as_of": "2021-01-05",
+      "region": "united_states",
+      "archetype": "construction",
+      "category": "Construcción e ingeniería",
+      "metric": "ev_ebitda",
+      "median": 13.0434,
+      "p25": 11.9483,
+      "p75": 14.1386,
+      "subindustry_count": 2,
+      "company_count": 107,
+      "observations": [
+        {
+          "industry": "Construction Supplies",
+          "multiple": 15.233754,
+          "company_count": 46
+        },
+        {
+          "industry": "Engineering/Construction",
+          "multiple": 10.8531,
+          "company_count": 61
+        }
+      ],
+      "source_file": "vebitda20.xls"
+    },
+    {
+      "as_of": "2021-01-05",
+      "region": "united_states",
+      "archetype": "energy_utilities",
+      "category": "Energía",
+      "metric": "ev_ebitda",
+      "median": 12.1518,
+      "p25": 11.886,
+      "p75": 20.9249,
+      "subindustry_count": 5,
+      "company_count": 142,
+      "observations": [
+        {
+          "industry": "Coal & Related Energy",
+          "multiple": 5.78523,
+          "company_count": 29
+        },
+        {
+          "industry": "Green & Renewable Energy",
+          "multiple": 22.94044,
+          "company_count": 25
+        },
+        {
+          "industry": "Power",
+          "multiple": 11.886012,
+          "company_count": 55
+        },
+        {
+          "industry": "Utility (General)",
+          "multiple": 12.151844,
+          "company_count": 16
+        },
+        {
+          "industry": "Utility (Water)",
+          "multiple": 20.924855,
+          "company_count": 17
+        }
+      ],
+      "source_file": "vebitda20.xls"
+    },
+    {
+      "as_of": "2022-01-05",
+      "region": "united_states",
+      "archetype": "real_estate",
+      "category": "Inmobiliario",
+      "metric": "ev_ebitda",
+      "median": 23.8267,
+      "p25": 20.6162,
+      "p75": 26.8169,
+      "subindustry_count": 4,
+      "company_count": 318,
+      "observations": [
+        {
+          "industry": "R.E.I.T.",
+          "multiple": 26.809894,
+          "company_count": 238
+        },
+        {
+          "industry": "Real Estate (Development)",
+          "multiple": 26.837721,
+          "company_count": 19
+        },
+        {
+          "industry": "Real Estate (General/Diversified)",
+          "multiple": 19.934126,
+          "company_count": 10
+        },
+        {
+          "industry": "Real Estate (Operations & Services)",
+          "multiple": 20.843545,
+          "company_count": 51
+        }
+      ],
+      "source_file": "vebitda21.xls"
+    },
+    {
+      "as_of": "2022-01-05",
+      "region": "united_states",
+      "archetype": "media_content",
+      "category": "Medios y publicidad",
+      "metric": "ev_ebitda",
+      "median": 9.7545,
+      "p25": 9.0124,
+      "p75": 15.3472,
+      "subindustry_count": 4,
+      "company_count": 206,
+      "observations": [
+        {
+          "industry": "Advertising",
+          "multiple": 9.935638,
+          "company_count": 49
+        },
+        {
+          "industry": "Broadcasting",
+          "multiple": 7.329775,
+          "company_count": 28
+        },
+        {
+          "industry": "Entertainment",
+          "multiple": 31.581895,
+          "company_count": 108
+        },
+        {
+          "industry": "Publishing & Newspapers",
+          "multiple": 9.573262,
+          "company_count": 21
+        }
+      ],
+      "source_file": "vebitda21.xls"
+    },
+    {
+      "as_of": "2022-01-05",
+      "region": "united_states",
+      "archetype": "construction",
+      "category": "Construcción e ingeniería",
+      "metric": "ev_ebitda",
+      "median": 13.4476,
+      "p25": 13.0397,
+      "p75": 13.8556,
+      "subindustry_count": 2,
+      "company_count": 96,
+      "observations": [
+        {
+          "industry": "Construction Supplies",
+          "multiple": 14.263556,
+          "company_count": 48
+        },
+        {
+          "industry": "Engineering/Construction",
+          "multiple": 12.631698,
+          "company_count": 48
+        }
+      ],
+      "source_file": "vebitda21.xls"
+    },
+    {
+      "as_of": "2022-01-05",
+      "region": "united_states",
+      "archetype": "energy_utilities",
+      "category": "Energía",
+      "metric": "ev_ebitda",
+      "median": 14.2975,
+      "p25": 12.3642,
+      "p75": 16.8741,
+      "subindustry_count": 5,
+      "company_count": 118,
+      "observations": [
+        {
+          "industry": "Coal & Related Energy",
+          "multiple": 8.177637,
+          "company_count": 18
+        },
+        {
+          "industry": "Green & Renewable Energy",
+          "multiple": 16.874057,
+          "company_count": 20
+        },
+        {
+          "industry": "Power",
+          "multiple": 12.364213,
+          "company_count": 50
+        },
+        {
+          "industry": "Utility (General)",
+          "multiple": 14.297506,
+          "company_count": 16
+        },
+        {
+          "industry": "Utility (Water)",
+          "multiple": 22.421982,
+          "company_count": 14
+        }
+      ],
+      "source_file": "vebitda21.xls"
+    },
+    {
+      "as_of": "2023-01-05",
+      "region": "united_states",
+      "archetype": "real_estate",
+      "category": "Inmobiliario",
+      "metric": "ev_ebitda",
+      "median": 12.7152,
+      "p25": 10.104,
+      "p75": 16.1405,
+      "subindustry_count": 4,
+      "company_count": 313,
+      "observations": [
+        {
+          "industry": "R.E.I.T.",
+          "multiple": 19.889516,
+          "company_count": 223
+        },
+        {
+          "industry": "Real Estate (Development)",
+          "multiple": 10.539631,
+          "company_count": 18
+        },
+        {
+          "industry": "Real Estate (General/Diversified)",
+          "multiple": 14.890794,
+          "company_count": 12
+        },
+        {
+          "industry": "Real Estate (Operations & Services)",
+          "multiple": 8.797146,
+          "company_count": 60
+        }
+      ],
+      "source_file": "vebitda22.xls"
+    },
+    {
+      "as_of": "2023-01-05",
+      "region": "united_states",
+      "archetype": "media_content",
+      "category": "Medios y publicidad",
+      "metric": "ev_ebitda",
+      "median": 9.3782,
+      "p25": 7.9351,
+      "p75": 12.1357,
+      "subindustry_count": 4,
+      "company_count": 214,
+      "observations": [
+        {
+          "industry": "Advertising",
+          "multiple": 10.360207,
+          "company_count": 58
+        },
+        {
+          "industry": "Broadcasting",
+          "multiple": 6.551963,
+          "company_count": 26
+        },
+        {
+          "industry": "Entertainment",
+          "multiple": 17.462188,
+          "company_count": 110
+        },
+        {
+          "industry": "Publishing & Newspapers",
+          "multiple": 8.396095,
+          "company_count": 20
+        }
+      ],
+      "source_file": "vebitda22.xls"
+    },
+    {
+      "as_of": "2023-01-05",
+      "region": "united_states",
+      "archetype": "construction",
+      "category": "Construcción e ingeniería",
+      "metric": "ev_ebitda",
+      "median": 13.0519,
+      "p25": 12.993,
+      "p75": 13.1107,
+      "subindustry_count": 2,
+      "company_count": 92,
+      "observations": [
+        {
+          "industry": "Construction Supplies",
+          "multiple": 12.934161,
+          "company_count": 49
+        },
+        {
+          "industry": "Engineering/Construction",
+          "multiple": 13.169581,
+          "company_count": 43
+        }
+      ],
+      "source_file": "vebitda22.xls"
+    },
+    {
+      "as_of": "2023-01-05",
+      "region": "united_states",
+      "archetype": "energy_utilities",
+      "category": "Energía",
+      "metric": "ev_ebitda",
+      "median": 12.9726,
+      "p25": 12.7012,
+      "p75": 13.7453,
+      "subindustry_count": 5,
+      "company_count": 117,
+      "observations": [
+        {
+          "industry": "Coal & Related Energy",
+          "multiple": 3.813723,
+          "company_count": 19
+        },
+        {
+          "industry": "Green & Renewable Energy",
+          "multiple": 12.701231,
+          "company_count": 19
+        },
+        {
+          "industry": "Power",
+          "multiple": 12.972637,
+          "company_count": 48
+        },
+        {
+          "industry": "Utility (General)",
+          "multiple": 13.745257,
+          "company_count": 15
+        },
+        {
+          "industry": "Utility (Water)",
+          "multiple": 20.002977,
+          "company_count": 16
+        }
+      ],
+      "source_file": "vebitda22.xls"
+    },
+    {
+      "as_of": "2024-01-05",
+      "region": "united_states",
+      "archetype": "real_estate",
+      "category": "Inmobiliario",
+      "metric": "ev_ebitda",
+      "median": 17.9321,
+      "p25": 17.4319,
+      "p75": 18.0092,
+      "subindustry_count": 5,
+      "company_count": 309,
+      "observations": [
+        {
+          "industry": "R.E.I.T.",
+          "multiple": 21.021909,
+          "company_count": 193
+        },
+        {
+          "industry": "Real Estate (Development)",
+          "multiple": 17.932057,
+          "company_count": 17
+        },
+        {
+          "industry": "Real Estate (General/Diversified)",
+          "multiple": 18.009159,
+          "company_count": 11
+        },
+        {
+          "industry": "Real Estate (Operations & Services)",
+          "multiple": 14.981931,
+          "company_count": 60
+        },
+        {
+          "industry": "Retail (REITs)",
+          "multiple": 17.431874,
+          "company_count": 28
+        }
+      ],
+      "source_file": "vebitda23.xls"
+    },
+    {
+      "as_of": "2024-01-05",
+      "region": "united_states",
+      "archetype": "media_content",
+      "category": "Medios y publicidad",
+      "metric": "ev_ebitda",
+      "median": 11.7324,
+      "p25": 9.7208,
+      "p75": 13.7983,
+      "subindustry_count": 4,
+      "company_count": 198,
+      "observations": [
+        {
+          "industry": "Advertising",
+          "multiple": 12.940313,
+          "company_count": 57
+        },
+        {
+          "industry": "Broadcasting",
+          "multiple": 7.30983,
+          "company_count": 22
+        },
+        {
+          "industry": "Entertainment",
+          "multiple": 16.372327,
+          "company_count": 98
+        },
+        {
+          "industry": "Publishing & Newspapers",
+          "multiple": 10.52443,
+          "company_count": 21
+        }
+      ],
+      "source_file": "vebitda23.xls"
+    },
+    {
+      "as_of": "2024-01-05",
+      "region": "united_states",
+      "archetype": "construction",
+      "category": "Construcción e ingeniería",
+      "metric": "ev_ebitda",
+      "median": 11.939,
+      "p25": 11.5284,
+      "p75": 12.3497,
+      "subindustry_count": 2,
+      "company_count": 88,
+      "observations": [
+        {
+          "industry": "Construction Supplies",
+          "multiple": 11.117699,
+          "company_count": 45
+        },
+        {
+          "industry": "Engineering/Construction",
+          "multiple": 12.760394,
+          "company_count": 43
+        }
+      ],
+      "source_file": "vebitda23.xls"
+    },
+    {
+      "as_of": "2024-01-05",
+      "region": "united_states",
+      "archetype": "energy_utilities",
+      "category": "Energía",
+      "metric": "ev_ebitda",
+      "median": 11.6964,
+      "p25": 11.6918,
+      "p75": 12.632,
+      "subindustry_count": 5,
+      "company_count": 112,
+      "observations": [
+        {
+          "industry": "Coal & Related Energy",
+          "multiple": 2.752899,
+          "company_count": 18
+        },
+        {
+          "industry": "Green & Renewable Energy",
+          "multiple": 12.631995,
+          "company_count": 17
+        },
+        {
+          "industry": "Power",
+          "multiple": 11.691846,
+          "company_count": 50
+        },
+        {
+          "industry": "Utility (General)",
+          "multiple": 11.696398,
+          "company_count": 14
+        },
+        {
+          "industry": "Utility (Water)",
+          "multiple": 16.861059,
+          "company_count": 13
+        }
+      ],
+      "source_file": "vebitda23.xls"
+    },
+    {
+      "as_of": "2025-01-05",
+      "region": "united_states",
+      "archetype": "real_estate",
+      "category": "Inmobiliario",
+      "metric": "ev_ebitda",
+      "median": 17.4419,
+      "p25": 14.9354,
+      "p75": 20.3318,
+      "subindustry_count": 5,
+      "company_count": 306,
+      "observations": [
+        {
+          "industry": "R.E.I.T.",
+          "multiple": 20.331784,
+          "company_count": 192
+        },
+        {
+          "industry": "Real Estate (Development)",
+          "multiple": 14.93537,
+          "company_count": 15
+        },
+        {
+          "industry": "Real Estate (General/Diversified)",
+          "multiple": 14.22459,
+          "company_count": 11
+        },
+        {
+          "industry": "Real Estate (Operations & Services)",
+          "multiple": 20.833734,
+          "company_count": 60
+        },
+        {
+          "industry": "Retail (REITs)",
+          "multiple": 17.441938,
+          "company_count": 28
+        }
+      ],
+      "source_file": "vebitda24.xls"
+    },
+    {
+      "as_of": "2025-01-05",
+      "region": "united_states",
+      "archetype": "media_content",
+      "category": "Medios y publicidad",
+      "metric": "ev_ebitda",
+      "median": 13.3254,
+      "p25": 10.1213,
+      "p75": 16.5709,
+      "subindustry_count": 4,
+      "company_count": 191,
+      "observations": [
+        {
+          "industry": "Advertising",
+          "multiple": 15.557573,
+          "company_count": 54
+        },
+        {
+          "industry": "Broadcasting",
+          "multiple": 7.205646,
+          "company_count": 22
+        },
+        {
+          "industry": "Entertainment",
+          "multiple": 19.610967,
+          "company_count": 96
+        },
+        {
+          "industry": "Publishing & Newspapers",
+          "multiple": 11.093234,
+          "company_count": 19
+        }
+      ],
+      "source_file": "vebitda24.xls"
+    },
+    {
+      "as_of": "2025-01-05",
+      "region": "united_states",
+      "archetype": "construction",
+      "category": "Construcción e ingeniería",
+      "metric": "ev_ebitda",
+      "median": 14.1348,
+      "p25": 13.3787,
+      "p75": 14.8909,
+      "subindustry_count": 2,
+      "company_count": 88,
+      "observations": [
+        {
+          "industry": "Construction Supplies",
+          "multiple": 12.622658,
+          "company_count": 46
+        },
+        {
+          "industry": "Engineering/Construction",
+          "multiple": 15.646991,
+          "company_count": 42
+        }
+      ],
+      "source_file": "vebitda24.xls"
+    },
+    {
+      "as_of": "2025-01-05",
+      "region": "united_states",
+      "archetype": "energy_utilities",
+      "category": "Energía",
+      "metric": "ev_ebitda",
+      "median": 11.8733,
+      "p25": 11.3045,
+      "p75": 13.4398,
+      "subindustry_count": 5,
+      "company_count": 111,
+      "observations": [
+        {
+          "industry": "Coal & Related Energy",
+          "multiple": 3.893753,
+          "company_count": 16
+        },
+        {
+          "industry": "Green & Renewable Energy",
+          "multiple": 11.304546,
+          "company_count": 18
+        },
+        {
+          "industry": "Power",
+          "multiple": 11.873307,
+          "company_count": 48
+        },
+        {
+          "industry": "Utility (General)",
+          "multiple": 13.439817,
+          "company_count": 14
+        },
+        {
+          "industry": "Utility (Water)",
+          "multiple": 15.027217,
+          "company_count": 15
+        }
+      ],
+      "source_file": "vebitda24.xls"
+    },
+    {
+      "as_of": "2020-01-05",
+      "region": "europe",
+      "archetype": "real_estate",
+      "category": "Inmobiliario",
+      "metric": "ev_ebitda",
+      "median": 23.251,
+      "p25": 20.4968,
+      "p75": 24.9891,
+      "subindustry_count": 4,
+      "company_count": 541,
+      "observations": [
+        {
+          "industry": "R.E.I.T.",
+          "multiple": 24.178065,
+          "company_count": 169
+        },
+        {
+          "industry": "Real Estate (Development)",
+          "multiple": 15.015367,
+          "company_count": 60
+        },
+        {
+          "industry": "Real Estate (General/Diversified)",
+          "multiple": 27.422375,
+          "company_count": 66
+        },
+        {
+          "industry": "Real Estate (Operations & Services)",
+          "multiple": 22.32389,
+          "company_count": 246
+        }
+      ],
+      "source_file": "vebitdaEurope19.xls"
+    },
+    {
+      "as_of": "2020-01-05",
+      "region": "europe",
+      "archetype": "media_content",
+      "category": "Medios y publicidad",
+      "metric": "ev_ebitda",
+      "median": 11.2237,
+      "p25": 9.9776,
+      "p75": 13.4746,
+      "subindustry_count": 4,
+      "company_count": 348,
+      "observations": [
+        {
+          "industry": "Advertising",
+          "multiple": 11.809806,
+          "company_count": 84
+        },
+        {
+          "industry": "Broadcasting",
+          "multiple": 7.997788,
+          "company_count": 23
+        },
+        {
+          "industry": "Entertainment",
+          "multiple": 18.469078,
+          "company_count": 152
+        },
+        {
+          "industry": "Publishing & Newspapers",
+          "multiple": 10.637591,
+          "company_count": 89
+        }
+      ],
+      "source_file": "vebitdaEurope19.xls"
+    },
+    {
+      "as_of": "2020-01-05",
+      "region": "europe",
+      "archetype": "construction",
+      "category": "Construcción e ingeniería",
+      "metric": "ev_ebitda",
+      "median": 8.9224,
+      "p25": 8.7653,
+      "p75": 9.0796,
+      "subindustry_count": 2,
+      "company_count": 250,
+      "observations": [
+        {
+          "industry": "Construction Supplies",
+          "multiple": 8.608092,
+          "company_count": 111
+        },
+        {
+          "industry": "Engineering/Construction",
+          "multiple": 9.236742,
+          "company_count": 139
+        }
+      ],
+      "source_file": "vebitdaEurope19.xls"
+    },
+    {
+      "as_of": "2020-01-05",
+      "region": "europe",
+      "archetype": "energy_utilities",
+      "category": "Energía",
+      "metric": "ev_ebitda",
+      "median": 11.6812,
+      "p25": 8.6648,
+      "p75": 12.8167,
+      "subindustry_count": 5,
+      "company_count": 166,
+      "observations": [
+        {
+          "industry": "Coal & Related Energy",
+          "multiple": 4.036253,
+          "company_count": 16
+        },
+        {
+          "industry": "Green & Renewable Energy",
+          "multiple": 12.816748,
+          "company_count": 48
+        },
+        {
+          "industry": "Power",
+          "multiple": 8.664849,
+          "company_count": 71
+        },
+        {
+          "industry": "Utility (General)",
+          "multiple": 11.681221,
+          "company_count": 21
+        },
+        {
+          "industry": "Utility (Water)",
+          "multiple": 13.677566,
+          "company_count": 10
+        }
+      ],
+      "source_file": "vebitdaEurope19.xls"
+    },
+    {
+      "as_of": "2021-01-05",
+      "region": "europe",
+      "archetype": "real_estate",
+      "category": "Inmobiliario",
+      "metric": "ev_ebitda",
+      "median": 27.6424,
+      "p25": 23.9704,
+      "p75": 29.5654,
+      "subindustry_count": 4,
+      "company_count": 531,
+      "observations": [
+        {
+          "industry": "R.E.I.T.",
+          "multiple": 26.311819,
+          "company_count": 171
+        },
+        {
+          "industry": "Real Estate (Development)",
+          "multiple": 16.946092,
+          "company_count": 65
+        },
+        {
+          "industry": "Real Estate (General/Diversified)",
+          "multiple": 31.342514,
+          "company_count": 58
+        },
+        {
+          "industry": "Real Estate (Operations & Services)",
+          "multiple": 28.973009,
+          "company_count": 237
+        }
+      ],
+      "source_file": "vebitdaEurope20.xls"
+    },
+    {
+      "as_of": "2021-01-05",
+      "region": "europe",
+      "archetype": "media_content",
+      "category": "Medios y publicidad",
+      "metric": "ev_ebitda",
+      "median": 14.1325,
+      "p25": 11.7578,
+      "p75": 16.2759,
+      "subindustry_count": 4,
+      "company_count": 361,
+      "observations": [
+        {
+          "industry": "Advertising",
+          "multiple": 12.652646,
+          "company_count": 82
+        },
+        {
+          "industry": "Broadcasting",
+          "multiple": 9.073097,
+          "company_count": 25
+        },
+        {
+          "industry": "Entertainment",
+          "multiple": 18.266594,
+          "company_count": 172
+        },
+        {
+          "industry": "Publishing & Newspapers",
+          "multiple": 15.612387,
+          "company_count": 82
+        }
+      ],
+      "source_file": "vebitdaEurope20.xls"
+    },
+    {
+      "as_of": "2021-01-05",
+      "region": "europe",
+      "archetype": "construction",
+      "category": "Construcción e ingeniería",
+      "metric": "ev_ebitda",
+      "median": 11.3522,
+      "p25": 10.7998,
+      "p75": 11.9047,
+      "subindustry_count": 2,
+      "company_count": 254,
+      "observations": [
+        {
+          "industry": "Construction Supplies",
+          "multiple": 12.457077,
+          "company_count": 112
+        },
+        {
+          "industry": "Engineering/Construction",
+          "multiple": 10.247372,
+          "company_count": 142
+        }
+      ],
+      "source_file": "vebitdaEurope20.xls"
+    },
+    {
+      "as_of": "2021-01-05",
+      "region": "europe",
+      "archetype": "energy_utilities",
+      "category": "Energía",
+      "metric": "ev_ebitda",
+      "median": 10.5097,
+      "p25": 9.2471,
+      "p75": 13.9414,
+      "subindustry_count": 5,
+      "company_count": 165,
+      "observations": [
+        {
+          "industry": "Coal & Related Energy",
+          "multiple": 4.096192,
+          "company_count": 16
+        },
+        {
+          "industry": "Green & Renewable Energy",
+          "multiple": 23.222871,
+          "company_count": 49
+        },
+        {
+          "industry": "Power",
+          "multiple": 10.509683,
+          "company_count": 71
+        },
+        {
+          "industry": "Utility (General)",
+          "multiple": 9.247074,
+          "company_count": 19
+        },
+        {
+          "industry": "Utility (Water)",
+          "multiple": 13.941381,
+          "company_count": 10
+        }
+      ],
+      "source_file": "vebitdaEurope20.xls"
+    },
+    {
+      "as_of": "2022-01-05",
+      "region": "europe",
+      "archetype": "real_estate",
+      "category": "Inmobiliario",
+      "metric": "ev_ebitda",
+      "median": 29.815,
+      "p25": 23.8921,
+      "p75": 32.8976,
+      "subindustry_count": 4,
+      "company_count": 541,
+      "observations": [
+        {
+          "industry": "R.E.I.T.",
+          "multiple": 27.696771,
+          "company_count": 178
+        },
+        {
+          "industry": "Real Estate (Development)",
+          "multiple": 12.477945,
+          "company_count": 66
+        },
+        {
+          "industry": "Real Estate (General/Diversified)",
+          "multiple": 35.790683,
+          "company_count": 54
+        },
+        {
+          "industry": "Real Estate (Operations & Services)",
+          "multiple": 31.933192,
+          "company_count": 243
+        }
+      ],
+      "source_file": "vebitdaEurope21.xls"
+    },
+    {
+      "as_of": "2022-01-05",
+      "region": "europe",
+      "archetype": "media_content",
+      "category": "Medios y publicidad",
+      "metric": "ev_ebitda",
+      "median": 15.3066,
+      "p25": 13.1911,
+      "p75": 17.4743,
+      "subindustry_count": 4,
+      "company_count": 390,
+      "observations": [
+        {
+          "industry": "Advertising",
+          "multiple": 15.267917,
+          "company_count": 89
+        },
+        {
+          "industry": "Broadcasting",
+          "multiple": 6.96049,
+          "company_count": 24
+        },
+        {
+          "industry": "Entertainment",
+          "multiple": 23.861565,
+          "company_count": 198
+        },
+        {
+          "industry": "Publishing & Newspapers",
+          "multiple": 15.345278,
+          "company_count": 79
+        }
+      ],
+      "source_file": "vebitdaEurope21.xls"
+    },
+    {
+      "as_of": "2022-01-05",
+      "region": "europe",
+      "archetype": "construction",
+      "category": "Construcción e ingeniería",
+      "metric": "ev_ebitda",
+      "median": 10.0044,
+      "p25": 9.8403,
+      "p75": 10.1686,
+      "subindustry_count": 2,
+      "company_count": 269,
+      "observations": [
+        {
+          "industry": "Construction Supplies",
+          "multiple": 9.676073,
+          "company_count": 116
+        },
+        {
+          "industry": "Engineering/Construction",
+          "multiple": 10.332814,
+          "company_count": 153
+        }
+      ],
+      "source_file": "vebitdaEurope21.xls"
+    },
+    {
+      "as_of": "2022-01-05",
+      "region": "europe",
+      "archetype": "energy_utilities",
+      "category": "Energía",
+      "metric": "ev_ebitda",
+      "median": 9.3685,
+      "p25": 8.2427,
+      "p75": 15.5153,
+      "subindustry_count": 5,
+      "company_count": 181,
+      "observations": [
+        {
+          "industry": "Coal & Related Energy",
+          "multiple": 4.966571,
+          "company_count": 17
+        },
+        {
+          "industry": "Green & Renewable Energy",
+          "multiple": 18.791719,
+          "company_count": 63
+        },
+        {
+          "industry": "Power",
+          "multiple": 9.368521,
+          "company_count": 72
+        },
+        {
+          "industry": "Utility (General)",
+          "multiple": 8.242739,
+          "company_count": 19
+        },
+        {
+          "industry": "Utility (Water)",
+          "multiple": 15.515302,
+          "company_count": 10
+        }
+      ],
+      "source_file": "vebitdaEurope21.xls"
+    },
+    {
+      "as_of": "2023-01-05",
+      "region": "europe",
+      "archetype": "real_estate",
+      "category": "Inmobiliario",
+      "metric": "ev_ebitda",
+      "median": 22.9316,
+      "p25": 19.1669,
+      "p75": 25.8264,
+      "subindustry_count": 4,
+      "company_count": 527,
+      "observations": [
+        {
+          "industry": "R.E.I.T.",
+          "multiple": 22.093771,
+          "company_count": 172
+        },
+        {
+          "industry": "Real Estate (Development)",
+          "multiple": 10.386173,
+          "company_count": 63
+        },
+        {
+          "industry": "Real Estate (General/Diversified)",
+          "multiple": 31.997033,
+          "company_count": 51
+        },
+        {
+          "industry": "Real Estate (Operations & Services)",
+          "multiple": 23.769507,
+          "company_count": 241
+        }
+      ],
+      "source_file": "vebitdaEurope22.xls"
+    },
+    {
+      "as_of": "2023-01-05",
+      "region": "europe",
+      "archetype": "media_content",
+      "category": "Medios y publicidad",
+      "metric": "ev_ebitda",
+      "median": 11.3397,
+      "p25": 9.4522,
+      "p75": 13.7946,
+      "subindustry_count": 4,
+      "company_count": 388,
+      "observations": [
+        {
+          "industry": "Advertising",
+          "multiple": 10.518742,
+          "company_count": 86
+        },
+        {
+          "industry": "Broadcasting",
+          "multiple": 6.252454,
+          "company_count": 25
+        },
+        {
+          "industry": "Entertainment",
+          "multiple": 18.696578,
+          "company_count": 200
+        },
+        {
+          "industry": "Publishing & Newspapers",
+          "multiple": 12.160612,
+          "company_count": 77
+        }
+      ],
+      "source_file": "vebitdaEurope22.xls"
+    },
+    {
+      "as_of": "2023-01-05",
+      "region": "europe",
+      "archetype": "construction",
+      "category": "Construcción e ingeniería",
+      "metric": "ev_ebitda",
+      "median": 8.6135,
+      "p25": 8.5696,
+      "p75": 8.6574,
+      "subindustry_count": 2,
+      "company_count": 279,
+      "observations": [
+        {
+          "industry": "Construction Supplies",
+          "multiple": 8.70133,
+          "company_count": 119
+        },
+        {
+          "industry": "Engineering/Construction",
+          "multiple": 8.525725,
+          "company_count": 160
+        }
+      ],
+      "source_file": "vebitdaEurope22.xls"
+    },
+    {
+      "as_of": "2023-01-05",
+      "region": "europe",
+      "archetype": "energy_utilities",
+      "category": "Energía",
+      "metric": "ev_ebitda",
+      "median": 11.3611,
+      "p25": 7.3024,
+      "p75": 15.0641,
+      "subindustry_count": 5,
+      "company_count": 180,
+      "observations": [
+        {
+          "industry": "Coal & Related Energy",
+          "multiple": 5.035395,
+          "company_count": 17
+        },
+        {
+          "industry": "Green & Renewable Energy",
+          "multiple": 15.064074,
+          "company_count": 63
+        },
+        {
+          "industry": "Power",
+          "multiple": 11.361147,
+          "company_count": 73
+        },
+        {
+          "industry": "Utility (General)",
+          "multiple": 7.302444,
+          "company_count": 17
+        },
+        {
+          "industry": "Utility (Water)",
+          "multiple": 15.611256,
+          "company_count": 10
+        }
+      ],
+      "source_file": "vebitdaEurope22.xls"
+    },
+    {
+      "as_of": "2024-01-05",
+      "region": "europe",
+      "archetype": "real_estate",
+      "category": "Inmobiliario",
+      "metric": "ev_ebitda",
+      "median": 21.4,
+      "p25": 19.5339,
+      "p75": 24.6879,
+      "subindustry_count": 5,
+      "company_count": 526,
+      "observations": [
+        {
+          "industry": "R.E.I.T.",
+          "multiple": 21.400011,
+          "company_count": 142
+        },
+        {
+          "industry": "Real Estate (Development)",
+          "multiple": 10.558333,
+          "company_count": 66
+        },
+        {
+          "industry": "Real Estate (General/Diversified)",
+          "multiple": 28.444207,
+          "company_count": 48
+        },
+        {
+          "industry": "Real Estate (Operations & Services)",
+          "multiple": 24.687938,
+          "company_count": 237
+        },
+        {
+          "industry": "Retail (REITs)",
+          "multiple": 19.533926,
+          "company_count": 33
+        }
+      ],
+      "source_file": "vebitdaEurope23.xls"
+    },
+    {
+      "as_of": "2024-01-05",
+      "region": "europe",
+      "archetype": "media_content",
+      "category": "Medios y publicidad",
+      "metric": "ev_ebitda",
+      "median": 10.9352,
+      "p25": 10.3034,
+      "p75": 12.3452,
+      "subindustry_count": 4,
+      "company_count": 383,
+      "observations": [
+        {
+          "industry": "Advertising",
+          "multiple": 10.922925,
+          "company_count": 89
+        },
+        {
+          "industry": "Broadcasting",
+          "multiple": 8.444834,
+          "company_count": 22
+        },
+        {
+          "industry": "Entertainment",
+          "multiple": 16.538366,
+          "company_count": 200
+        },
+        {
+          "industry": "Publishing & Newspapers",
+          "multiple": 10.947501,
+          "company_count": 72
+        }
+      ],
+      "source_file": "vebitdaEurope23.xls"
+    },
+    {
+      "as_of": "2024-01-05",
+      "region": "europe",
+      "archetype": "construction",
+      "category": "Construcción e ingeniería",
+      "metric": "ev_ebitda",
+      "median": 8.6853,
+      "p25": 8.5281,
+      "p75": 8.8424,
+      "subindustry_count": 2,
+      "company_count": 285,
+      "observations": [
+        {
+          "industry": "Construction Supplies",
+          "multiple": 8.370887,
+          "company_count": 123
+        },
+        {
+          "industry": "Engineering/Construction",
+          "multiple": 8.999637,
+          "company_count": 162
+        }
+      ],
+      "source_file": "vebitdaEurope23.xls"
+    },
+    {
+      "as_of": "2024-01-05",
+      "region": "europe",
+      "archetype": "energy_utilities",
+      "category": "Energía",
+      "metric": "ev_ebitda",
+      "median": 6.7623,
+      "p25": 5.7257,
+      "p75": 13.3756,
+      "subindustry_count": 5,
+      "company_count": 183,
+      "observations": [
+        {
+          "industry": "Coal & Related Energy",
+          "multiple": 3.645926,
+          "company_count": 16
+        },
+        {
+          "industry": "Green & Renewable Energy",
+          "multiple": 13.375624,
+          "company_count": 66
+        },
+        {
+          "industry": "Power",
+          "multiple": 5.7257,
+          "company_count": 73
+        },
+        {
+          "industry": "Utility (General)",
+          "multiple": 6.762259,
+          "company_count": 16
+        },
+        {
+          "industry": "Utility (Water)",
+          "multiple": 19.198153,
+          "company_count": 12
+        }
+      ],
+      "source_file": "vebitdaEurope23.xls"
+    },
+    {
+      "as_of": "2025-01-05",
+      "region": "europe",
+      "archetype": "real_estate",
+      "category": "Inmobiliario",
+      "metric": "ev_ebitda",
+      "median": 20.478,
+      "p25": 17.5499,
+      "p75": 22.4557,
+      "subindustry_count": 5,
+      "company_count": 502,
+      "observations": [
+        {
+          "industry": "R.E.I.T.",
+          "multiple": 20.478047,
+          "company_count": 141
+        },
+        {
+          "industry": "Real Estate (Development)",
+          "multiple": 12.537301,
+          "company_count": 60
+        },
+        {
+          "industry": "Real Estate (General/Diversified)",
+          "multiple": 30.913403,
+          "company_count": 42
+        },
+        {
+          "industry": "Real Estate (Operations & Services)",
+          "multiple": 22.455728,
+          "company_count": 227
+        },
+        {
+          "industry": "Retail (REITs)",
+          "multiple": 17.54986,
+          "company_count": 32
+        }
+      ],
+      "source_file": "vebitdaEurope24.xls"
+    },
+    {
+      "as_of": "2025-01-05",
+      "region": "europe",
+      "archetype": "media_content",
+      "category": "Medios y publicidad",
+      "metric": "ev_ebitda",
+      "median": 7.7344,
+      "p25": 5.1903,
+      "p75": 9.6826,
+      "subindustry_count": 4,
+      "company_count": 380,
+      "observations": [
+        {
+          "industry": "Advertising",
+          "multiple": 10.379299,
+          "company_count": 88
+        },
+        {
+          "industry": "Broadcasting",
+          "multiple": 6.018388,
+          "company_count": 21
+        },
+        {
+          "industry": "Entertainment",
+          "multiple": 2.706228,
+          "company_count": 201
+        },
+        {
+          "industry": "Publishing & Newspapers",
+          "multiple": 9.450352,
+          "company_count": 70
+        }
+      ],
+      "source_file": "vebitdaEurope24.xls"
+    },
+    {
+      "as_of": "2025-01-05",
+      "region": "europe",
+      "archetype": "construction",
+      "category": "Construcción e ingeniería",
+      "metric": "ev_ebitda",
+      "median": 8.2091,
+      "p25": 8.115,
+      "p75": 8.3032,
+      "subindustry_count": 2,
+      "company_count": 276,
+      "observations": [
+        {
+          "industry": "Construction Supplies",
+          "multiple": 8.397362,
+          "company_count": 118
+        },
+        {
+          "industry": "Engineering/Construction",
+          "multiple": 8.020912,
+          "company_count": 158
+        }
+      ],
+      "source_file": "vebitdaEurope24.xls"
+    },
+    {
+      "as_of": "2025-01-05",
+      "region": "europe",
+      "archetype": "energy_utilities",
+      "category": "Energía",
+      "metric": "ev_ebitda",
+      "median": 7.1635,
+      "p25": 6.6635,
+      "p75": 10.7558,
+      "subindustry_count": 5,
+      "company_count": 177,
+      "observations": [
+        {
+          "industry": "Coal & Related Energy",
+          "multiple": 1.734038,
+          "company_count": 14
+        },
+        {
+          "industry": "Green & Renewable Energy",
+          "multiple": 10.75578,
+          "company_count": 63
+        },
+        {
+          "industry": "Power",
+          "multiple": 7.16355,
+          "company_count": 71
+        },
+        {
+          "industry": "Utility (General)",
+          "multiple": 6.663475,
+          "company_count": 18
+        },
+        {
+          "industry": "Utility (Water)",
+          "multiple": 15.852926,
+          "company_count": 11
+        }
+      ],
+      "source_file": "vebitdaEurope24.xls"
+    }
+  ]
+}

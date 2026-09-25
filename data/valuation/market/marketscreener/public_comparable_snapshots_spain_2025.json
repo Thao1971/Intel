@@ -1,0 +1,3723 @@
+{
+  "snapshot_version": "public-comparable-snapshots-v1",
+  "provider": "marketscreener",
+  "region": "spain",
+  "as_of": "2025-12-31",
+  "record_count": 113,
+  "snapshot_count": 10,
+  "snapshots": [
+    {
+      "snapshot_version": "public-comparable-snapshots-v1",
+      "provider": "marketscreener",
+      "region": "spain",
+      "as_of": "2025-12-31",
+      "archetype": "construction",
+      "company_count": 28,
+      "metrics": {
+        "ev_ebitda": {
+          "p25": 5.72,
+          "median": 6.94,
+          "p75": 10.9,
+          "sample_size": 21,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0125220311",
+              "name": "ACCIONA,S.A.",
+              "value": 5.33,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ACCIONA-S-A-69450/valoracion/"
+            },
+            {
+              "identifier": "ES0167050915",
+              "name": "ACS,ACTIVIDADES DE CONST.Y SERVICIOS S.A",
+              "value": 7.06,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ACS-ACTIVIDADES-DE-CONSTR-140640/valoracion/"
+            },
+            {
+              "identifier": "ES0158300410",
+              "name": "CIA.LEVANTINA, EDIFICACION DE O.PUBLICAS",
+              "value": 17.2,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/COMPA-IA-LEVANTINA-DE-EDI-195674/valoracion/"
+            },
+            {
+              "identifier": "ES0122060314",
+              "name": "FOMENTO DE CONSTR. Y CONTRATAS S.A.",
+              "value": 5.23,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/FOMENTO-DE-CONSTRUCCIONES-74234/valoracion/"
+            },
+            {
+              "identifier": "ES0182870214",
+              "name": "SACYR, S.A.",
+              "value": 6.94,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/SACYR-S-A-69101/valoracion/"
+            },
+            {
+              "identifier": "ES0105521001",
+              "name": "ARTECHE",
+              "value": 16.6,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ARTECHE-LANTEGI-ELKARTEA--123776304/valoracion/"
+            },
+            {
+              "identifier": "ES0112458312",
+              "name": "AZKOYEN S.A.",
+              "value": 6.5,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AZKOYEN-S-A-74052/valoracion/"
+            },
+            {
+              "identifier": "ES0121975009",
+              "name": "CONSTRUCC. Y AUX. DE FERROCARRILES, S.A.",
+              "value": 6.25,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CONSTRUCCIONES-Y-AUXILIAR-32078325/valoracion/"
+            },
+            {
+              "identifier": "ES0129743318",
+              "name": "ELECNOR S. A.",
+              "value": 7.06,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ELECNOR-S-A-4011267/valoracion/"
+            },
+            {
+              "identifier": "ES0105223004",
+              "name": "GESTAMP AUTOMOCION, S.A.",
+              "value": 2.72,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GESTAMP-AUTOMOCI-N-S-A-34532674/valoracion/"
+            },
+            {
+              "identifier": "ES0166300212",
+              "name": "NICOLAS CORREA S.A.",
+              "value": 5.97,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NICOL-S-CORREA-S-A-74910/valoracion/"
+            },
+            {
+              "identifier": "ES0125140A14",
+              "name": "ERCROS S.A.",
+              "value": 54.9,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ERCROS-S-A-69039/valoracion/"
+            },
+            {
+              "identifier": "ES0137650018",
+              "name": "FLUIDRA, S.A.",
+              "value": 10.9,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/FLUIDRA-S-A-365952/valoracion/"
+            },
+            {
+              "identifier": "ES0141571192",
+              "name": "GENERAL DE ALQUILER DE MAQUINARIA, S.A.",
+              "value": 4.91,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GENERAL-DE-ALQUILER-DE-MA-36939129/valoracion/"
+            },
+            {
+              "identifier": "ES0178165017",
+              "name": "TECNICAS REUNIDAS, S.A.",
+              "value": 5.54,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/TECNICAS-REUNIDAS-S-A-183228/valoracion/"
+            },
+            {
+              "identifier": "ES0117360117",
+              "name": "CEMENTOS MOLINS, S.A.",
+              "value": 5.72,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CEMENTOS-MOLINS-S-A-120964302/valoracion/"
+            },
+            {
+              "identifier": "ES0132105018",
+              "name": "ACERINOX, S.A.",
+              "value": 12.3,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ACERINOX-S-A-141121/valoracion/"
+            },
+            {
+              "identifier": "ES0105630315",
+              "name": "CIE AUTOMOTIVE, S.A.",
+              "value": 6.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CIE-AUTOMOTIVE-S-A-179927/valoracion/"
+            },
+            {
+              "identifier": "ES0126251018",
+              "name": "DESA",
+              "value": 7.25,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/DESARROLLOS-ESPECIALES-DE-89896890/valoracion/"
+            },
+            {
+              "identifier": "ES0158480311",
+              "name": "LINGOTES ESPECIALES, S.A.",
+              "value": 23.4,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/LINGOTES-ESPECIALES-S-A-74770/valoracion/"
+            },
+            {
+              "identifier": "ES0132945017",
+              "name": "TUBACEX, S.A.",
+              "value": 7.13,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/TUBACEX-S-A-69371/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0180918015",
+              "reason": "non_positive_or_outlier",
+              "value": -0.16
+            },
+            {
+              "identifier": "ES0142090317",
+              "reason": "non_positive_or_outlier",
+              "value": 0.0
+            },
+            {
+              "identifier": "ES0105065009",
+              "reason": "non_positive_or_outlier",
+              "value": 1230.0
+            },
+            {
+              "identifier": "ES0152768612",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0162600003",
+              "reason": "non_positive_or_outlier",
+              "value": -10.9
+            },
+            {
+              "identifier": "ES0105394003",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0180850416",
+              "reason": "non_positive_or_outlier",
+              "value": -13.3
+            }
+          ]
+        },
+        "ev_ebit": {
+          "p25": null,
+          "median": null,
+          "p75": null,
+          "sample_size": 0,
+          "minimum_sample": 3,
+          "publishable": false,
+          "included": [],
+          "excluded": [
+            {
+              "identifier": "ES0125220311",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0167050915",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0158300410",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0122060314",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0180918015",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0142090317",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0182870214",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105521001",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0112458312",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0121975009",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0129743318",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105223004",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0166300212",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105065009",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0125140A14",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0152768612",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0162600003",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0137650018",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0141571192",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0178165017",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105394003",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0117360117",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0132105018",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105630315",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0126251018",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0158480311",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0132945017",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0180850416",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "ev_revenue": {
+          "p25": 0.725,
+          "median": 0.91,
+          "p75": 1.385,
+          "sample_size": 24,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0125220311",
+              "name": "ACCIONA,S.A.",
+              "value": 0.85,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ACCIONA-S-A-69450/valoracion/"
+            },
+            {
+              "identifier": "ES0167050915",
+              "name": "ACS,ACTIVIDADES DE CONST.Y SERVICIOS S.A",
+              "value": 0.43,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ACS-ACTIVIDADES-DE-CONSTR-140640/valoracion/"
+            },
+            {
+              "identifier": "ES0158300410",
+              "name": "CIA.LEVANTINA, EDIFICACION DE O.PUBLICAS",
+              "value": 1.52,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/COMPA-IA-LEVANTINA-DE-EDI-195674/valoracion/"
+            },
+            {
+              "identifier": "ES0122060314",
+              "name": "FOMENTO DE CONSTR. Y CONTRATAS S.A.",
+              "value": 0.76,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/FOMENTO-DE-CONSTRUCCIONES-74234/valoracion/"
+            },
+            {
+              "identifier": "ES0182870214",
+              "name": "SACYR, S.A.",
+              "value": 2.02,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/SACYR-S-A-69101/valoracion/"
+            },
+            {
+              "identifier": "ES0105521001",
+              "name": "ARTECHE",
+              "value": 2.59,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ARTECHE-LANTEGI-ELKARTEA--123776304/valoracion/"
+            },
+            {
+              "identifier": "ES0112458312",
+              "name": "AZKOYEN S.A.",
+              "value": 1.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AZKOYEN-S-A-74052/valoracion/"
+            },
+            {
+              "identifier": "ES0121975009",
+              "name": "CONSTRUCC. Y AUX. DE FERROCARRILES, S.A.",
+              "value": 0.49,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CONSTRUCCIONES-Y-AUXILIAR-32078325/valoracion/"
+            },
+            {
+              "identifier": "ES0129743318",
+              "name": "ELECNOR S. A.",
+              "value": 0.43,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ELECNOR-S-A-4011267/valoracion/"
+            },
+            {
+              "identifier": "ES0105223004",
+              "name": "GESTAMP AUTOMOCION, S.A.",
+              "value": 0.31,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GESTAMP-AUTOMOCI-N-S-A-34532674/valoracion/"
+            },
+            {
+              "identifier": "ES0166300212",
+              "name": "NICOLAS CORREA S.A.",
+              "value": 0.82,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NICOL-S-CORREA-S-A-74910/valoracion/"
+            },
+            {
+              "identifier": "ES0105065009",
+              "name": "TALGO, S.A.",
+              "value": 1.19,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/TALGO-S-A-22148977/valoracion/"
+            },
+            {
+              "identifier": "ES0125140A14",
+              "name": "ERCROS S.A.",
+              "value": 0.65,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ERCROS-S-A-69039/valoracion/"
+            },
+            {
+              "identifier": "ES0162600003",
+              "name": "DURO FELGUERA, S.A.",
+              "value": 1.92,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/DURO-FELGUERA-S-A-61568039/valoracion/"
+            },
+            {
+              "identifier": "ES0137650018",
+              "name": "FLUIDRA, S.A.",
+              "value": 2.51,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/FLUIDRA-S-A-365952/valoracion/"
+            },
+            {
+              "identifier": "ES0141571192",
+              "name": "GENERAL DE ALQUILER DE MAQUINARIA, S.A.",
+              "value": 1.35,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GENERAL-DE-ALQUILER-DE-MA-36939129/valoracion/"
+            },
+            {
+              "identifier": "ES0178165017",
+              "name": "TECNICAS REUNIDAS, S.A.",
+              "value": 0.28,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/TECNICAS-REUNIDAS-S-A-183228/valoracion/"
+            },
+            {
+              "identifier": "ES0117360117",
+              "name": "CEMENTOS MOLINS, S.A.",
+              "value": 1.49,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CEMENTOS-MOLINS-S-A-120964302/valoracion/"
+            },
+            {
+              "identifier": "ES0132105018",
+              "name": "ACERINOX, S.A.",
+              "value": 0.75,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ACERINOX-S-A-141121/valoracion/"
+            },
+            {
+              "identifier": "ES0105630315",
+              "name": "CIE AUTOMOTIVE, S.A.",
+              "value": 1.13,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CIE-AUTOMOTIVE-S-A-179927/valoracion/"
+            },
+            {
+              "identifier": "ES0126251018",
+              "name": "DESA",
+              "value": 0.89,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/DESARROLLOS-ESPECIALES-DE-89896890/valoracion/"
+            },
+            {
+              "identifier": "ES0158480311",
+              "name": "LINGOTES ESPECIALES, S.A.",
+              "value": 0.93,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/LINGOTES-ESPECIALES-S-A-74770/valoracion/"
+            },
+            {
+              "identifier": "ES0132945017",
+              "name": "TUBACEX, S.A.",
+              "value": 1.05,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/TUBACEX-S-A-69371/valoracion/"
+            },
+            {
+              "identifier": "ES0180850416",
+              "name": "TUBOS REUNIDOS,S.A.",
+              "value": 0.89,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/TUBOS-REUNIDOS-S-A-356837/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0180918015",
+              "reason": "non_positive_or_outlier",
+              "value": -0.01
+            },
+            {
+              "identifier": "ES0142090317",
+              "reason": "non_positive_or_outlier",
+              "value": 0.0
+            },
+            {
+              "identifier": "ES0152768612",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105394003",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "per": {
+          "p25": 11.525,
+          "median": 13.9,
+          "p75": 22.925,
+          "sample_size": 18,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0125220311",
+              "name": "ACCIONA,S.A.",
+              "value": 12.6,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ACCIONA-S-A-69450/valoracion/"
+            },
+            {
+              "identifier": "ES0167050915",
+              "name": "ACS,ACTIVIDADES DE CONST.Y SERVICIOS S.A",
+              "value": 23.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ACS-ACTIVIDADES-DE-CONSTR-140640/valoracion/"
+            },
+            {
+              "identifier": "ES0158300410",
+              "name": "CIA.LEVANTINA, EDIFICACION DE O.PUBLICAS",
+              "value": 14.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/COMPA-IA-LEVANTINA-DE-EDI-195674/valoracion/"
+            },
+            {
+              "identifier": "ES0122060314",
+              "name": "FOMENTO DE CONSTR. Y CONTRATAS S.A.",
+              "value": 31.5,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/FOMENTO-DE-CONSTRUCCIONES-74234/valoracion/"
+            },
+            {
+              "identifier": "ES0180918015",
+              "name": "GRUPO EMPRESARIAL SAN JOSE, S.A.",
+              "value": 12.3,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GRUPO-EMPRESARIAL-SAN-JOS-5401116/valoracion/"
+            },
+            {
+              "identifier": "ES0182870214",
+              "name": "SACYR, S.A.",
+              "value": 35.1,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/SACYR-S-A-69101/valoracion/"
+            },
+            {
+              "identifier": "ES0105521001",
+              "name": "ARTECHE",
+              "value": 28.6,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ARTECHE-LANTEGI-ELKARTEA--123776304/valoracion/"
+            },
+            {
+              "identifier": "ES0112458312",
+              "name": "AZKOYEN S.A.",
+              "value": 12.2,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AZKOYEN-S-A-74052/valoracion/"
+            },
+            {
+              "identifier": "ES0121975009",
+              "name": "CONSTRUCC. Y AUX. DE FERROCARRILES, S.A.",
+              "value": 13.8,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CONSTRUCCIONES-Y-AUXILIAR-32078325/valoracion/"
+            },
+            {
+              "identifier": "ES0129743318",
+              "name": "ELECNOR S. A.",
+              "value": 18.7,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ELECNOR-S-A-4011267/valoracion/"
+            },
+            {
+              "identifier": "ES0105223004",
+              "name": "GESTAMP AUTOMOCION, S.A.",
+              "value": 11.3,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GESTAMP-AUTOMOCI-N-S-A-34532674/valoracion/"
+            },
+            {
+              "identifier": "ES0166300212",
+              "name": "NICOLAS CORREA S.A.",
+              "value": 9.01,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NICOL-S-CORREA-S-A-74910/valoracion/"
+            },
+            {
+              "identifier": "ES0137650018",
+              "name": "FLUIDRA, S.A.",
+              "value": 25.3,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/FLUIDRA-S-A-365952/valoracion/"
+            },
+            {
+              "identifier": "ES0141571192",
+              "name": "GENERAL DE ALQUILER DE MAQUINARIA, S.A.",
+              "value": 22.7,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GENERAL-DE-ALQUILER-DE-MA-36939129/valoracion/"
+            },
+            {
+              "identifier": "ES0178165017",
+              "name": "TECNICAS REUNIDAS, S.A.",
+              "value": 14.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/TECNICAS-REUNIDAS-S-A-183228/valoracion/"
+            },
+            {
+              "identifier": "ES0117360117",
+              "name": "CEMENTOS MOLINS, S.A.",
+              "value": 11.2,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CEMENTOS-MOLINS-S-A-120964302/valoracion/"
+            },
+            {
+              "identifier": "ES0105630315",
+              "name": "CIE AUTOMOTIVE, S.A.",
+              "value": 10.5,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CIE-AUTOMOTIVE-S-A-179927/valoracion/"
+            },
+            {
+              "identifier": "ES0126251018",
+              "name": "DESA",
+              "value": 8.58,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/DESARROLLOS-ESPECIALES-DE-89896890/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0142090317",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105065009",
+              "reason": "non_positive_or_outlier",
+              "value": -3.54
+            },
+            {
+              "identifier": "ES0125140A14",
+              "reason": "non_positive_or_outlier",
+              "value": -5.84
+            },
+            {
+              "identifier": "ES0152768612",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0162600003",
+              "reason": "non_positive_or_outlier",
+              "value": -0.52
+            },
+            {
+              "identifier": "ES0105394003",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0132105018",
+              "reason": "non_positive_or_outlier",
+              "value": -79.1
+            },
+            {
+              "identifier": "ES0158480311",
+              "reason": "non_positive_or_outlier",
+              "value": -203.0
+            },
+            {
+              "identifier": "ES0132945017",
+              "reason": "non_positive_or_outlier",
+              "value": -13.3
+            },
+            {
+              "identifier": "ES0180850416",
+              "reason": "non_positive_or_outlier",
+              "value": -0.47
+            }
+          ]
+        },
+        "price_to_book": {
+          "p25": 1.49,
+          "median": 2.06,
+          "p75": 2.76,
+          "sample_size": 17,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0125220311",
+              "name": "ACCIONA,S.A.",
+              "value": 2.17,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ACCIONA-S-A-69450/valoracion/"
+            },
+            {
+              "identifier": "ES0167050915",
+              "name": "ACS,ACTIVIDADES DE CONST.Y SERVICIOS S.A",
+              "value": 4.58,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ACS-ACTIVIDADES-DE-CONSTR-140640/valoracion/"
+            },
+            {
+              "identifier": "ES0158300410",
+              "name": "CIA.LEVANTINA, EDIFICACION DE O.PUBLICAS",
+              "value": 0.56,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/COMPA-IA-LEVANTINA-DE-EDI-195674/valoracion/"
+            },
+            {
+              "identifier": "ES0182870214",
+              "name": "SACYR, S.A.",
+              "value": 2.96,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/SACYR-S-A-69101/valoracion/"
+            },
+            {
+              "identifier": "ES0105521001",
+              "name": "ARTECHE",
+              "value": 11.5,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ARTECHE-LANTEGI-ELKARTEA--123776304/valoracion/"
+            },
+            {
+              "identifier": "ES0112458312",
+              "name": "AZKOYEN S.A.",
+              "value": 1.59,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AZKOYEN-S-A-74052/valoracion/"
+            },
+            {
+              "identifier": "ES0121975009",
+              "name": "CONSTRUCC. Y AUX. DE FERROCARRILES, S.A.",
+              "value": 2.06,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CONSTRUCCIONES-Y-AUXILIAR-32078325/valoracion/"
+            },
+            {
+              "identifier": "ES0129743318",
+              "name": "ELECNOR S. A.",
+              "value": 2.26,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ELECNOR-S-A-4011267/valoracion/"
+            },
+            {
+              "identifier": "ES0105223004",
+              "name": "GESTAMP AUTOMOCION, S.A.",
+              "value": 0.78,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GESTAMP-AUTOMOCI-N-S-A-34532674/valoracion/"
+            },
+            {
+              "identifier": "ES0166300212",
+              "name": "NICOLAS CORREA S.A.",
+              "value": 1.17,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NICOL-S-CORREA-S-A-74910/valoracion/"
+            },
+            {
+              "identifier": "ES0105065009",
+              "name": "TALGO, S.A.",
+              "value": 1.52,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/TALGO-S-A-22148977/valoracion/"
+            },
+            {
+              "identifier": "ES0137650018",
+              "name": "FLUIDRA, S.A.",
+              "value": 2.76,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/FLUIDRA-S-A-365952/valoracion/"
+            },
+            {
+              "identifier": "ES0178165017",
+              "name": "TECNICAS REUNIDAS, S.A.",
+              "value": 3.95,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/TECNICAS-REUNIDAS-S-A-183228/valoracion/"
+            },
+            {
+              "identifier": "ES0132105018",
+              "name": "ACERINOX, S.A.",
+              "value": 1.51,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ACERINOX-S-A-141121/valoracion/"
+            },
+            {
+              "identifier": "ES0105630315",
+              "name": "CIE AUTOMOTIVE, S.A.",
+              "value": 2.45,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CIE-AUTOMOTIVE-S-A-179927/valoracion/"
+            },
+            {
+              "identifier": "ES0126251018",
+              "name": "DESA",
+              "value": 1.49,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/DESARROLLOS-ESPECIALES-DE-89896890/valoracion/"
+            },
+            {
+              "identifier": "ES0132945017",
+              "name": "TUBACEX, S.A.",
+              "value": 1.4,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/TUBACEX-S-A-69371/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0122060314",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0180918015",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0142090317",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0125140A14",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0152768612",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0162600003",
+              "reason": "non_positive_or_outlier",
+              "value": -0.11
+            },
+            {
+              "identifier": "ES0141571192",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105394003",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0117360117",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0158480311",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0180850416",
+              "reason": "non_positive_or_outlier",
+              "value": -0.64
+            }
+          ]
+        }
+      },
+      "status": "observed_comparables",
+      "generated_at": "2026-09-21T12:07:53.919475+00:00",
+      "active": true
+    },
+    {
+      "snapshot_version": "public-comparable-snapshots-v1",
+      "provider": "marketscreener",
+      "region": "spain",
+      "as_of": "2025-12-31",
+      "archetype": "energy_utilities",
+      "company_count": 13,
+      "metrics": {
+        "ev_ebitda": {
+          "p25": 7.22,
+          "median": 8.39,
+          "p75": 11.6,
+          "sample_size": 12,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0105848008",
+              "name": "COX GROUP, S.A.",
+              "value": 5.15,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/COX-INFRASTRUCTURE-GROUP--178608219/valoracion/"
+            },
+            {
+              "identifier": "ES0130960018",
+              "name": "ENAGAS, S.A.",
+              "value": 8.72,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ENAG-S-S-A-409361/valoracion/"
+            },
+            {
+              "identifier": "ES0130670112",
+              "name": "ENDESA, SOCIEDAD ANONIMA",
+              "value": 7.3,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ENDESA-S-A-69599/valoracion/"
+            },
+            {
+              "identifier": "ES0144580Y14",
+              "name": "IBERDROLA, S.A.",
+              "value": 10.4,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/IBERDROLA-S-A-355153/valoracion/"
+            },
+            {
+              "identifier": "ES0116870314",
+              "name": "NATURGY ENERGY GROUP, S.A.",
+              "value": 6.98,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NATURGY-ENERGY-GROUP-S-A-74206/valoracion/"
+            },
+            {
+              "identifier": "ES0173093024",
+              "name": "REDEIA CORPORACION, S.A.",
+              "value": 10.9,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/REDEIA-CORPORACION-S-A-29688106/valoracion/"
+            },
+            {
+              "identifier": "ES0136463017",
+              "name": "AUDAX RENOVABLES, S.A.",
+              "value": 8.06,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AUDAX-RENOVABLES-S-A-101780/valoracion/"
+            },
+            {
+              "identifier": "ES0105563003",
+              "name": "CORP.  ACCIONA ENERGÍAS RENOVABLES, S.A.",
+              "value": 7.39,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CORPORACI-N-ACCIONA-ENERG-124363463/valoracion/"
+            },
+            {
+              "identifier": "ES0105548004",
+              "name": "ECOENER, S.A.",
+              "value": 21.2,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ECOENER-S-A-122370158/valoracion/"
+            },
+            {
+              "identifier": "ES0105079000",
+              "name": "GRENERGY",
+              "value": 17.3,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GRENERGY-RENOVABLES-S-A-29423731/valoracion/"
+            },
+            {
+              "identifier": "ES0165386014",
+              "name": "SOLARIA ENERGIA Y MEDIO AMBIENTE, S.A.",
+              "value": 13.7,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/SOLARIA-ENERGIA-Y-MEDIO-A-273983/valoracion/"
+            },
+            {
+              "identifier": "ES0173516115",
+              "name": "REPSOL, S.A.",
+              "value": 3.06,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/REPSOL-S-A-75044/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0105513008",
+              "reason": "non_positive_or_outlier",
+              "value": -11.3
+            }
+          ]
+        },
+        "ev_ebit": {
+          "p25": null,
+          "median": null,
+          "p75": null,
+          "sample_size": 0,
+          "minimum_sample": 3,
+          "publishable": false,
+          "included": [],
+          "excluded": [
+            {
+              "identifier": "ES0105848008",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0130960018",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0130670112",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0144580Y14",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0116870314",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0173093024",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0136463017",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105563003",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105548004",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105079000",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0165386014",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105513008",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0173516115",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "ev_revenue": {
+          "p25": 1.91,
+          "median": 3.77,
+          "p75": 6.03,
+          "sample_size": 13,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0105848008",
+              "name": "COX GROUP, S.A.",
+              "value": 1.02,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/COX-INFRASTRUCTURE-GROUP--178608219/valoracion/"
+            },
+            {
+              "identifier": "ES0130960018",
+              "name": "ENAGAS, S.A.",
+              "value": 6.03,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ENAG-S-S-A-409361/valoracion/"
+            },
+            {
+              "identifier": "ES0130670112",
+              "name": "ENDESA, SOCIEDAD ANONIMA",
+              "value": 1.96,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ENDESA-S-A-69599/valoracion/"
+            },
+            {
+              "identifier": "ES0144580Y14",
+              "name": "IBERDROLA, S.A.",
+              "value": 3.77,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/IBERDROLA-S-A-355153/valoracion/"
+            },
+            {
+              "identifier": "ES0116870314",
+              "name": "NATURGY ENERGY GROUP, S.A.",
+              "value": 1.91,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NATURGY-ENERGY-GROUP-S-A-74206/valoracion/"
+            },
+            {
+              "identifier": "ES0173093024",
+              "name": "REDEIA CORPORACION, S.A.",
+              "value": 8.24,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/REDEIA-CORPORACION-S-A-29688106/valoracion/"
+            },
+            {
+              "identifier": "ES0136463017",
+              "name": "AUDAX RENOVABLES, S.A.",
+              "value": 0.49,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AUDAX-RENOVABLES-S-A-101780/valoracion/"
+            },
+            {
+              "identifier": "ES0105563003",
+              "name": "CORP.  ACCIONA ENERGÍAS RENOVABLES, S.A.",
+              "value": 3.91,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CORPORACI-N-ACCIONA-ENERG-124363463/valoracion/"
+            },
+            {
+              "identifier": "ES0105548004",
+              "name": "ECOENER, S.A.",
+              "value": 10.6,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ECOENER-S-A-122370158/valoracion/"
+            },
+            {
+              "identifier": "ES0105079000",
+              "name": "GRENERGY",
+              "value": 3.25,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GRENERGY-RENOVABLES-S-A-29423731/valoracion/"
+            },
+            {
+              "identifier": "ES0165386014",
+              "name": "SOLARIA ENERGIA Y MEDIO AMBIENTE, S.A.",
+              "value": 12.1,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/SOLARIA-ENERGIA-Y-MEDIO-A-273983/valoracion/"
+            },
+            {
+              "identifier": "ES0105513008",
+              "name": "SOLTEC POWER HOLDINGS, S.A.",
+              "value": 5.51,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/SOLTEC-POWER-HOLDINGS-S-A-114383842/valoracion/"
+            },
+            {
+              "identifier": "ES0173516115",
+              "name": "REPSOL, S.A.",
+              "value": 0.41,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/REPSOL-S-A-75044/valoracion/"
+            }
+          ],
+          "excluded": []
+        },
+        "per": {
+          "p25": 10.5,
+          "median": 14.6,
+          "p75": 20.0,
+          "sample_size": 13,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0105848008",
+              "name": "COX GROUP, S.A.",
+              "value": 11.7,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/COX-INFRASTRUCTURE-GROUP--178608219/valoracion/"
+            },
+            {
+              "identifier": "ES0130960018",
+              "name": "ENAGAS, S.A.",
+              "value": 10.2,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ENAG-S-S-A-409361/valoracion/"
+            },
+            {
+              "identifier": "ES0130670112",
+              "name": "ENDESA, SOCIEDAD ANONIMA",
+              "value": 14.6,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ENDESA-S-A-69599/valoracion/"
+            },
+            {
+              "identifier": "ES0144580Y14",
+              "name": "IBERDROLA, S.A.",
+              "value": 20.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/IBERDROLA-S-A-355153/valoracion/"
+            },
+            {
+              "identifier": "ES0116870314",
+              "name": "NATURGY ENERGY GROUP, S.A.",
+              "value": 11.9,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NATURGY-ENERGY-GROUP-S-A-74206/valoracion/"
+            },
+            {
+              "identifier": "ES0173093024",
+              "name": "REDEIA CORPORACION, S.A.",
+              "value": 16.9,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/REDEIA-CORPORACION-S-A-29688106/valoracion/"
+            },
+            {
+              "identifier": "ES0136463017",
+              "name": "AUDAX RENOVABLES, S.A.",
+              "value": 31.3,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AUDAX-RENOVABLES-S-A-101780/valoracion/"
+            },
+            {
+              "identifier": "ES0105563003",
+              "name": "CORP.  ACCIONA ENERGÍAS RENOVABLES, S.A.",
+              "value": 10.5,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CORPORACI-N-ACCIONA-ENERG-124363463/valoracion/"
+            },
+            {
+              "identifier": "ES0105548004",
+              "name": "ECOENER, S.A.",
+              "value": 50.2,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ECOENER-S-A-122370158/valoracion/"
+            },
+            {
+              "identifier": "ES0105079000",
+              "name": "GRENERGY",
+              "value": 27.7,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GRENERGY-RENOVABLES-S-A-29423731/valoracion/"
+            },
+            {
+              "identifier": "ES0165386014",
+              "name": "SOLARIA ENERGIA Y MEDIO AMBIENTE, S.A.",
+              "value": 16.5,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/SOLARIA-ENERGIA-Y-MEDIO-A-273983/valoracion/"
+            },
+            {
+              "identifier": "ES0105513008",
+              "name": "SOLTEC POWER HOLDINGS, S.A.",
+              "value": 8.29,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/SOLTEC-POWER-HOLDINGS-S-A-114383842/valoracion/"
+            },
+            {
+              "identifier": "ES0173516115",
+              "name": "REPSOL, S.A.",
+              "value": 9.83,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/REPSOL-S-A-75044/valoracion/"
+            }
+          ],
+          "excluded": []
+        },
+        "price_to_book": {
+          "p25": 1.525,
+          "median": 2.46,
+          "p75": 3.045,
+          "sample_size": 11,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0130960018",
+              "name": "ENAGAS, S.A.",
+              "value": 1.49,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ENAG-S-S-A-409361/valoracion/"
+            },
+            {
+              "identifier": "ES0130670112",
+              "name": "ENDESA, SOCIEDAD ANONIMA",
+              "value": 4.43,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ENDESA-S-A-69599/valoracion/"
+            },
+            {
+              "identifier": "ES0144580Y14",
+              "name": "IBERDROLA, S.A.",
+              "value": 2.46,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/IBERDROLA-S-A-355153/valoracion/"
+            },
+            {
+              "identifier": "ES0116870314",
+              "name": "NATURGY ENERGY GROUP, S.A.",
+              "value": 2.57,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NATURGY-ENERGY-GROUP-S-A-74206/valoracion/"
+            },
+            {
+              "identifier": "ES0173093024",
+              "name": "REDEIA CORPORACION, S.A.",
+              "value": 1.56,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/REDEIA-CORPORACION-S-A-29688106/valoracion/"
+            },
+            {
+              "identifier": "ES0136463017",
+              "name": "AUDAX RENOVABLES, S.A.",
+              "value": 2.97,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AUDAX-RENOVABLES-S-A-101780/valoracion/"
+            },
+            {
+              "identifier": "ES0105563003",
+              "name": "CORP.  ACCIONA ENERGÍAS RENOVABLES, S.A.",
+              "value": 1.25,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CORPORACI-N-ACCIONA-ENERG-124363463/valoracion/"
+            },
+            {
+              "identifier": "ES0105548004",
+              "name": "ECOENER, S.A.",
+              "value": 2.31,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ECOENER-S-A-122370158/valoracion/"
+            },
+            {
+              "identifier": "ES0105079000",
+              "name": "GRENERGY",
+              "value": 5.81,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GRENERGY-RENOVABLES-S-A-29423731/valoracion/"
+            },
+            {
+              "identifier": "ES0165386014",
+              "name": "SOLARIA ENERGIA Y MEDIO AMBIENTE, S.A.",
+              "value": 3.12,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/SOLARIA-ENERGIA-Y-MEDIO-A-273983/valoracion/"
+            },
+            {
+              "identifier": "ES0173516115",
+              "name": "REPSOL, S.A.",
+              "value": 0.72,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/REPSOL-S-A-75044/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0105848008",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105513008",
+              "reason": "non_positive_or_outlier",
+              "value": -15.1
+            }
+          ]
+        }
+      },
+      "status": "observed_comparables",
+      "generated_at": "2026-09-21T12:07:53.919496+00:00",
+      "active": true
+    },
+    {
+      "snapshot_version": "public-comparable-snapshots-v1",
+      "provider": "marketscreener",
+      "region": "spain",
+      "as_of": "2025-12-31",
+      "archetype": "financial_services",
+      "company_count": 8,
+      "metrics": {
+        "ev_ebitda": {
+          "p25": null,
+          "median": null,
+          "p75": null,
+          "sample_size": 0,
+          "minimum_sample": 3,
+          "publishable": false,
+          "included": [],
+          "excluded": [
+            {
+              "identifier": "ES0113211835",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0113860A34",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0113900J37",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0113679I37",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0140609019",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0180907000",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105546008",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0124244E34",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "ev_ebit": {
+          "p25": null,
+          "median": null,
+          "p75": null,
+          "sample_size": 0,
+          "minimum_sample": 3,
+          "publishable": false,
+          "included": [],
+          "excluded": [
+            {
+              "identifier": "ES0113211835",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0113860A34",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0113900J37",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0113679I37",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0140609019",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0180907000",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105546008",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0124244E34",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "ev_revenue": {
+          "p25": null,
+          "median": null,
+          "p75": null,
+          "sample_size": 1,
+          "minimum_sample": 3,
+          "publishable": false,
+          "included": [
+            {
+              "identifier": "ES0105546008",
+              "name": "LINEA DIRECTA ASEGURADORA, S.A.",
+              "value": 1.06,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/L-NEA-DIRECTA-ASEGURADORA-121503999/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0113211835",
+              "reason": "non_positive_or_outlier",
+              "value": 0.0
+            },
+            {
+              "identifier": "ES0113860A34",
+              "reason": "non_positive_or_outlier",
+              "value": 0.0
+            },
+            {
+              "identifier": "ES0113900J37",
+              "reason": "non_positive_or_outlier",
+              "value": 0.0
+            },
+            {
+              "identifier": "ES0113679I37",
+              "reason": "non_positive_or_outlier",
+              "value": 0.0
+            },
+            {
+              "identifier": "ES0140609019",
+              "reason": "non_positive_or_outlier",
+              "value": 0.0
+            },
+            {
+              "identifier": "ES0180907000",
+              "reason": "non_positive_or_outlier",
+              "value": 0.0
+            },
+            {
+              "identifier": "ES0124244E34",
+              "reason": "non_positive_or_outlier",
+              "value": 0.0
+            }
+          ]
+        },
+        "per": {
+          "p25": 11.275,
+          "median": 11.5,
+          "p75": 12.225,
+          "sample_size": 8,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0113211835",
+              "name": "BANCO BILBAO VIZCAYA ARGENTARIA, S.A.",
+              "value": 11.4,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/BBVA-69719/valoracion/"
+            },
+            {
+              "identifier": "ES0113860A34",
+              "name": "BANCO DE SABADELL, S.A.",
+              "value": 10.5,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/BANCO-DE-SABADELL-S-A-260497/valoracion/"
+            },
+            {
+              "identifier": "ES0113900J37",
+              "name": "BANCO SANTANDER, S.A.",
+              "value": 11.2,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/BANCO-SANTANDER-S-A-69308/valoracion/"
+            },
+            {
+              "identifier": "ES0113679I37",
+              "name": "BANKINTER,S.A.",
+              "value": 12.1,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/BANKINTER-S-A-410428/valoracion/"
+            },
+            {
+              "identifier": "ES0140609019",
+              "name": "CAIXABANK, S.A.",
+              "value": 12.6,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CAIXABANK-S-A-357103/valoracion/"
+            },
+            {
+              "identifier": "ES0180907000",
+              "name": "UNICAJA BANCO, S.A.",
+              "value": 11.3,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/UNICAJA-BANCO-S-A-36718485/valoracion/"
+            },
+            {
+              "identifier": "ES0105546008",
+              "name": "LINEA DIRECTA ASEGURADORA, S.A.",
+              "value": 14.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/L-NEA-DIRECTA-ASEGURADORA-121503999/valoracion/"
+            },
+            {
+              "identifier": "ES0124244E34",
+              "name": "MAPFRE, S.A.",
+              "value": 11.6,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MAPFRE-S-A-195228/valoracion/"
+            }
+          ],
+          "excluded": []
+        },
+        "price_to_book": {
+          "p25": 1.27,
+          "median": 1.645,
+          "p75": 1.9725,
+          "sample_size": 8,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0113211835",
+              "name": "BANCO BILBAO VIZCAYA ARGENTARIA, S.A.",
+              "value": 1.97,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/BBVA-69719/valoracion/"
+            },
+            {
+              "identifier": "ES0113860A34",
+              "name": "BANCO DE SABADELL, S.A.",
+              "value": 1.15,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/BANCO-DE-SABADELL-S-A-260497/valoracion/"
+            },
+            {
+              "identifier": "ES0113900J37",
+              "name": "BANCO SANTANDER, S.A.",
+              "value": 1.31,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/BANCO-SANTANDER-S-A-69308/valoracion/"
+            },
+            {
+              "identifier": "ES0113679I37",
+              "name": "BANKINTER,S.A.",
+              "value": 1.98,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/BANKINTER-S-A-410428/valoracion/"
+            },
+            {
+              "identifier": "ES0140609019",
+              "name": "CAIXABANK, S.A.",
+              "value": 1.9,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CAIXABANK-S-A-357103/valoracion/"
+            },
+            {
+              "identifier": "ES0180907000",
+              "name": "UNICAJA BANCO, S.A.",
+              "value": 1.12,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/UNICAJA-BANCO-S-A-36718485/valoracion/"
+            },
+            {
+              "identifier": "ES0105546008",
+              "name": "LINEA DIRECTA ASEGURADORA, S.A.",
+              "value": 3.02,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/L-NEA-DIRECTA-ASEGURADORA-121503999/valoracion/"
+            },
+            {
+              "identifier": "ES0124244E34",
+              "name": "MAPFRE, S.A.",
+              "value": 1.39,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MAPFRE-S-A-195228/valoracion/"
+            }
+          ],
+          "excluded": []
+        }
+      },
+      "status": "observed_comparables",
+      "generated_at": "2026-09-21T12:07:53.919506+00:00",
+      "active": true
+    },
+    {
+      "snapshot_version": "public-comparable-snapshots-v1",
+      "provider": "marketscreener",
+      "region": "spain",
+      "as_of": "2025-12-31",
+      "archetype": "general_business",
+      "company_count": 16,
+      "metrics": {
+        "ev_ebitda": {
+          "p25": 5.055,
+          "median": 7.435,
+          "p75": 9.0525,
+          "sample_size": 12,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0110047919",
+              "name": "DEOLEO, S.A.",
+              "value": 4.56,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/DEOLEO-S-A-159781/valoracion/"
+            },
+            {
+              "identifier": "ES0112501012",
+              "name": "EBRO FOODS, S.A.",
+              "value": 8.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/EBRO-FOODS-S-A-408703/valoracion/"
+            },
+            {
+              "identifier": "ES0105043006",
+              "name": "NATURHOUSE HEALTH, S.A.",
+              "value": 8.96,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NATURHOUSE-HEALTH-S-A-22033595/valoracion/"
+            },
+            {
+              "identifier": "ES0184262212",
+              "name": "VISCOFAN, S.A.",
+              "value": 9.33,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/VISCOFAN-S-A-75245/valoracion/"
+            },
+            {
+              "identifier": "ES0183746314",
+              "name": "VIDRALA S.A.",
+              "value": 7.43,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/VIDRALA-S-A-75235/valoracion/"
+            },
+            {
+              "identifier": "ES0130625512",
+              "name": "ENCE ENERGIA Y CELULOSA, S.A.",
+              "value": 18.1,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ENCE-ENERG-A-Y-CELULOSA-S-254243/valoracion/"
+            },
+            {
+              "identifier": "ES0147561015",
+              "name": "IBERPAPEL GESTION, S.A.",
+              "value": 5.01,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/IBERPAPEL-GESTI-N-S-A-74510/valoracion/"
+            },
+            {
+              "identifier": "ES0164180012",
+              "name": "MIQUEL Y COSTAS & MIQUEL, S.A.",
+              "value": 7.44,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MIQUEL-Y-COSTAS-MIQUEL-S--74860/valoracion/"
+            },
+            {
+              "identifier": "ES0105836003",
+              "name": "INMOCEMENTO, S.A.",
+              "value": 6.07,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INMOCEMENTO-S-A-178441185/valoracion/"
+            },
+            {
+              "identifier": "ES0105229001",
+              "name": "CASH, S.A.",
+              "value": 5.07,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PROSEGUR-CASH-S-A-34308503/valoracion/"
+            },
+            {
+              "identifier": "ES0119037010",
+              "name": "CLINICA BAVIERA, S.A.",
+              "value": 9.84,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CL-NICA-BAVIERA-S-A-239423/valoracion/"
+            },
+            {
+              "identifier": "ES0175438003",
+              "name": "PROSEGUR , CIA. DE SEGURIDAD, S.A.",
+              "value": 4.91,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PROSEGUR-COMPA-A-DE-SEGUR-10944570/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0115002018",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0169350016",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0126501131",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0173358039",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "ev_ebit": {
+          "p25": null,
+          "median": null,
+          "p75": null,
+          "sample_size": 0,
+          "minimum_sample": 3,
+          "publishable": false,
+          "included": [],
+          "excluded": [
+            {
+              "identifier": "ES0115002018",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0110047919",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0112501012",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105043006",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0169350016",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0184262212",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0183746314",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0130625512",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0147561015",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0164180012",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0126501131",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105836003",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0173358039",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105229001",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0119037010",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0175438003",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "ev_revenue": {
+          "p25": 0.9,
+          "median": 1.27,
+          "p75": 2.16,
+          "sample_size": 13,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0110047919",
+              "name": "DEOLEO, S.A.",
+              "value": 0.28,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/DEOLEO-S-A-159781/valoracion/"
+            },
+            {
+              "identifier": "ES0112501012",
+              "name": "EBRO FOODS, S.A.",
+              "value": 1.12,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/EBRO-FOODS-S-A-408703/valoracion/"
+            },
+            {
+              "identifier": "ES0105043006",
+              "name": "NATURHOUSE HEALTH, S.A.",
+              "value": 2.54,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NATURHOUSE-HEALTH-S-A-22033595/valoracion/"
+            },
+            {
+              "identifier": "ES0184262212",
+              "name": "VISCOFAN, S.A.",
+              "value": 2.16,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/VISCOFAN-S-A-75245/valoracion/"
+            },
+            {
+              "identifier": "ES0183746314",
+              "name": "VIDRALA S.A.",
+              "value": 2.23,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/VIDRALA-S-A-75235/valoracion/"
+            },
+            {
+              "identifier": "ES0130625512",
+              "name": "ENCE ENERGIA Y CELULOSA, S.A.",
+              "value": 1.27,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ENCE-ENERG-A-Y-CELULOSA-S-254243/valoracion/"
+            },
+            {
+              "identifier": "ES0147561015",
+              "name": "IBERPAPEL GESTION, S.A.",
+              "value": 0.47,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/IBERPAPEL-GESTI-N-S-A-74510/valoracion/"
+            },
+            {
+              "identifier": "ES0164180012",
+              "name": "MIQUEL Y COSTAS & MIQUEL, S.A.",
+              "value": 1.77,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MIQUEL-Y-COSTAS-MIQUEL-S--74860/valoracion/"
+            },
+            {
+              "identifier": "ES0126501131",
+              "name": "ALANTRA PARTNERS, S.A.",
+              "value": 1.15,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ALANTRA-PARTNERS-S-A-74284/valoracion/"
+            },
+            {
+              "identifier": "ES0105836003",
+              "name": "INMOCEMENTO, S.A.",
+              "value": 2.15,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INMOCEMENTO-S-A-178441185/valoracion/"
+            },
+            {
+              "identifier": "ES0105229001",
+              "name": "CASH, S.A.",
+              "value": 0.9,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PROSEGUR-CASH-S-A-34308503/valoracion/"
+            },
+            {
+              "identifier": "ES0119037010",
+              "name": "CLINICA BAVIERA, S.A.",
+              "value": 2.67,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CL-NICA-BAVIERA-S-A-239423/valoracion/"
+            },
+            {
+              "identifier": "ES0175438003",
+              "name": "PROSEGUR , CIA. DE SEGURIDAD, S.A.",
+              "value": 0.56,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PROSEGUR-COMPA-A-DE-SEGUR-10944570/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0115002018",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0169350016",
+              "reason": "non_positive_or_outlier",
+              "value": 32.0
+            },
+            {
+              "identifier": "ES0173358039",
+              "reason": "non_positive_or_outlier",
+              "value": -1.36
+            }
+          ]
+        },
+        "per": {
+          "p25": 11.6,
+          "median": 13.2,
+          "p75": 16.2,
+          "sample_size": 13,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0110047919",
+              "name": "DEOLEO, S.A.",
+              "value": 6.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/DEOLEO-S-A-159781/valoracion/"
+            },
+            {
+              "identifier": "ES0112501012",
+              "name": "EBRO FOODS, S.A.",
+              "value": 13.2,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/EBRO-FOODS-S-A-408703/valoracion/"
+            },
+            {
+              "identifier": "ES0105043006",
+              "name": "NATURHOUSE HEALTH, S.A.",
+              "value": 13.1,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NATURHOUSE-HEALTH-S-A-22033595/valoracion/"
+            },
+            {
+              "identifier": "ES0184262212",
+              "name": "VISCOFAN, S.A.",
+              "value": 15.2,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/VISCOFAN-S-A-75245/valoracion/"
+            },
+            {
+              "identifier": "ES0183746314",
+              "name": "VIDRALA S.A.",
+              "value": 15.1,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/VIDRALA-S-A-75235/valoracion/"
+            },
+            {
+              "identifier": "ES0147561015",
+              "name": "IBERPAPEL GESTION, S.A.",
+              "value": 35.7,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/IBERPAPEL-GESTI-N-S-A-74510/valoracion/"
+            },
+            {
+              "identifier": "ES0164180012",
+              "name": "MIQUEL Y COSTAS & MIQUEL, S.A.",
+              "value": 12.1,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MIQUEL-Y-COSTAS-MIQUEL-S--74860/valoracion/"
+            },
+            {
+              "identifier": "ES0126501131",
+              "name": "ALANTRA PARTNERS, S.A.",
+              "value": 16.2,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ALANTRA-PARTNERS-S-A-74284/valoracion/"
+            },
+            {
+              "identifier": "ES0105836003",
+              "name": "INMOCEMENTO, S.A.",
+              "value": 4.72,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INMOCEMENTO-S-A-178441185/valoracion/"
+            },
+            {
+              "identifier": "ES0173358039",
+              "name": "RENTA 4 BANCO, S.A.",
+              "value": 19.2,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/RENTA-4-BANCO-S-A-3728066/valoracion/"
+            },
+            {
+              "identifier": "ES0105229001",
+              "name": "CASH, S.A.",
+              "value": 10.6,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PROSEGUR-CASH-S-A-34308503/valoracion/"
+            },
+            {
+              "identifier": "ES0119037010",
+              "name": "CLINICA BAVIERA, S.A.",
+              "value": 18.9,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CL-NICA-BAVIERA-S-A-239423/valoracion/"
+            },
+            {
+              "identifier": "ES0175438003",
+              "name": "PROSEGUR , CIA. DE SEGURIDAD, S.A.",
+              "value": 11.6,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PROSEGUR-COMPA-A-DE-SEGUR-10944570/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0115002018",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0169350016",
+              "reason": "non_positive_or_outlier",
+              "value": -83.9
+            },
+            {
+              "identifier": "ES0130625512",
+              "reason": "non_positive_or_outlier",
+              "value": -10.9
+            }
+          ]
+        },
+        "price_to_book": {
+          "p25": 1.2275,
+          "median": 2.08,
+          "p75": 4.805,
+          "sample_size": 12,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0112501012",
+              "name": "EBRO FOODS, S.A.",
+              "value": 1.23,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/EBRO-FOODS-S-A-408703/valoracion/"
+            },
+            {
+              "identifier": "ES0105043006",
+              "name": "NATURHOUSE HEALTH, S.A.",
+              "value": 7.43,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NATURHOUSE-HEALTH-S-A-22033595/valoracion/"
+            },
+            {
+              "identifier": "ES0184262212",
+              "name": "VISCOFAN, S.A.",
+              "value": 2.69,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/VISCOFAN-S-A-75245/valoracion/"
+            },
+            {
+              "identifier": "ES0183746314",
+              "name": "VIDRALA S.A.",
+              "value": 2.24,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/VIDRALA-S-A-75235/valoracion/"
+            },
+            {
+              "identifier": "ES0130625512",
+              "name": "ENCE ENERGIA Y CELULOSA, S.A.",
+              "value": 1.22,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ENCE-ENERG-A-Y-CELULOSA-S-254243/valoracion/"
+            },
+            {
+              "identifier": "ES0147561015",
+              "name": "IBERPAPEL GESTION, S.A.",
+              "value": 0.66,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/IBERPAPEL-GESTI-N-S-A-74510/valoracion/"
+            },
+            {
+              "identifier": "ES0164180012",
+              "name": "MIQUEL Y COSTAS & MIQUEL, S.A.",
+              "value": 1.33,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MIQUEL-Y-COSTAS-MIQUEL-S--74860/valoracion/"
+            },
+            {
+              "identifier": "ES0126501131",
+              "name": "ALANTRA PARTNERS, S.A.",
+              "value": 1.07,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ALANTRA-PARTNERS-S-A-74284/valoracion/"
+            },
+            {
+              "identifier": "ES0173358039",
+              "name": "RENTA 4 BANCO, S.A.",
+              "value": 4.65,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/RENTA-4-BANCO-S-A-3728066/valoracion/"
+            },
+            {
+              "identifier": "ES0105229001",
+              "name": "CASH, S.A.",
+              "value": 5.27,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PROSEGUR-CASH-S-A-34308503/valoracion/"
+            },
+            {
+              "identifier": "ES0119037010",
+              "name": "CLINICA BAVIERA, S.A.",
+              "value": 7.24,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CL-NICA-BAVIERA-S-A-239423/valoracion/"
+            },
+            {
+              "identifier": "ES0175438003",
+              "name": "PROSEGUR , CIA. DE SEGURIDAD, S.A.",
+              "value": 1.92,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PROSEGUR-COMPA-A-DE-SEGUR-10944570/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0115002018",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0110047919",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0169350016",
+              "reason": "non_positive_or_outlier",
+              "value": -1.27
+            },
+            {
+              "identifier": "ES0105836003",
+              "reason": "missing_metric"
+            }
+          ]
+        }
+      },
+      "status": "observed_comparables",
+      "generated_at": "2026-09-21T12:07:53.919525+00:00",
+      "active": true
+    },
+    {
+      "snapshot_version": "public-comparable-snapshots-v1",
+      "provider": "marketscreener",
+      "region": "spain",
+      "as_of": "2025-12-31",
+      "archetype": "healthcare",
+      "company_count": 9,
+      "metrics": {
+        "ev_ebitda": {
+          "p25": 9.6025,
+          "median": 13.35,
+          "p75": 15.875,
+          "sample_size": 8,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0157097017",
+              "name": "ALMIRALL, S.A.",
+              "value": 11.6,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ALMIRALL-S-A-268048/valoracion/"
+            },
+            {
+              "identifier": "ES0105148003",
+              "name": "ATRYS HEALTH, S.A.",
+              "value": 15.8,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ATRYS-HEALTH-S-A-111615051/valoracion/"
+            },
+            {
+              "identifier": "ES0134950F36",
+              "name": "FAES FARMA, S.A.",
+              "value": 16.1,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/FAES-FARMA-S-A-224975/valoracion/"
+            },
+            {
+              "identifier": "ES0171996087",
+              "name": "GRIFOLS, S.A.",
+              "value": 8.41,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GRIFOLS-S-A-25530828/valoracion/"
+            },
+            {
+              "identifier": "ES0165359029",
+              "name": "LABORATORIO REIG JOFRE, S.A.",
+              "value": 10.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/LABORATORIO-REIG-JOFRE-S--24301125/valoracion/"
+            },
+            {
+              "identifier": "ES0157261019",
+              "name": "LABORATORIOS FARMACEUTICOS ROVI, S.A.",
+              "value": 15.1,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/LABORATORIOS-FARMACEUTICO-388853/valoracion/"
+            },
+            {
+              "identifier": "ES0169501022",
+              "name": "PHARMA MAR, S.A.",
+              "value": 17.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PHARMA-MAR-S-A-24798227/valoracion/"
+            },
+            {
+              "identifier": "ES0170884417",
+              "name": "PRIM, S.A.",
+              "value": 6.41,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PRIM-S-A-170839/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0167733015",
+              "reason": "non_positive_or_outlier",
+              "value": -42.9
+            }
+          ]
+        },
+        "ev_ebit": {
+          "p25": null,
+          "median": null,
+          "p75": null,
+          "sample_size": 0,
+          "minimum_sample": 3,
+          "publishable": false,
+          "included": [],
+          "excluded": [
+            {
+              "identifier": "ES0157097017",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105148003",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0134950F36",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0171996087",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0165359029",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0157261019",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0167733015",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0169501022",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0170884417",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "ev_revenue": {
+          "p25": 1.75,
+          "median": 2.285,
+          "p75": 3.4325,
+          "sample_size": 8,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0157097017",
+              "name": "ALMIRALL, S.A.",
+              "value": 2.44,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ALMIRALL-S-A-268048/valoracion/"
+            },
+            {
+              "identifier": "ES0105148003",
+              "name": "ATRYS HEALTH, S.A.",
+              "value": 2.13,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ATRYS-HEALTH-S-A-111615051/valoracion/"
+            },
+            {
+              "identifier": "ES0134950F36",
+              "name": "FAES FARMA, S.A.",
+              "value": 3.11,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/FAES-FARMA-S-A-224975/valoracion/"
+            },
+            {
+              "identifier": "ES0171996087",
+              "name": "GRIFOLS, S.A.",
+              "value": 2.04,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GRIFOLS-S-A-25530828/valoracion/"
+            },
+            {
+              "identifier": "ES0165359029",
+              "name": "LABORATORIO REIG JOFRE, S.A.",
+              "value": 0.88,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/LABORATORIO-REIG-JOFRE-S--24301125/valoracion/"
+            },
+            {
+              "identifier": "ES0157261019",
+              "name": "LABORATORIOS FARMACEUTICOS ROVI, S.A.",
+              "value": 4.4,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/LABORATORIOS-FARMACEUTICO-388853/valoracion/"
+            },
+            {
+              "identifier": "ES0169501022",
+              "name": "PHARMA MAR, S.A.",
+              "value": 5.27,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PHARMA-MAR-S-A-24798227/valoracion/"
+            },
+            {
+              "identifier": "ES0170884417",
+              "name": "PRIM, S.A.",
+              "value": 0.86,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PRIM-S-A-170839/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0167733015",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "per": {
+          "p25": 17.75,
+          "median": 20.6,
+          "p75": 32.95,
+          "sample_size": 7,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0157097017",
+              "name": "ALMIRALL, S.A.",
+              "value": 58.4,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ALMIRALL-S-A-268048/valoracion/"
+            },
+            {
+              "identifier": "ES0134950F36",
+              "name": "FAES FARMA, S.A.",
+              "value": 20.6,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/FAES-FARMA-S-A-224975/valoracion/"
+            },
+            {
+              "identifier": "ES0171996087",
+              "name": "GRIFOLS, S.A.",
+              "value": 18.1,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GRIFOLS-S-A-25530828/valoracion/"
+            },
+            {
+              "identifier": "ES0165359029",
+              "name": "LABORATORIO REIG JOFRE, S.A.",
+              "value": 42.8,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/LABORATORIO-REIG-JOFRE-S--24301125/valoracion/"
+            },
+            {
+              "identifier": "ES0157261019",
+              "name": "LABORATORIOS FARMACEUTICOS ROVI, S.A.",
+              "value": 23.1,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/LABORATORIOS-FARMACEUTICO-388853/valoracion/"
+            },
+            {
+              "identifier": "ES0169501022",
+              "name": "PHARMA MAR, S.A.",
+              "value": 17.4,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PHARMA-MAR-S-A-24798227/valoracion/"
+            },
+            {
+              "identifier": "ES0170884417",
+              "name": "PRIM, S.A.",
+              "value": 13.5,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PRIM-S-A-170839/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0105148003",
+              "reason": "non_positive_or_outlier",
+              "value": -2.22
+            },
+            {
+              "identifier": "ES0167733015",
+              "reason": "non_positive_or_outlier",
+              "value": -91.9
+            }
+          ]
+        },
+        "price_to_book": {
+          "p25": 1.545,
+          "median": 1.85,
+          "p75": 3.525,
+          "sample_size": 7,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0157097017",
+              "name": "ALMIRALL, S.A.",
+              "value": 1.85,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ALMIRALL-S-A-268048/valoracion/"
+            },
+            {
+              "identifier": "ES0105148003",
+              "name": "ATRYS HEALTH, S.A.",
+              "value": 1.46,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ATRYS-HEALTH-S-A-111615051/valoracion/"
+            },
+            {
+              "identifier": "ES0134950F36",
+              "name": "FAES FARMA, S.A.",
+              "value": 2.16,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/FAES-FARMA-S-A-224975/valoracion/"
+            },
+            {
+              "identifier": "ES0171996087",
+              "name": "GRIFOLS, S.A.",
+              "value": 0.96,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GRIFOLS-S-A-25530828/valoracion/"
+            },
+            {
+              "identifier": "ES0157261019",
+              "name": "LABORATORIOS FARMACEUTICOS ROVI, S.A.",
+              "value": 4.89,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/LABORATORIOS-FARMACEUTICO-388853/valoracion/"
+            },
+            {
+              "identifier": "ES0169501022",
+              "name": "PHARMA MAR, S.A.",
+              "value": 5.16,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PHARMA-MAR-S-A-24798227/valoracion/"
+            },
+            {
+              "identifier": "ES0170884417",
+              "name": "PRIM, S.A.",
+              "value": 1.63,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PRIM-S-A-170839/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0165359029",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0167733015",
+              "reason": "missing_metric"
+            }
+          ]
+        }
+      },
+      "status": "observed_comparables",
+      "generated_at": "2026-09-21T12:07:53.919538+00:00",
+      "active": true
+    },
+    {
+      "snapshot_version": "public-comparable-snapshots-v1",
+      "provider": "marketscreener",
+      "region": "spain",
+      "as_of": "2025-12-31",
+      "archetype": "hospitality",
+      "company_count": 3,
+      "metrics": {
+        "ev_ebitda": {
+          "p25": 5.625,
+          "median": 6.07,
+          "p75": 6.535,
+          "sample_size": 3,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0105375002",
+              "name": "AMREST HOLDINGS, S.E.",
+              "value": 5.18,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AMREST-HOLDINGS-SE-6498610/valoracion/"
+            },
+            {
+              "identifier": "ES0105884011",
+              "name": "CIRSA ENTERPRISES, S.A",
+              "value": 6.07,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CIRSA-ENTERPRISES-S-A-191730419/valoracion/"
+            },
+            {
+              "identifier": "ES0176252718",
+              "name": "MELIA HOTELS INTERNATIONAL, S.A.",
+              "value": 7.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MELI-HOTELS-INTERNATIONAL-75117/valoracion/"
+            }
+          ],
+          "excluded": []
+        },
+        "ev_ebit": {
+          "p25": null,
+          "median": null,
+          "p75": null,
+          "sample_size": 0,
+          "minimum_sample": 3,
+          "publishable": false,
+          "included": [],
+          "excluded": [
+            {
+              "identifier": "ES0105375002",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105884011",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0176252718",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "ev_revenue": {
+          "p25": 1.36,
+          "median": 1.88,
+          "p75": 1.91,
+          "sample_size": 3,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0105375002",
+              "name": "AMREST HOLDINGS, S.E.",
+              "value": 0.84,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AMREST-HOLDINGS-SE-6498610/valoracion/"
+            },
+            {
+              "identifier": "ES0105884011",
+              "name": "CIRSA ENTERPRISES, S.A",
+              "value": 1.94,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CIRSA-ENTERPRISES-S-A-191730419/valoracion/"
+            },
+            {
+              "identifier": "ES0176252718",
+              "name": "MELIA HOTELS INTERNATIONAL, S.A.",
+              "value": 1.88,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MELI-HOTELS-INTERNATIONAL-75117/valoracion/"
+            }
+          ],
+          "excluded": []
+        },
+        "per": {
+          "p25": 20.9,
+          "median": 31.5,
+          "p75": 38.45,
+          "sample_size": 3,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0105375002",
+              "name": "AMREST HOLDINGS, S.E.",
+              "value": 45.4,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AMREST-HOLDINGS-SE-6498610/valoracion/"
+            },
+            {
+              "identifier": "ES0105884011",
+              "name": "CIRSA ENTERPRISES, S.A",
+              "value": 31.5,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CIRSA-ENTERPRISES-S-A-191730419/valoracion/"
+            },
+            {
+              "identifier": "ES0176252718",
+              "name": "MELIA HOTELS INTERNATIONAL, S.A.",
+              "value": 10.3,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MELI-HOTELS-INTERNATIONAL-75117/valoracion/"
+            }
+          ],
+          "excluded": []
+        },
+        "price_to_book": {
+          "p25": 1.95,
+          "median": 2.07,
+          "p75": 2.64,
+          "sample_size": 3,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0105375002",
+              "name": "AMREST HOLDINGS, S.E.",
+              "value": 1.83,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AMREST-HOLDINGS-SE-6498610/valoracion/"
+            },
+            {
+              "identifier": "ES0105884011",
+              "name": "CIRSA ENTERPRISES, S.A",
+              "value": 3.21,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CIRSA-ENTERPRISES-S-A-191730419/valoracion/"
+            },
+            {
+              "identifier": "ES0176252718",
+              "name": "MELIA HOTELS INTERNATIONAL, S.A.",
+              "value": 2.07,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MELI-HOTELS-INTERNATIONAL-75117/valoracion/"
+            }
+          ],
+          "excluded": []
+        }
+      },
+      "status": "observed_comparables",
+      "generated_at": "2026-09-21T12:07:53.919546+00:00",
+      "active": true
+    },
+    {
+      "snapshot_version": "public-comparable-snapshots-v1",
+      "provider": "marketscreener",
+      "region": "spain",
+      "as_of": "2025-12-31",
+      "archetype": "media_content",
+      "company_count": 13,
+      "metrics": {
+        "ev_ebitda": {
+          "p25": 7.1,
+          "median": 10.9,
+          "p75": 12.425,
+          "sample_size": 12,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0109427734",
+              "name": "ATRESMEDIA CORP. DE MEDIOS DE COM. S.A.",
+              "value": 11.8,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ATRESMEDIA-159185/valoracion/"
+            },
+            {
+              "identifier": "ES01717430J3",
+              "name": "PROMOTORA DE INFORMACIONES,S.A.",
+              "value": 7.33,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PROMOTORA-DE-INFORMACIONE-22283933/valoracion/"
+            },
+            {
+              "identifier": "ES0183304080",
+              "name": "SQUIRREL MEDIA, S.A",
+              "value": 9.99,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/SQUIRREL-MEDIA-S-A-759694/valoracion/"
+            },
+            {
+              "identifier": "ES0114820113",
+              "name": "VOCENTO, S.A.",
+              "value": 6.41,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/VOCENTO-S-A-168602/valoracion/"
+            },
+            {
+              "identifier": "ES0109067019",
+              "name": "AMADEUS IT GROUP, S.A.",
+              "value": 11.8,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AMADEUS-IT-GROUP-S-A-4027320/valoracion/"
+            },
+            {
+              "identifier": "ES0109260291",
+              "name": "AMPER, S.A.",
+              "value": 10.1,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AMPER-S-A-73999/valoracion/"
+            },
+            {
+              "identifier": "ES0118594417",
+              "name": "INDRA SISTEMAS, S.A., SERIE A",
+              "value": 14.3,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INDRA-SISTEMAS-S-A-413470/valoracion/"
+            },
+            {
+              "identifier": "ES0105066007",
+              "name": "CELLNEX TELECOM, S.A.",
+              "value": 11.7,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CELLNEX-TELECOM-S-A-22148947/valoracion/"
+            },
+            {
+              "identifier": "ES0105130001",
+              "name": "GLOBAL DOMINION ACCESS, S.A.",
+              "value": 4.42,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GLOBAL-DOMINION-ACCESS-S--27377774/valoracion/"
+            },
+            {
+              "identifier": "ES0172708234",
+              "name": "GRUPO EZENTIS, S.A.",
+              "value": 58.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GRUPO-EZENTIS-S-A-15166565/valoracion/"
+            },
+            {
+              "identifier": "ES0105449005",
+              "name": "IZERTIS",
+              "value": 16.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/IZERTIS-S-A-111615897/valoracion/"
+            },
+            {
+              "identifier": "ES0178430E18",
+              "name": "TELEFONICA, S.A.",
+              "value": 4.62,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/TELEF-NICA-S-A-68962/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0106043005",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "ev_ebit": {
+          "p25": null,
+          "median": null,
+          "p75": null,
+          "sample_size": 0,
+          "minimum_sample": 3,
+          "publishable": false,
+          "included": [],
+          "excluded": [
+            {
+              "identifier": "ES0109427734",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES01717430J3",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0183304080",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0114820113",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0109067019",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0109260291",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0118594417",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105066007",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0106043005",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105130001",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0172708234",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105449005",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0178430E18",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "ev_revenue": {
+          "p25": 1.06,
+          "median": 1.52,
+          "p75": 1.8025,
+          "sample_size": 12,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0109427734",
+              "name": "ATRESMEDIA CORP. DE MEDIOS DE COM. S.A.",
+              "value": 1.03,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ATRESMEDIA-159185/valoracion/"
+            },
+            {
+              "identifier": "ES01717430J3",
+              "name": "PROMOTORA DE INFORMACIONES,S.A.",
+              "value": 1.32,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PROMOTORA-DE-INFORMACIONE-22283933/valoracion/"
+            },
+            {
+              "identifier": "ES0183304080",
+              "name": "SQUIRREL MEDIA, S.A",
+              "value": 1.07,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/SQUIRREL-MEDIA-S-A-759694/valoracion/"
+            },
+            {
+              "identifier": "ES0114820113",
+              "name": "VOCENTO, S.A.",
+              "value": 0.33,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/VOCENTO-S-A-168602/valoracion/"
+            },
+            {
+              "identifier": "ES0109067019",
+              "name": "AMADEUS IT GROUP, S.A.",
+              "value": 4.53,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AMADEUS-IT-GROUP-S-A-4027320/valoracion/"
+            },
+            {
+              "identifier": "ES0109260291",
+              "name": "AMPER, S.A.",
+              "value": 1.66,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AMPER-S-A-73999/valoracion/"
+            },
+            {
+              "identifier": "ES0118594417",
+              "name": "INDRA SISTEMAS, S.A., SERIE A",
+              "value": 1.67,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INDRA-SISTEMAS-S-A-413470/valoracion/"
+            },
+            {
+              "identifier": "ES0105066007",
+              "name": "CELLNEX TELECOM, S.A.",
+              "value": 8.79,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CELLNEX-TELECOM-S-A-22148947/valoracion/"
+            },
+            {
+              "identifier": "ES0105130001",
+              "name": "GLOBAL DOMINION ACCESS, S.A.",
+              "value": 0.61,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GLOBAL-DOMINION-ACCESS-S--27377774/valoracion/"
+            },
+            {
+              "identifier": "ES0172708234",
+              "name": "GRUPO EZENTIS, S.A.",
+              "value": 1.47,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GRUPO-EZENTIS-S-A-15166565/valoracion/"
+            },
+            {
+              "identifier": "ES0105449005",
+              "name": "IZERTIS",
+              "value": 2.2,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/IZERTIS-S-A-111615897/valoracion/"
+            },
+            {
+              "identifier": "ES0178430E18",
+              "name": "TELEFONICA, S.A.",
+              "value": 1.57,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/TELEF-NICA-S-A-68962/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0106043005",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "per": {
+          "p25": 18.5,
+          "median": 20.9,
+          "p75": 32.8,
+          "sample_size": 7,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0109427734",
+              "name": "ATRESMEDIA CORP. DE MEDIOS DE COM. S.A.",
+              "value": 17.4,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ATRESMEDIA-159185/valoracion/"
+            },
+            {
+              "identifier": "ES0183304080",
+              "name": "SQUIRREL MEDIA, S.A",
+              "value": 35.5,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/SQUIRREL-MEDIA-S-A-759694/valoracion/"
+            },
+            {
+              "identifier": "ES0114820113",
+              "name": "VOCENTO, S.A.",
+              "value": 11.5,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/VOCENTO-S-A-168602/valoracion/"
+            },
+            {
+              "identifier": "ES0109067019",
+              "name": "AMADEUS IT GROUP, S.A.",
+              "value": 20.9,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AMADEUS-IT-GROUP-S-A-4027320/valoracion/"
+            },
+            {
+              "identifier": "ES0118594417",
+              "name": "INDRA SISTEMAS, S.A., SERIE A",
+              "value": 19.6,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INDRA-SISTEMAS-S-A-413470/valoracion/"
+            },
+            {
+              "identifier": "ES0105130001",
+              "name": "GLOBAL DOMINION ACCESS, S.A.",
+              "value": 30.1,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GLOBAL-DOMINION-ACCESS-S--27377774/valoracion/"
+            },
+            {
+              "identifier": "ES0105449005",
+              "name": "IZERTIS",
+              "value": 75.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/IZERTIS-S-A-111615897/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES01717430J3",
+              "reason": "non_positive_or_outlier",
+              "value": -17.8
+            },
+            {
+              "identifier": "ES0109260291",
+              "reason": "non_positive_or_outlier",
+              "value": 169.0
+            },
+            {
+              "identifier": "ES0105066007",
+              "reason": "non_positive_or_outlier",
+              "value": -51.8
+            },
+            {
+              "identifier": "ES0106043005",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0172708234",
+              "reason": "non_positive_or_outlier",
+              "value": -15.6
+            },
+            {
+              "identifier": "ES0178430E18",
+              "reason": "non_positive_or_outlier",
+              "value": -4.31
+            }
+          ]
+        },
+        "price_to_book": {
+          "p25": 1.51,
+          "median": 2.465,
+          "p75": 4.4975,
+          "sample_size": 10,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0109427734",
+              "name": "ATRESMEDIA CORP. DE MEDIOS DE COM. S.A.",
+              "value": 1.5,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ATRESMEDIA-159185/valoracion/"
+            },
+            {
+              "identifier": "ES0183304080",
+              "name": "SQUIRREL MEDIA, S.A",
+              "value": 3.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/SQUIRREL-MEDIA-S-A-759694/valoracion/"
+            },
+            {
+              "identifier": "ES0114820113",
+              "name": "VOCENTO, S.A.",
+              "value": 0.78,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/VOCENTO-S-A-168602/valoracion/"
+            },
+            {
+              "identifier": "ES0109067019",
+              "name": "AMADEUS IT GROUP, S.A.",
+              "value": 5.58,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AMADEUS-IT-GROUP-S-A-4027320/valoracion/"
+            },
+            {
+              "identifier": "ES0118594417",
+              "name": "INDRA SISTEMAS, S.A., SERIE A",
+              "value": 4.92,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INDRA-SISTEMAS-S-A-413470/valoracion/"
+            },
+            {
+              "identifier": "ES0105066007",
+              "name": "CELLNEX TELECOM, S.A.",
+              "value": 1.54,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/CELLNEX-TELECOM-S-A-22148947/valoracion/"
+            },
+            {
+              "identifier": "ES0105130001",
+              "name": "GLOBAL DOMINION ACCESS, S.A.",
+              "value": 1.93,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GLOBAL-DOMINION-ACCESS-S--27377774/valoracion/"
+            },
+            {
+              "identifier": "ES0172708234",
+              "name": "GRUPO EZENTIS, S.A.",
+              "value": 14.7,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/GRUPO-EZENTIS-S-A-15166565/valoracion/"
+            },
+            {
+              "identifier": "ES0105449005",
+              "name": "IZERTIS",
+              "value": 3.23,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/IZERTIS-S-A-111615897/valoracion/"
+            },
+            {
+              "identifier": "ES0178430E18",
+              "name": "TELEFONICA, S.A.",
+              "value": 1.38,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/TELEF-NICA-S-A-68962/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES01717430J3",
+              "reason": "non_positive_or_outlier",
+              "value": -1.37
+            },
+            {
+              "identifier": "ES0109260291",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0106043005",
+              "reason": "missing_metric"
+            }
+          ]
+        }
+      },
+      "status": "observed_comparables",
+      "generated_at": "2026-09-21T12:07:53.919585+00:00",
+      "active": true
+    },
+    {
+      "snapshot_version": "public-comparable-snapshots-v1",
+      "provider": "marketscreener",
+      "region": "spain",
+      "as_of": "2025-12-31",
+      "archetype": "real_estate",
+      "company_count": 14,
+      "metrics": {
+        "ev_ebitda": {
+          "p25": 11.02,
+          "median": 14.3,
+          "p75": 23.95,
+          "sample_size": 12,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0105287009",
+              "name": "AEDAS HOMES, S.A.",
+              "value": 8.5,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AEDAS-HOMES-S-A-38183500/valoracion/"
+            },
+            {
+              "identifier": "ES0132955008",
+              "name": "CIA. ESPAÑOLA  VIVIENDAS EN ALQUILER,S.A",
+              "value": 14.8,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/COMPA-A-ESPA-OLA-DE-VIVIE-58002375/valoracion/"
+            },
+            {
+              "identifier": "ES0154653911",
+              "name": "INMOBILIARIA DEL SUR, S.A.",
+              "value": 8.68,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INMOBILIARIA-DEL-SUR-S-A-187708/valoracion/"
+            },
+            {
+              "identifier": "ES0137998A12",
+              "name": "LIBERTAS 7, S.A.",
+              "value": 11.8,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/LIBERTAS-7-S-A-118501041/valoracion/"
+            },
+            {
+              "identifier": "ES0105122024",
+              "name": "METROVACESA, S.A.",
+              "value": 13.5,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/METROVACESA-S-A-40601524/valoracion/"
+            },
+            {
+              "identifier": "ES0116494016",
+              "name": "MONTEBALITO, S.A.",
+              "value": 13.8,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MONTEBALITO-S-A-74194/valoracion/"
+            },
+            {
+              "identifier": "ES0105251005",
+              "name": "NEINOR HOMES, S.A.",
+              "value": 23.6,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NEINOR-HOMES-S-A-34430291/valoracion/"
+            },
+            {
+              "identifier": "ES0150480194",
+              "name": "NYESA VALORES CORPORACION, S.A.",
+              "value": 22.9,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NYESA-VALORES-CORPORACI-N-74529/valoracion/"
+            },
+            {
+              "identifier": "ES0173365018",
+              "name": "RENTA CORPORACION REAL ESTATE, S.A.",
+              "value": 4.52,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/RENTA-CORPORACI-N-REAL-ES-176705/valoracion/"
+            },
+            {
+              "identifier": "ES0139140174",
+              "name": "COLONIAL SFL, SOCIMI, S.A.",
+              "value": 25.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/COLONIAL-SFL-SOCIMI-S-A-30340922/valoracion/"
+            },
+            {
+              "identifier": "ES0105025003",
+              "name": "MERLIN PROPERTIES, SOCIMI, S.A.",
+              "value": 26.9,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MERLIN-PROPERTIES-SOCIMI--16796079/valoracion/"
+            },
+            {
+              "identifier": "ES0105376059",
+              "name": "ÁRIMA REAL ESTATE SOCIMI, S.A.",
+              "value": 31.6,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/-RIMA-REAL-ESTATE-SOCIMI--46736817/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0173908015",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0182280018",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "ev_ebit": {
+          "p25": null,
+          "median": null,
+          "p75": null,
+          "sample_size": 0,
+          "minimum_sample": 3,
+          "publishable": false,
+          "included": [],
+          "excluded": [
+            {
+              "identifier": "ES0105287009",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0132955008",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0154653911",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0137998A12",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105122024",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0116494016",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105251005",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0150480194",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0173908015",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0173365018",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0182280018",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0139140174",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105025003",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105376059",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "ev_revenue": {
+          "p25": 2.09,
+          "median": 4.34,
+          "p75": 9.005,
+          "sample_size": 11,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0105287009",
+              "name": "AEDAS HOMES, S.A.",
+              "value": 1.21,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AEDAS-HOMES-S-A-38183500/valoracion/"
+            },
+            {
+              "identifier": "ES0132955008",
+              "name": "CIA. ESPAÑOLA  VIVIENDAS EN ALQUILER,S.A",
+              "value": 10.3,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/COMPA-A-ESPA-OLA-DE-VIVIE-58002375/valoracion/"
+            },
+            {
+              "identifier": "ES0154653911",
+              "name": "INMOBILIARIA DEL SUR, S.A.",
+              "value": 1.75,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INMOBILIARIA-DEL-SUR-S-A-187708/valoracion/"
+            },
+            {
+              "identifier": "ES0137998A12",
+              "name": "LIBERTAS 7, S.A.",
+              "value": 4.61,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/LIBERTAS-7-S-A-118501041/valoracion/"
+            },
+            {
+              "identifier": "ES0105122024",
+              "name": "METROVACESA, S.A.",
+              "value": 2.43,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/METROVACESA-S-A-40601524/valoracion/"
+            },
+            {
+              "identifier": "ES0116494016",
+              "name": "MONTEBALITO, S.A.",
+              "value": 7.71,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MONTEBALITO-S-A-74194/valoracion/"
+            },
+            {
+              "identifier": "ES0105251005",
+              "name": "NEINOR HOMES, S.A.",
+              "value": 3.69,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NEINOR-HOMES-S-A-34430291/valoracion/"
+            },
+            {
+              "identifier": "ES0150480194",
+              "name": "NYESA VALORES CORPORACION, S.A.",
+              "value": 4.34,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NYESA-VALORES-CORPORACI-N-74529/valoracion/"
+            },
+            {
+              "identifier": "ES0173365018",
+              "name": "RENTA CORPORACION REAL ESTATE, S.A.",
+              "value": 0.41,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/RENTA-CORPORACI-N-REAL-ES-176705/valoracion/"
+            },
+            {
+              "identifier": "ES0105025003",
+              "name": "MERLIN PROPERTIES, SOCIMI, S.A.",
+              "value": 19.8,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MERLIN-PROPERTIES-SOCIMI--16796079/valoracion/"
+            },
+            {
+              "identifier": "ES0105376059",
+              "name": "ÁRIMA REAL ESTATE SOCIMI, S.A.",
+              "value": 19.3,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/-RIMA-REAL-ESTATE-SOCIMI--46736817/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0173908015",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0182280018",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0139140174",
+              "reason": "non_positive_or_outlier",
+              "value": 20.8
+            }
+          ]
+        },
+        "per": {
+          "p25": 8.88,
+          "median": 13.0,
+          "p75": 17.9,
+          "sample_size": 13,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0105287009",
+              "name": "AEDAS HOMES, S.A.",
+              "value": 7.55,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AEDAS-HOMES-S-A-38183500/valoracion/"
+            },
+            {
+              "identifier": "ES0132955008",
+              "name": "CIA. ESPAÑOLA  VIVIENDAS EN ALQUILER,S.A",
+              "value": 6.38,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/COMPA-A-ESPA-OLA-DE-VIVIE-58002375/valoracion/"
+            },
+            {
+              "identifier": "ES0154653911",
+              "name": "INMOBILIARIA DEL SUR, S.A.",
+              "value": 6.74,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INMOBILIARIA-DEL-SUR-S-A-187708/valoracion/"
+            },
+            {
+              "identifier": "ES0137998A12",
+              "name": "LIBERTAS 7, S.A.",
+              "value": 15.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/LIBERTAS-7-S-A-118501041/valoracion/"
+            },
+            {
+              "identifier": "ES0105122024",
+              "name": "METROVACESA, S.A.",
+              "value": 25.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/METROVACESA-S-A-40601524/valoracion/"
+            },
+            {
+              "identifier": "ES0116494016",
+              "name": "MONTEBALITO, S.A.",
+              "value": 15.5,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MONTEBALITO-S-A-74194/valoracion/"
+            },
+            {
+              "identifier": "ES0105251005",
+              "name": "NEINOR HOMES, S.A.",
+              "value": 13.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NEINOR-HOMES-S-A-34430291/valoracion/"
+            },
+            {
+              "identifier": "ES0150480194",
+              "name": "NYESA VALORES CORPORACION, S.A.",
+              "value": 96.3,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NYESA-VALORES-CORPORACI-N-74529/valoracion/"
+            },
+            {
+              "identifier": "ES0173908015",
+              "name": "REALIA BUSINESS, S.A.",
+              "value": 17.9,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/REALIA-BUSINESS-S-A-264952/valoracion/"
+            },
+            {
+              "identifier": "ES0173365018",
+              "name": "RENTA CORPORACION REAL ESTATE, S.A.",
+              "value": 9.1,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/RENTA-CORPORACI-N-REAL-ES-176705/valoracion/"
+            },
+            {
+              "identifier": "ES0139140174",
+              "name": "COLONIAL SFL, SOCIMI, S.A.",
+              "value": 9.76,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/COLONIAL-SFL-SOCIMI-S-A-30340922/valoracion/"
+            },
+            {
+              "identifier": "ES0105025003",
+              "name": "MERLIN PROPERTIES, SOCIMI, S.A.",
+              "value": 8.88,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MERLIN-PROPERTIES-SOCIMI--16796079/valoracion/"
+            },
+            {
+              "identifier": "ES0105376059",
+              "name": "ÁRIMA REAL ESTATE SOCIMI, S.A.",
+              "value": 28.3,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/-RIMA-REAL-ESTATE-SOCIMI--46736817/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0182280018",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "price_to_book": {
+          "p25": 0.6625,
+          "median": 0.795,
+          "p75": 1.2075,
+          "sample_size": 8,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0105287009",
+              "name": "AEDAS HOMES, S.A.",
+              "value": 1.15,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AEDAS-HOMES-S-A-38183500/valoracion/"
+            },
+            {
+              "identifier": "ES0116494016",
+              "name": "MONTEBALITO, S.A.",
+              "value": 0.69,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MONTEBALITO-S-A-74194/valoracion/"
+            },
+            {
+              "identifier": "ES0105251005",
+              "name": "NEINOR HOMES, S.A.",
+              "value": 1.38,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NEINOR-HOMES-S-A-34430291/valoracion/"
+            },
+            {
+              "identifier": "ES0150480194",
+              "name": "NYESA VALORES CORPORACION, S.A.",
+              "value": 1.79,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NYESA-VALORES-CORPORACI-N-74529/valoracion/"
+            },
+            {
+              "identifier": "ES0173365018",
+              "name": "RENTA CORPORACION REAL ESTATE, S.A.",
+              "value": 0.36,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/RENTA-CORPORACI-N-REAL-ES-176705/valoracion/"
+            },
+            {
+              "identifier": "ES0139140174",
+              "name": "COLONIAL SFL, SOCIMI, S.A.",
+              "value": 0.58,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/COLONIAL-SFL-SOCIMI-S-A-30340922/valoracion/"
+            },
+            {
+              "identifier": "ES0105025003",
+              "name": "MERLIN PROPERTIES, SOCIMI, S.A.",
+              "value": 0.87,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/MERLIN-PROPERTIES-SOCIMI--16796079/valoracion/"
+            },
+            {
+              "identifier": "ES0105376059",
+              "name": "ÁRIMA REAL ESTATE SOCIMI, S.A.",
+              "value": 0.72,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/-RIMA-REAL-ESTATE-SOCIMI--46736817/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0132955008",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0154653911",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0137998A12",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105122024",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0173908015",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0182280018",
+              "reason": "missing_metric"
+            }
+          ]
+        }
+      },
+      "status": "observed_comparables",
+      "generated_at": "2026-09-21T12:07:53.919602+00:00",
+      "active": true
+    },
+    {
+      "snapshot_version": "public-comparable-snapshots-v1",
+      "provider": "marketscreener",
+      "region": "spain",
+      "as_of": "2025-12-31",
+      "archetype": "retail",
+      "company_count": 6,
+      "metrics": {
+        "ev_ebitda": {
+          "p25": 5.19,
+          "median": 7.135,
+          "p75": 9.79,
+          "sample_size": 4,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0106000013",
+              "name": "ADOLFO DOMINGUEZ, S.A.",
+              "value": 2.91,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ADOLFO-DOM-NGUEZ-S-A-408469/valoracion/"
+            },
+            {
+              "identifier": "ES0148396007",
+              "name": "INDUSTRIA DE DISEÑO TEXTIL, SA \"INDITEX\"",
+              "value": 14.2,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INDITEX-16943135/valoracion/"
+            },
+            {
+              "identifier": "ES0105777017",
+              "name": "PUIG BRANDS, S.A. CLASE B",
+              "value": 8.32,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PUIG-BRANDS-SA-169390759/valoracion/"
+            },
+            {
+              "identifier": "ES0126775008",
+              "name": "DIA-DISTRIBUIDORA INT. DE ALIMENT. S.A.",
+              "value": 5.95,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/DISTRIBUIDORA-INTERNACION-8322842/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0126962069",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0143421073",
+              "reason": "non_positive_or_outlier",
+              "value": -159.0
+            }
+          ]
+        },
+        "ev_ebit": {
+          "p25": null,
+          "median": null,
+          "p75": null,
+          "sample_size": 0,
+          "minimum_sample": 3,
+          "publishable": false,
+          "included": [],
+          "excluded": [
+            {
+              "identifier": "ES0106000013",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0148396007",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0126962069",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105777017",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0126775008",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0143421073",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "ev_revenue": {
+          "p25": 0.455,
+          "median": 1.1,
+          "p75": 2.2775,
+          "sample_size": 4,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0106000013",
+              "name": "ADOLFO DOMINGUEZ, S.A.",
+              "value": 0.38,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ADOLFO-DOM-NGUEZ-S-A-408469/valoracion/"
+            },
+            {
+              "identifier": "ES0148396007",
+              "name": "INDUSTRIA DE DISEÑO TEXTIL, SA \"INDITEX\"",
+              "value": 3.95,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INDITEX-16943135/valoracion/"
+            },
+            {
+              "identifier": "ES0105777017",
+              "name": "PUIG BRANDS, S.A. CLASE B",
+              "value": 1.72,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PUIG-BRANDS-SA-169390759/valoracion/"
+            },
+            {
+              "identifier": "ES0126775008",
+              "name": "DIA-DISTRIBUIDORA INT. DE ALIMENT. S.A.",
+              "value": 0.48,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/DISTRIBUIDORA-INTERNACION-8322842/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0126962069",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0143421073",
+              "reason": "non_positive_or_outlier",
+              "value": 3077.0
+            }
+          ]
+        },
+        "per": {
+          "p25": 16.5,
+          "median": 28.0,
+          "p75": 49.9,
+          "sample_size": 5,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0106000013",
+              "name": "ADOLFO DOMINGUEZ, S.A.",
+              "value": 49.9,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/ADOLFO-DOM-NGUEZ-S-A-408469/valoracion/"
+            },
+            {
+              "identifier": "ES0148396007",
+              "name": "INDUSTRIA DE DISEÑO TEXTIL, SA \"INDITEX\"",
+              "value": 28.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INDITEX-16943135/valoracion/"
+            },
+            {
+              "identifier": "ES0126962069",
+              "name": "NUEVA EXPRESION TEXTIL, S.A.",
+              "value": 92.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/NUEVA-EXPRESI-N-TEXTIL-S--45184179/valoracion/"
+            },
+            {
+              "identifier": "ES0105777017",
+              "name": "PUIG BRANDS, S.A. CLASE B",
+              "value": 14.2,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PUIG-BRANDS-SA-169390759/valoracion/"
+            },
+            {
+              "identifier": "ES0126775008",
+              "name": "DIA-DISTRIBUIDORA INT. DE ALIMENT. S.A.",
+              "value": 16.5,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/DISTRIBUIDORA-INTERNACION-8322842/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0143421073",
+              "reason": "non_positive_or_outlier",
+              "value": -48.4
+            }
+          ]
+        },
+        "price_to_book": {
+          "p25": 5.245,
+          "median": 8.34,
+          "p75": 12.67,
+          "sample_size": 3,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0148396007",
+              "name": "INDUSTRIA DE DISEÑO TEXTIL, SA \"INDITEX\"",
+              "value": 8.34,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INDITEX-16943135/valoracion/"
+            },
+            {
+              "identifier": "ES0105777017",
+              "name": "PUIG BRANDS, S.A. CLASE B",
+              "value": 2.15,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/PUIG-BRANDS-SA-169390759/valoracion/"
+            },
+            {
+              "identifier": "ES0126775008",
+              "name": "DIA-DISTRIBUIDORA INT. DE ALIMENT. S.A.",
+              "value": 17.0,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/DISTRIBUIDORA-INTERNACION-8322842/valoracion/"
+            }
+          ],
+          "excluded": [
+            {
+              "identifier": "ES0106000013",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0126962069",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0143421073",
+              "reason": "non_positive_or_outlier",
+              "value": -6.49
+            }
+          ]
+        }
+      },
+      "status": "observed_comparables",
+      "generated_at": "2026-09-21T12:07:53.919612+00:00",
+      "active": true
+    },
+    {
+      "snapshot_version": "public-comparable-snapshots-v1",
+      "provider": "marketscreener",
+      "region": "spain",
+      "as_of": "2025-12-31",
+      "archetype": "transport_logistics",
+      "company_count": 3,
+      "metrics": {
+        "ev_ebitda": {
+          "p25": 3.045,
+          "median": 3.61,
+          "p75": 7.255,
+          "sample_size": 3,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0105046017",
+              "name": "AENA, S.M.E., S.A.",
+              "value": 10.9,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AENA-S-M-E-S-A-20798509/valoracion/"
+            },
+            {
+              "identifier": "ES0105027009",
+              "name": "CIA. DE DIST. INTEG. LOGISTA HOLDINGS",
+              "value": 2.48,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/LOGISTA-HOLDINGS-16860992/valoracion/"
+            },
+            {
+              "identifier": "ES0177542018",
+              "name": "INTERNATIONAL CONSOLIDAT. AIRLINES GROUP",
+              "value": 3.61,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INTERNATIONAL-CONSOLIDATE-7233512/valoracion/"
+            }
+          ],
+          "excluded": []
+        },
+        "ev_ebit": {
+          "p25": null,
+          "median": null,
+          "p75": null,
+          "sample_size": 0,
+          "minimum_sample": 3,
+          "publishable": false,
+          "included": [],
+          "excluded": [
+            {
+              "identifier": "ES0105046017",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0105027009",
+              "reason": "missing_metric"
+            },
+            {
+              "identifier": "ES0177542018",
+              "reason": "missing_metric"
+            }
+          ]
+        },
+        "ev_revenue": {
+          "p25": 0.755,
+          "median": 0.83,
+          "p75": 3.7,
+          "sample_size": 3,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0105046017",
+              "name": "AENA, S.M.E., S.A.",
+              "value": 6.57,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AENA-S-M-E-S-A-20798509/valoracion/"
+            },
+            {
+              "identifier": "ES0105027009",
+              "name": "CIA. DE DIST. INTEG. LOGISTA HOLDINGS",
+              "value": 0.68,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/LOGISTA-HOLDINGS-16860992/valoracion/"
+            },
+            {
+              "identifier": "ES0177542018",
+              "name": "INTERNATIONAL CONSOLIDAT. AIRLINES GROUP",
+              "value": 0.83,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INTERNATIONAL-CONSOLIDATE-7233512/valoracion/"
+            }
+          ],
+          "excluded": []
+        },
+        "per": {
+          "p25": 10.215,
+          "median": 13.6,
+          "p75": 15.2,
+          "sample_size": 3,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0105046017",
+              "name": "AENA, S.M.E., S.A.",
+              "value": 16.8,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AENA-S-M-E-S-A-20798509/valoracion/"
+            },
+            {
+              "identifier": "ES0105027009",
+              "name": "CIA. DE DIST. INTEG. LOGISTA HOLDINGS",
+              "value": 13.6,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/LOGISTA-HOLDINGS-16860992/valoracion/"
+            },
+            {
+              "identifier": "ES0177542018",
+              "name": "INTERNATIONAL CONSOLIDAT. AIRLINES GROUP",
+              "value": 6.83,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INTERNATIONAL-CONSOLIDATE-7233512/valoracion/"
+            }
+          ],
+          "excluded": []
+        },
+        "price_to_book": {
+          "p25": 3.47,
+          "median": 3.88,
+          "p75": 4.91,
+          "sample_size": 3,
+          "minimum_sample": 3,
+          "publishable": true,
+          "included": [
+            {
+              "identifier": "ES0105046017",
+              "name": "AENA, S.M.E., S.A.",
+              "value": 3.88,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/AENA-S-M-E-S-A-20798509/valoracion/"
+            },
+            {
+              "identifier": "ES0105027009",
+              "name": "CIA. DE DIST. INTEG. LOGISTA HOLDINGS",
+              "value": 5.94,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/LOGISTA-HOLDINGS-16860992/valoracion/"
+            },
+            {
+              "identifier": "ES0177542018",
+              "name": "INTERNATIONAL CONSOLIDAT. AIRLINES GROUP",
+              "value": 3.06,
+              "source_url": "https://es.marketscreener.com/cotizacion/accion/INTERNATIONAL-CONSOLIDATE-7233512/valoracion/"
+            }
+          ],
+          "excluded": []
+        }
+      },
+      "status": "observed_comparables",
+      "generated_at": "2026-09-21T12:07:53.919620+00:00",
+      "active": true
+    }
+  ]
+}

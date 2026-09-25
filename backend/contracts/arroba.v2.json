@@ -163,7 +163,7 @@
        }
       ],
       "examples": [
-       "Transporte de mercanc\u00edas por carretera"
+       "Transporte de mercancías por carretera"
       ],
       "title": "Description"
      },
@@ -238,7 +238,7 @@
         "type": "null"
        }
       ],
-      "description": "Situaci\u00f3n de actividad (null si no verificable)",
+      "description": "Situación de actividad (null si no verificable)",
       "title": "Activity Status"
      },
      "address": {
@@ -357,7 +357,7 @@
      },
      "data_coverage": {
       "additionalProperties": true,
-      "description": "Qu\u00e9 campos est\u00e1n presentes (true) o ausentes (false)",
+      "description": "Qué campos están presentes (true) o ausentes (false)",
       "title": "Data Coverage",
       "type": "object"
      },
@@ -370,7 +370,7 @@
         "type": "null"
        }
       ],
-      "description": "Solo si existe descripci\u00f3n con soporte; nunca texto inventado",
+      "description": "Solo si existe descripción con soporte; nunca texto inventado",
       "title": "Description"
      },
      "domain": {
@@ -396,7 +396,7 @@
         "type": "null"
        }
       ],
-      "description": "N\u00ba empleados (null si no verificable)",
+      "description": "Nº empleados (null si no verificable)",
       "title": "Employees Total"
      },
      "incorporation_date": {
@@ -408,7 +408,7 @@
         "type": "null"
        }
       ],
-      "description": "Fecha de constituci\u00f3n (null si no verificable)",
+      "description": "Fecha de constitución (null si no verificable)",
       "title": "Incorporation Date"
      },
      "is_listed": {
@@ -432,7 +432,7 @@
         "type": "null"
        }
       ],
-      "description": "Forma jur\u00eddica (null si no verificable)",
+      "description": "Forma jurídica (null si no verificable)",
       "title": "Legal Form"
      },
      "legal_name": {
@@ -683,7 +683,7 @@
      },
      "limit": {
       "default": 10,
-      "description": "M\u00e1x. coincidencias para b\u00fasqueda por nombre",
+      "description": "Máx. coincidencias para búsqueda por nombre",
       "maximum": 50.0,
       "minimum": 1.0,
       "title": "Limit",
@@ -698,7 +698,7 @@
         "type": "null"
        }
       ],
-      "description": "Nombre/raz\u00f3n social a resolver",
+      "description": "Nombre/razón social a resolver",
       "examples": [
        "Totalenergies"
       ],
@@ -6814,8 +6814,8 @@
   }
  },
  "info": {
-  "description": "Contrato p\u00fablico v2 para arroba.com. Superset TIPADO de v1: los 6 motores de inteligencia con DTO de respuesta expl\u00edcitos + la capacidad p\u00fablica Company/Identity (/api/v2/company-intelligence). Auth: cabecera X-API-Key. Runtime id\u00e9ntico a v1 (los DTO documentan, no filtran). Permite generar SDK tipado.",
-  "title": "Agency Tool \u2014 Intelligence API (arroba.com) \u2014 v2",
+  "description": "Contrato público v2 para arroba.com. Superset TIPADO de v1: los 6 motores de inteligencia con DTO de respuesta explícitos + la capacidad pública Company/Identity (/api/v2/company-intelligence). Auth: cabecera X-API-Key. Runtime idéntico a v1 (los DTO documentan, no filtran). Permite generar SDK tipado.",
+  "title": "Agency Tool — Intelligence API (arroba.com) — v2",
   "version": "arroba-integration-contract-v2"
  },
  "openapi": "3.1.0",
@@ -9543,7 +9543,7 @@
         }
        }
       },
-      "description": "Identidad can\u00f3nica p\u00fablica de la empresa"
+      "description": "Identidad canónica pública de la empresa"
      },
      "422": {
       "content": {
@@ -9556,7 +9556,7 @@
       "description": "Validation Error"
      }
     },
-    "summary": "Identidad can\u00f3nica p\u00fablica de una empresa (COMP-1001/1002/1003)",
+    "summary": "Identidad canónica pública de una empresa (COMP-1001/1002/1003)",
     "tags": [
      "company-intelligence (v2)"
     ]
@@ -9564,7 +9564,7 @@
   },
   "/api/v2/company-intelligence/resolve": {
    "post": {
-    "description": "Public resolver (CIF or name \u2192 master_id). No JWT, no /master/*, no Mongo access needed.\n\nCIF: exact match on the normalized CIF. Name: exact name_key first, then partial (diacritics/\ncase-insensitive), ranked. Returns the canonical master_id + a brief identity for each match.",
+    "description": "Public resolver (CIF or name → master_id). No JWT, no /master/*, no Mongo access needed.\n\nCIF: exact match on the normalized CIF. Name: exact name_key first, then partial (diacritics/\ncase-insensitive), ranked. Returns the canonical master_id + a brief identity for each match.",
     "operationId": "resolve_api_v2_company_intelligence_resolve_post",
     "parameters": [
      {
@@ -9596,7 +9596,7 @@
         }
        }
       },
-      "description": "Resoluci\u00f3n p\u00fablica CIF/Nombre \u2192 master_id"
+      "description": "Resolución pública CIF/Nombre → master_id"
      },
      "422": {
       "content": {
@@ -9609,10 +9609,432 @@
       "description": "Validation Error"
      }
     },
-    "summary": "Resolver un CIF o nombre a master_id can\u00f3nico (solo X-API-Key)",
+    "summary": "Resolver un CIF o nombre a master_id canónico (solo X-API-Key)",
     "tags": [
      "company-intelligence (v2)"
     ]
+   }
+  },
+  "/api/v2/company-intelligence/screen": {
+   "post": {
+    "tags": [
+     "company_screener"
+    ],
+    "summary": "Screener multi-criterio: página + total del universo filtrado + facetas",
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {
+         "cnae_sections": {
+          "type": "array",
+          "items": {
+           "type": "string"
+          }
+         },
+         "cnae_codes": {
+          "type": "array",
+          "items": {
+           "type": "string"
+          }
+         },
+         "provincias": {
+          "type": "array",
+          "items": {
+           "type": "string"
+          }
+         },
+         "revenue_min": {
+          "type": "number"
+         },
+         "revenue_max": {
+          "type": "number"
+         },
+         "employees_min": {
+          "type": "number"
+         },
+         "employees_max": {
+          "type": "number"
+         },
+         "ebitda_min": {
+          "type": "number"
+         },
+         "ebitda_max": {
+          "type": "number"
+         },
+         "ebitda_margin_min": {
+          "type": "number"
+         },
+         "ebitda_margin_max": {
+          "type": "number"
+         },
+         "growth_yoy_min": {
+          "type": "number"
+         },
+         "growth_yoy_max": {
+          "type": "number"
+         },
+         "estado": {
+          "type": "string",
+          "enum": [
+           "active",
+           "distressed",
+           "all"
+          ]
+         },
+         "signals": {
+          "type": "array",
+          "items": {
+           "type": "string"
+          }
+         },
+         "year": {
+          "type": "integer"
+         },
+         "query": {
+          "type": "string"
+         },
+         "offset": {
+          "type": "integer",
+          "default": 0
+         },
+         "limit": {
+          "type": "integer",
+          "default": 25
+         },
+         "sort_by": {
+          "type": "string"
+         },
+         "sort_dir": {
+          "type": "string",
+          "enum": [
+           "asc",
+           "desc"
+          ]
+         }
+        }
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Página de resultados + total + facetas",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "total": {
+           "type": "integer"
+          },
+          "results": {
+           "type": "array",
+           "items": {
+            "type": "object"
+           }
+          },
+          "facets": {
+           "type": "object"
+          },
+          "applied_filters": {
+           "type": "object"
+          },
+          "offset": {
+           "type": "integer"
+          },
+          "limit": {
+           "type": "integer"
+          },
+          "engine_version": {
+           "type": "string"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v2/company-intelligence/screen/count": {
+   "post": {
+    "tags": [
+     "company_screener"
+    ],
+    "summary": "Solo total + facetas (contador en vivo, debounced)",
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Total + facetas",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "total": {
+           "type": "integer"
+          },
+          "facets": {
+           "type": "object"
+          },
+          "engine_version": {
+           "type": "string"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v2/company-intelligence/screen/signals": {
+   "get": {
+    "tags": [
+     "company_screener"
+    ],
+    "summary": "Catálogo de señales filtrables (etiqueta -> signal_type reales)",
+    "responses": {
+     "200": {
+      "description": "Mapa de señales",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/public/sector-market/{cnae}/growth": {
+   "get": {
+    "tags": [
+     "sector_market"
+    ],
+    "summary": "Crecimiento real por subsector (serie revenue/año + YoY + CAGR 3a)",
+    "parameters": [
+     {
+      "name": "cnae",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "serie + yoy_latest + cagr_3y",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/public/sector-market/{cnae}/borme-monthly": {
+   "get": {
+    "tags": [
+     "sector_market"
+    ],
+    "summary": "Serie mensual de eventos BORME por división CNAE",
+    "parameters": [
+     {
+      "name": "cnae",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "name": "months",
+      "in": "query",
+      "schema": {
+       "type": "integer",
+       "default": 24
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "serie mensual",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/public/sector-market/{cnae}/ma-deals": {
+   "get": {
+    "tags": [
+     "sector_market"
+    ],
+    "summary": "Operaciones M&A del sector + múltiplos (transactions_normalized)",
+    "parameters": [
+     {
+      "name": "cnae",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "name": "category",
+      "in": "query",
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "name": "limit",
+      "in": "query",
+      "schema": {
+       "type": "integer",
+       "default": 10
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "deals_count + múltiplos + recientes",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/public/sector-market/{cnae}/top-buyers": {
+   "get": {
+    "tags": [
+     "sector_market"
+    ],
+    "summary": "Top organismos públicos por sector (cpv→CNAE)",
+    "parameters": [
+     {
+      "name": "cnae",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "name": "limit",
+      "in": "query",
+      "schema": {
+       "type": "integer",
+       "default": 10
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "buyers[]",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/public/sector-market/ranking": {
+   "get": {
+    "tags": [
+     "sector_market"
+    ],
+    "summary": "Ranking precomputado de sectores",
+    "parameters": [
+     {
+      "name": "lens",
+      "in": "query",
+      "schema": {
+       "type": "string",
+       "default": "arroba"
+      }
+     },
+     {
+      "name": "metric",
+      "in": "query",
+      "schema": {
+       "type": "string",
+       "default": "size"
+      }
+     },
+     {
+      "name": "limit",
+      "in": "query",
+      "schema": {
+       "type": "integer",
+       "default": 20
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Ranking sectorial",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/public/sector-market/aggregates/rebuild": {
+   "post": {
+    "tags": [
+     "sector_market"
+    ],
+    "summary": "Reconstruye agregados sectoriales",
+    "responses": {
+     "200": {
+      "description": "Agregados reconstruidos",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object"
+        }
+       }
+      }
+     }
+    }
    }
   }
  }

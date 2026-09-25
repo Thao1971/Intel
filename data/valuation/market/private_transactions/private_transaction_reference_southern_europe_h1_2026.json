@@ -1,0 +1,47 @@
+{
+  "reference_version": "private-transaction-reference-v1",
+  "as_of": "2026-06-30",
+  "region": "southern_europe",
+  "scope": "mid-market companies with revenue between EUR 1m and EUR 200m",
+  "metric": "ev_ebitda",
+  "size_curve": {
+    "size_measure": "normalised_ebitda",
+    "reference_average": 5.4,
+    "scope": "all sectors in the observed southern-European mid-market sample",
+    "observations": [
+      {"ebitda_eur": 200000, "label": "0,2 M€", "multiple": 4.0},
+      {"ebitda_eur": 500000, "label": "0,5 M€", "multiple": 4.7},
+      {"ebitda_eur": 1000000, "label": "1 M€", "multiple": 5.3},
+      {"ebitda_eur": 2000000, "label": "2 M€", "multiple": 5.8},
+      {"ebitda_eur": 5000000, "label": "5 M€", "multiple": 6.5},
+      {"ebitda_eur": 10000000, "label": "10 M€", "multiple": 7.6}
+    ]
+  },
+  "methodology": "Observed private-market sector reference. The reported average and range remain distinct from public-company trading multiples and are applied only as a corroborating transaction reference.",
+  "categories": [
+    {
+      "archetype": "media_content",
+      "category": "Medios y publicidad",
+      "source_sector": "Media & Communication",
+      "average": 5.0,
+      "low": 4.6,
+      "high": 5.7,
+      "average_buyer_interest": 6.7
+    },
+    {
+      "archetype": "construction",
+      "category": "Construcción e ingeniería",
+      "source_sector": "Construction & Engineering",
+      "average": 4.0,
+      "low": 3.5,
+      "high": 4.8,
+      "average_buyer_interest": 5.3
+    }
+  ],
+  "source": {
+    "document": "Southern European M&A Monitor, August 2026",
+    "period": "H1 2026",
+    "provided_by_user": true,
+    "pages": [9, 10, 16]
+  }
+}

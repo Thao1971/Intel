@@ -54,6 +54,45 @@ class GraphEdge(_Base):
 
 
 # ── Financial Intelligence ───────────────────────────────────────────────────
+
+
+class ValuationPackageSummary(_Base):
+    currency: str = "EUR"
+    as_of: Optional[Any] = None
+    enterprise_value: Optional[float] = None
+    enterprise_value_range: Optional[Dict[str, float]] = None
+    equity_value: Optional[float] = None
+    equity_value_range: Optional[Dict[str, float]] = None
+    equity_value_available: bool = False
+
+
+class ValuationPackageMethods(_Base):
+    applied: List[Dict[str, Any]] = Field(default_factory=list)
+    excluded: List[Dict[str, Any]] = Field(default_factory=list)
+
+
+class ValuationPackageConfidence(_Base):
+    score: float = 0.0
+    grade: str = "screen_grade"
+    weighting_rule: Optional[str] = None
+    method_count: int = 0
+
+
+class ValuationPackage(_Base):
+    contract_version: str
+    status: str
+    summary: ValuationPackageSummary
+    methods: ValuationPackageMethods
+    scenarios: Dict[str, Any]
+    assumptions: Dict[str, Any]
+    comparables: Dict[str, Any]
+    sensitivity: List[Dict[str, Any]] = Field(default_factory=list)
+    confidence: ValuationPackageConfidence
+    warnings: List[str] = Field(default_factory=list)
+    methodology_narrative: List[str] = Field(default_factory=list)
+    sources_and_versions: Dict[str, Any]
+
+
 class ValuationBlock(_Base):
     method: Optional[str] = None
     multiple: Optional[float] = None
@@ -64,6 +103,7 @@ class ValuationBlock(_Base):
     confidence: Optional[Any] = None
     hypotheses: Optional[List[Any]] = None
     lineage: Optional[Dict[str, Any]] = None
+    dcf: Optional[Dict[str, Any]] = None
 
 
 class FinancialAnalyzeResponse(_Base):
@@ -72,6 +112,7 @@ class FinancialAnalyzeResponse(_Base):
     identity: Optional[IdentityBrief] = None
     has_financials: Optional[bool] = None
     statements: Optional[Dict[str, Any]] = None
+    statements_history: Optional[list[Dict[str, Any]]] = None
     kpis: Optional[Dict[str, Optional[float]]] = None
     ratios: Optional[Dict[str, Any]] = None
     evolution: Optional[Dict[str, Any]] = None
@@ -89,6 +130,14 @@ class FinancialValuationResponse(_Base):
     master_id: str
     cif_normalized: Optional[str] = None
     valuation: Optional[ValuationBlock] = None
+    engine_version: Optional[str] = None
+    generated_at: Optional[str] = None
+
+
+class ValuationPackageResponse(_Base):
+    master_id: str
+    cif_normalized: Optional[str] = None
+    valuation: ValuationPackage
     engine_version: Optional[str] = None
     generated_at: Optional[str] = None
 

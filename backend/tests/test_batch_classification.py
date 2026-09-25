@@ -27,7 +27,7 @@ if not BASE_URL:
     BASE_URL = "https://data-factory-hub.preview.emergentagent.com"
 
 TEST_EMAIL = "daniel@wearebudadvisors.com"
-TEST_PASSWORD = "Thao1971@"
+TEST_PASSWORD = __import__("os").environ.get("SMOKE_TEST_PASSWORD", "")
 
 
 @pytest.fixture(scope="module")
