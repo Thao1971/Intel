@@ -12,8 +12,27 @@ from database import db
 router = APIRouter(prefix="/api/v1/auth", tags=["auth"])
 
 
+async def require_admin(user: dict = Depends(get_current_user)) -> dict:
+    """Exige que quien llama ya sea administrador.
+
+    HARDENING-admin-register (2026-09-28 · Daniel): antes /auth/register era
+    público y creaba usuarios con role="admin" sin ninguna comprobación —
+    cualquiera que conociera la URL podía autoconvertirse en administrador.
+    A partir de ahora, para registrar una cuenta nueva hace falta llamar con
+    el token (JWT o api-key) de un administrador ya existente. Sin token
+    válido, `get_current_user` ya devuelve 401; con token de un usuario no
+    admin, esta dependencia devuelve 403.
+    """
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Solo un administrador puede registrar nuevas cuentas")
+    return user
+
+
 @router.post("/register", response_model=TokenResponse)
-async def register(req: RegisterRequest):
+async def register(req: RegisterRequest, _admin: dict = Depends(require_admin)):
+    # Nota: el token devuelto es de la cuenta NUEVA creada, no del admin que
+    # la registra — igual que antes del hardening, solo que ahora hace falta
+    # ser admin para llegar hasta aquí.
     existing = await db.users.find_one({"email": req.email}, {"_id": 0})
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")

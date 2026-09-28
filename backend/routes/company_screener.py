@@ -8,7 +8,7 @@ de endpoints de usuario (igual que buyer-mandates). El motor vive en
     POST /api/v2/company-intelligence/screen/count  -> solo total + facetas (contador en vivo)
     GET  /api/v2/company-intelligence/screen/signals-> catálogo de señales filtrables
 """
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel, Field
@@ -17,6 +17,54 @@ from auth_utils import get_current_user
 from services.engines.screener import screener as SC
 
 router = APIRouter(prefix="/api/v2/company-intelligence", tags=["company_screener"])
+
+# HARDENING-señales-es (2026-09-28 · Daniel): etiquetas en español de cada
+# `signal_type` individual (distinto de `SC.SIGNAL_FILTER_MAP`, que agrupa
+# varios `signal_type` bajo una etiqueta de FILTRO como "succession"). Viven
+# aquí — el borde HTTP del screener — y no en
+# `services/engines/signal/taxonomy.py`, porque esa taxonomía declara
+# explícitamente "UI concepts are NEVER here" (D8): es el motor puro, agnóstico
+# de interfaz, y no hay que romper esa regla para que arroba pinte un chip.
+# Traducidas a partir de la descripción factual de cada `signal_type` en
+# `taxonomy.SIGNAL_TYPES` (versión `tax-v1`) — no son una interpretación libre.
+# Si se añade un `signal_type` nuevo a la taxonomía, añadir aquí su etiqueta;
+# el consumidor (arroba) ya sabe degradar con gracia si un código no está.
+SIGNAL_LABELS_ES: Dict[str, str] = {
+    "financial.margin_strong": "Margen EBITDA fuerte",
+    "financial.margin_weak": "Margen EBITDA débil",
+    "financial.low_liquidity": "Liquidez baja",
+    "financial.high_leverage": "Apalancamiento alto",
+    "financial.negative_equity": "Patrimonio neto negativo",
+    "financial.net_loss": "Pérdidas en el último ejercicio",
+    "financial.quality_low": "Calidad financiera baja",
+    "growth.revenue_surge": "Fuerte subida de facturación",
+    "growth.ebitda_expansion": "Expansión de EBITDA",
+    "growth.sustained": "Crecimiento sostenido",
+    "risk.revenue_decline": "Caída de facturación",
+    "risk.sustained_decline": "Caída sostenida (varios años)",
+    "risk.revenue_anomaly": "Variación anómala de facturación",
+    "risk.balance_inconsistency": "Inconsistencia en el balance",
+    "risk.dissolution_signal": "Disolución, liquidación o insolvencia",
+    "ownership.foreign_parent": "Matriz extranjera",
+    "ownership.group_member": "Pertenece a un grupo",
+    "ownership.consolidator": "Consolidador (tiene participadas)",
+    "ownership.standalone": "Independiente (sin grupo)",
+    "market.outperforms_peers": "Por encima de sus comparables",
+    "market.underperforms_peers": "Por debajo de sus comparables",
+    "market.fragmented_sector": "Sector fragmentado",
+    "operational.productivity_high": "Alta productividad por empleado",
+    "operational.productivity_low": "Baja productividad por empleado",
+    "operational.capital_intensive": "Intensiva en capital",
+    "corporate.officers_change": "Cambio de administradores",
+    "corporate.capital_change": "Cambio de capital social",
+    "corporate.group_change": "Cambio de grupo societario",
+    "corporate.borme_event": "Evento registrado en BORME",
+    "corporate.governance_change": "Cambio de gobierno (BORME)",
+    "corporate.capital_movement": "Movimiento de capital (BORME)",
+    "opportunity.succession_signal": "Posible sucesión o relevo",
+    "transaction.ma_event": "Operación de M&A",
+    "transaction.control_change": "Cambio de control",
+}
 
 
 class ScreenFilters(BaseModel):
@@ -70,5 +118,8 @@ async def screen_count(req: ScreenFilters, user=Depends(get_current_user)):
 
 @router.get("/screen/signals")
 async def screen_signals(user=Depends(get_current_user)):
-    """Catálogo de señales que el screener acepta como filtro (etiqueta -> signal_type)."""
-    return {"signals": SC.SIGNAL_FILTER_MAP}
+    """Catálogo de señales: `signals` (etiqueta de filtro -> lista de signal_type,
+    para los chips del constructor de criterios) y `labels_es` (signal_type ->
+    etiqueta legible en español, para pintar cada señal individual de una fila
+    — ver HARDENING-señales-es arriba)."""
+    return {"signals": SC.SIGNAL_FILTER_MAP, "labels_es": SIGNAL_LABELS_ES}

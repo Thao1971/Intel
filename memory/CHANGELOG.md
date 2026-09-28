@@ -2,6 +2,14 @@
 
 > Registro de cambios de arquitectura de la plataforma Agency Tool (compartida: Valuo.pro + arroba.com + Platform Console).
 
+## 2026-09-28 — Delta `ARROBA_INTEL_DELTA_20260928` (Preview) ✅
+- **SHA-256 del ZIP verificado** (`045632b7…433d19`). 2 archivos, aplicados tal cual (full-file), sin tocar nada más. Sin commit/push/reset.
+- **`routes/auth.py`**: cierra el registro público de admin. `POST /api/v1/auth/register` ahora exige token de un admin existente vía nueva dependencia `require_admin` (sin token→401, no-admin→403, admin→200). `login`/`api-keys`/`me` sin cambios.
+- **`routes/company_screener.py`**: `GET /api/v2/company-intelligence/screen/signals` añade clave **aditiva** `labels_es` (34 etiquetas ES por `signal_type`); `signals` intacto. Import `Dict` añadido.
+- **Validación Preview**: py_compile OK; cobertura `SIGNAL_LABELS_ES` == `taxonomy.SIGNAL_TYPES` (34/34 exacto); register 401/403/200 verificados (usuarios de prueba creados y borrados); `/screen/signals` devuelve `signals`+`labels_es`(34). 
+- **Nota**: el bug conocido `get_current_user` `KeyError:'id'` (clave de servicio como Bearer) sigue sin tocar por indicación de Daniel (problema aparte).
+
+
 ## 2026-09-25 — Aplicación ZIP `ARROBA_INTEL_EMERGENT_20260925_REVISADO_CODEX` (Preview) ✅
 - **SHA-256 verificado** (`425afe3f…eecba5b`). Entrega consolidada completa del backend aplicada sobre `/app/backend` conservando `.env`, datos y config de despliegue. Backup: `/app/memory/backups/backend_pre_codex_20260925_192538.tar.gz`. Sin commit/push/reset.
 - **Novedades del ZIP**: motor de valoración avanzada (`services/engines/valuation/*`), `screener`, `sector_market`, sistema `my_space_*` (services+routes) con **protección de concurrencia** en solicitudes/NDA, `config_guard.py`, tests.
