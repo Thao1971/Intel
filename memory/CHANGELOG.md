@@ -2,6 +2,14 @@
 
 > Registro de cambios de arquitectura de la plataforma Agency Tool (compartida: Valuo.pro + arroba.com + Platform Console).
 
+## 2026-09-28 — Delta `ARROBA_INTEL_DELTA_SCREEN_GRADE` (Preview) ✅
+- **SHA-256 del ZIP verificado** (`5e9853d4…c9359`). 2 archivos, aplicados full-file, sin tocar nada más. Sin commit/push/reset.
+- **`services/engines/valuation/reconciliation.py`**: cuando `total_raw <= 0` (ningún método reconciliado) pero el `valuation` trae cifra de respaldo (`enterprise_value`+`range`), devuelve nuevo estado `screen_grade` con rango, `confidence:0.0` y warnings `no_valuation_method_reconciled` + `screen_grade_single_method_estimate`. Sin respaldo → sigue `unavailable` (igual que antes). R15 intacta.
+- **`services/engines/valuation/contract.py`**: propaga `screen_grade`; `status` ∈ {available, screen_grade, unavailable}; `ev_range` incluido para screen_grade.
+- **Validación Preview**: py_compile OK; suite valoración 71 passed / 1 failed (fallo preexistente de precisión float en `test_private_company_adjustments.py`, módulo no tocado por el delta). NCR España B28031458 en vivo → `screen_grade`, EV 74.437.509 €, rango 52.106.257–96.768.762 €, 2 warnings (coincide con LEEME). Regresión: SERVIER/OPEL siguen `available`.
+- **Pendiente (fuera de este delta)**: Beta necesita su paquete `07_BETA_...SCREEN_GRADE` para pintar el estado; calibración sectorial `valuation-calibration-2026-09-28-b0f80f6076` publicada pero NO activada (352 candidatos `active:false`); aprobación negocio/legal de la redacción de advertencias.
+
+
 ## 2026-09-28 — Delta `ARROBA_INTEL_DELTA_20260928` (Preview) ✅
 - **SHA-256 del ZIP verificado** (`045632b7…433d19`). 2 archivos, aplicados tal cual (full-file), sin tocar nada más. Sin commit/push/reset.
 - **`routes/auth.py`**: cierra el registro público de admin. `POST /api/v1/auth/register` ahora exige token de un admin existente vía nueva dependencia `require_admin` (sin token→401, no-admin→403, admin→200). `login`/`api-keys`/`me` sin cambios.

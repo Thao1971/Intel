@@ -158,6 +158,29 @@ def reconcile_valuation(valuation: Mapping[str, Any], latest: Mapping[str, Any],
         weighting_rule = "user_supplied_available_methods_normalised"
     total_raw = sum(item["raw_weight"] for item in applied)
     if total_raw <= 0:
+        # No method cleared the reconciliation bar, but the underlying valuation
+        # may still carry a single-method, non-observed estimate (e.g. an
+        # inferred-reference EV/Revenue multiple applied to real revenue). Real
+        # analysts do not discard that — they surface it labelled and caveated
+        # rather than showing nothing. Only real financial data ever reaches
+        # this branch; R15 (never fabricate historical figures) is untouched.
+        fallback_range = _ordered_range(
+            (valuation.get("range") or {}).get("low"),
+            (valuation.get("range") or {}).get("central", valuation.get("enterprise_value")),
+            (valuation.get("range") or {}).get("high"))
+        if fallback_range and valuation.get("enterprise_value") is not None:
+            return {
+                "status": "screen_grade", "engine_version": RECONCILIATION_VERSION,
+                "methods_applied": [], "methods_excluded": excluded,
+                "enterprise_value_range": fallback_range, "equity_value_range": None,
+                "confidence": 0.0,
+                "warnings": ["no_valuation_method_reconciled", "screen_grade_single_method_estimate"],
+                "narrative": ("Ningún método supera el filtro de evidencia observada para una "
+                              "valoración reconciliada. Se conserva como estimación de cribado "
+                              "(screen grade) el único método con cifra disponible; sus limitaciones "
+                              "quedan explícitas en methods_excluded."),
+                "screen_grade_method": valuation.get("method"),
+            }
         return {
             "status": "unavailable", "engine_version": RECONCILIATION_VERSION,
             "methods_applied": [], "methods_excluded": excluded,

@@ -27,8 +27,9 @@ def build_valuation_package(valuation: Mapping[str, Any], latest: Mapping[str, A
     reconciliation = valuation.get("reconciliation") or {}
     dcf = valuation.get("dcf") or {}
     rec_available = reconciliation.get("status") == "available"
+    rec_screen_grade = reconciliation.get("status") == "screen_grade"
     legacy_range = valuation.get("range") or {}
-    ev_range = reconciliation.get("enterprise_value_range") if rec_available else (
+    ev_range = reconciliation.get("enterprise_value_range") if (rec_available or rec_screen_grade) else (
         legacy_range if legacy_range.get("central") is not None else None)
     bridge = reconciliation.get("equity_bridge") or valuation.get("equity_bridge") or equity_bridge(latest)
     equity_range = reconciliation.get("equity_value_range") if rec_available else None
@@ -52,7 +53,7 @@ def build_valuation_package(valuation: Mapping[str, Any], latest: Mapping[str, A
     private_adjustment = valuation.get("private_company_adjustment")
     operating_benchmark = valuation.get("benchmark")
 
-    status = "available" if rec_available else "unavailable"
+    status = "available" if rec_available else ("screen_grade" if rec_screen_grade else "unavailable")
     central_ev = reconciliation.get("enterprise_value") if rec_available else valuation.get("enterprise_value")
     central_equity = reconciliation.get("equity_value") if rec_available else valuation.get("equity_value")
     return {
