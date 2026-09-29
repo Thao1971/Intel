@@ -17,6 +17,7 @@ from services import my_space_objects as O
 from services import my_space_vigilance as V
 from services import my_space_portfolio as P
 from services import my_space_requests as Q
+from services import my_space_valuation_scenarios as VS
 from services import watchlist as W
 
 router = APIRouter(prefix="/api/v1/my-space", tags=["my_space"])
@@ -260,6 +261,47 @@ async def portfolio_delete(item_id: str, request: Request, user=Depends(get_curr
     if not await P.delete_item(db.my_space_portfolio, _user_id(user, request), item_id):
         raise HTTPException(404, "elemento no encontrado")
     return {"deleted": item_id}
+
+
+# ------------------------------------------------------------------ escenarios de valoración editados (privados)
+class ValuationScenarioIn(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    cif: str
+    company_name: Optional[str] = None
+    run_id: Optional[str] = None
+    label: Optional[str] = None
+    inputs: Dict[str, Any]
+    outputs: Optional[Dict[str, Any]] = None
+    reference: Optional[Dict[str, Any]] = None
+
+
+@router.get("/valuation-scenarios")
+async def valuation_scenarios_list(request: Request, cif: Optional[str] = None, user=Depends(get_current_user)):
+    items = await VS.list_scenarios(db.my_space_valuation_scenarios, _user_id(user, request), cif)
+    return {"items": items}
+
+
+@router.post("/valuation-scenarios", status_code=201)
+async def valuation_scenarios_create(body: ValuationScenarioIn, request: Request, user=Depends(get_current_user)):
+    try:
+        return await VS.create_scenario(db.my_space_valuation_scenarios, _user_id(user, request), body.model_dump())
+    except S.ValidationError as e:
+        raise _bad(e)
+
+
+@router.get("/valuation-scenarios/{scenario_id}")
+async def valuation_scenarios_get(scenario_id: str, request: Request, user=Depends(get_current_user)):
+    item = await VS.get_scenario(db.my_space_valuation_scenarios, _user_id(user, request), scenario_id)
+    if item is None:
+        raise HTTPException(404, "escenario no encontrado")
+    return item
+
+
+@router.delete("/valuation-scenarios/{scenario_id}")
+async def valuation_scenarios_delete(scenario_id: str, request: Request, user=Depends(get_current_user)):
+    if not await VS.delete_scenario(db.my_space_valuation_scenarios, _user_id(user, request), scenario_id):
+        raise HTTPException(404, "escenario no encontrado")
+    return {"deleted": scenario_id}
 
 
 # ------------------------------------------------------------------ solicitudes de acceso y NDA (sin chat)

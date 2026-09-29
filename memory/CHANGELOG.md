@@ -2,6 +2,15 @@
 
 > Registro de cambios de arquitectura de la plataforma Agency Tool (compartida: Valuo.pro + arroba.com + Platform Console).
 
+## 2026-09-29 — Delta `ARROBA_INTEL_DELTA_VALORACION_SCENARIOS` (Preview) ✅
+- **SHA-256 del ZIP verificado** (`56ba4d1f…e1ff`). 3 archivos (1 modificado + 2 nuevos), aplicados sin tocar nada más. Sin commit/push/reset.
+- **NUEVO `services/my_space_valuation_scenarios.py`**: CRUD (crear/listar/leer/borrar, sin update) de escenarios de valoración editados a mano, privados por `owner_id`. Límite 200/usuario. Colección nueva `my_space_valuation_scenarios`, no leída por ningún motor/job.
+- **MODIFICADO `routes/my_space.py`** (solo adiciones): 4 rutas nuevas `GET/POST /api/v1/my-space/valuation-scenarios`, `GET/DELETE .../{id}` (mismo `get_current_user` + `_user_id`). Pedir escenario ajeno → 404 (no revela existencia).
+- **NUEVO `tests/test_my_space_valuation_scenarios.py`** (9 tests).
+- **Validación Preview**: py_compile OK; suite my_space **47/47**; smoke en vivo replicando la pasarela (Bearer api-key usuario + `X-Arroba-User-Id`): userA crea/lista/lee/filtra por cif; userB aislado (list 0, get/delete 404); userA borra (200→404); inputs vacío → 422 (comportamiento esperado por su propio test). Artefactos de prueba (api-key temporal + escenarios) borrados.
+- **Pendiente (fuera de este delta)**: requiere el paquete Beta hermano `10_BETA_...` para el botón "Guardar simulación"; límite 200 es guardia técnico ajustable.
+
+
 ## 2026-09-28 — Delta `ARROBA_INTEL_DELTA_SCREEN_GRADE` (Preview) ✅
 - **SHA-256 del ZIP verificado** (`5e9853d4…c9359`). 2 archivos, aplicados full-file, sin tocar nada más. Sin commit/push/reset.
 - **`services/engines/valuation/reconciliation.py`**: cuando `total_raw <= 0` (ningún método reconciliado) pero el `valuation` trae cifra de respaldo (`enterprise_value`+`range`), devuelve nuevo estado `screen_grade` con rango, `confidence:0.0` y warnings `no_valuation_method_reconciled` + `screen_grade_single_method_estimate`. Sin respaldo → sigue `unavailable` (igual que antes). R15 intacta.
