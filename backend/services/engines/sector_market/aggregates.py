@@ -14,10 +14,15 @@ Fragmentación = (1 − HHI)·100 sobre la facturación de las empresas del sect
 """
 from __future__ import annotations
 
+import asyncio
+import logging
 import statistics
 from typing import Any, Dict, List, Optional
 
 from database import db
+
+logger = logging.getLogger(__name__)
+_rebuild_task: Optional[asyncio.Task] = None
 
 try:
     from services.cnae_catalog import cpv_to_cnae_division
@@ -179,6 +184,7 @@ _METRIC_FIELD = {"size": "rev_total", "growth": "growth_cagr",
 
 async def get_ranking(lens: str = "arroba", level: Optional[str] = None,
                       metric: str = "size", limit: int = 20) -> Dict[str, Any]:
+    global _rebuild_task
     field = _METRIC_FIELD.get(metric, "rev_total")
     q: Dict[str, Any] = {"lens": lens if lens in ("arroba", "cnae") else "arroba"}
     if level:
@@ -187,5 +193,19 @@ async def get_ranking(lens: str = "arroba", level: Optional[str] = None,
     rows = [r for r in rows if r.get(field) is not None]
     rows.sort(key=lambda r: r[field], reverse=True)
     meta = await db.sector_aggregates_meta.find_one({}, {"_id": 0})
-    return {"lens": q["lens"], "metric": metric, "sectors": rows[:limit],
+    building = False
+    if not rows and meta is None:
+        # Nunca se ha calculado: lanzar el rebuild en segundo plano (una sola vez a la vez)
+        # en lugar de devolver un ranking vacío para siempre.
+        if _rebuild_task is None or _rebuild_task.done():
+            async def _run():
+                try:
+                    await rebuild_sector_aggregates()
+                except Exception:
+                    logger.exception("sector aggregates rebuild failed")
+            _rebuild_task = asyncio.create_task(_run())
+        building = True
+    elif _rebuild_task is not None and not _rebuild_task.done():
+        building = True
+    return {"building": building, "lens": q["lens"], "metric": metric, "sectors": rows[:limit],
             "meta": meta, "coverage_note": "Agregados reales precomputados; cobertura = empresas activas con dato."}

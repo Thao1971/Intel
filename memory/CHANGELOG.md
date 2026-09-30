@@ -2,6 +2,13 @@
 
 > Registro de cambios de arquitectura de la plataforma Agency Tool (compartida: Valuo.pro + arroba.com + Platform Console).
 
+## 2026-09-30 — Delta `ARROBA_INTEL_ANALIZAR_SECTORES` (Preview) ✅
+- 1 fichero **SOBRESCRITO**: `backend/services/engines/sector_market/aggregates.py`. 0 nuevos. Sin LEEME. Sin commit/push/reset. (sha256 informativo `ab470da1…e679a`.)
+- **Cambio**: `get_ranking` deja de devolver ranking vacío para siempre cuando los agregados no se han calculado nunca (sin filas ni meta): lanza `rebuild_sector_aggregates()` en segundo plano (una sola vez a la vez, guardado en `_rebuild_task`) y añade `building: true/false` a la respuesta. Añade imports `asyncio`/`logging`.
+- **Validación Preview**: py_compile OK; `GET /api/v1/public/sector-market/ranking` → 200. El smoke disparó en vivo el camino nuevo: Preview no tenía agregados precalculados → `building:true`, 0 sectores → rebuild en segundo plano → a los ~20s `building:false`, 32 sectores, 24.882 empresas con sector, `sector_top_buyers=1100`, `computed_at 2026-09-30T19:56:57`. Sin errores en logs.
+- Nota: el rebuild escribe la caché derivada `sector_aggregates` (no datos fuente); es el comportamiento propio del delta, disparado por la lectura del ranking.
+
+
 ## 2026-09-30 — Acumulado `ARROBA_INTEL_ACUMULADO` (lote 24 sobre lotes 11-19) (Preview) ✅
 - ZIP acumulado (37 ficheros): **32 idénticos** (ya aplicados vía unificado 11-19), **3 sobrescritos**, 0 nuevos. NO incluye auth.py/company_screener.py/reconciliation.py/contract.py/my_space.py → sin revertir deltas previos. Sin commit/push/reset. Sin tocar .env/DB. (sha256 informativo `e27f3be0…9f00`.)
 - **Lote 24 (los 3 sobrescritos)**: `routes/signal_intelligence.py`, `services/signal_recompute.py`, `tests/test_signal_recompute.py`. `POST /api/v1/signal-intelligence/recompute` gana params opcionales `dry_run`, `only_with_financials`, `min_revenue`, `workers` (tope 12); respuesta incluye `criteria`. `enriched/view` intacto.
