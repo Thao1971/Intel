@@ -2,6 +2,12 @@
 
 > Registro de cambios de arquitectura de la plataforma Agency Tool (compartida: Valuo.pro + arroba.com + Platform Console).
 
+## 2026-09-30 — Acumulado `ARROBA_INTEL_ACUMULADO` (lote 24 sobre lotes 11-19) (Preview) ✅
+- ZIP acumulado (37 ficheros): **32 idénticos** (ya aplicados vía unificado 11-19), **3 sobrescritos**, 0 nuevos. NO incluye auth.py/company_screener.py/reconciliation.py/contract.py/my_space.py → sin revertir deltas previos. Sin commit/push/reset. Sin tocar .env/DB. (sha256 informativo `e27f3be0…9f00`.)
+- **Lote 24 (los 3 sobrescritos)**: `routes/signal_intelligence.py`, `services/signal_recompute.py`, `tests/test_signal_recompute.py`. `POST /api/v1/signal-intelligence/recompute` gana params opcionales `dry_run`, `only_with_financials`, `min_revenue`, `workers` (tope 12); respuesta incluye `criteria`. `enriched/view` intacto.
+- **Validación Preview**: py_compile OK; 6/6 tests `test_signal_recompute`; recompute + params visibles en OpenAPI (auth X-API-Key). **Recompute NO ejecutado** (ni dry_run) por indicación previa de Daniel; pendiente su OK para dry_run.
+
+
 ## 2026-09-30 — ZIP unificado `LOTES_11_A_19` (Preview) ✅
 - Aplicado sobre `/app` respetando rutas (merge: sobrescribe existentes + añade nuevos). Sin tocar `.env` ni la base de datos. Sin commit/push/reset. (ZIP sin SHA256SUMS; sha256 informativo `c838b295…a7d6`.)
 - **35 ficheros: 25 sobrescritos, 10 nuevos** (backend routes/services/engines/signal/tests + frontend pages/SyncBar).

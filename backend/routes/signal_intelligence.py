@@ -615,19 +615,35 @@ async def get_signal_view(signal_id: str, user=Depends(get_current_user)):
 
 @router.post("/recompute")
 async def recompute_signals(limit: Optional[int] = None, cnae_section: Optional[str] = None,
+                            only_with_financials: bool = False, min_revenue: Optional[float] = None,
+                            workers: int = 1, dry_run: bool = False,
                             _key=Depends(require_service_key)):
-    """Recalcula y persiste las señales (solo señales, sin el bootstrap completo). Acotable con `cnae_section`
-    y/o `limit` para probarlo antes de lanzarlo sobre todo el universo. Devuelve un `run_id` para consultar
-    el avance en GET /recompute/{run_id}. Cierra las señales que ya no se cumplen (`disappeared`)."""
+    """Recalcula y persiste las señales (solo señales, sin el bootstrap completo). Acotable con `cnae_section`,
+    `limit`, `only_with_financials` (solo empresas con cuentas en `norm_financials`) y `min_revenue` (ingresos
+    máximos declarados >= ese valor; implica cuentas). `workers` analiza varias empresas a la vez (tope
+    `MAX_WORKERS`). Con `dry_run=true` solo cuenta a quién se recalcularía, sin ejecutar nada.
+    Devuelve un `run_id` para consultar el avance en GET /recompute/{run_id}. Cierra las señales que ya no se
+    cumplen (`disappeared`)."""
     q: Dict = {"status": "active"}
     if cnae_section:
         q["classification.cnae_section"] = cnae_section
+    if only_with_financials or min_revenue is not None:
+        grp: List[Dict] = [{"$group": {"_id": "$cif_normalized", "maxrev": {"$max": "$revenue"}}}]
+        if min_revenue is not None:
+            grp.append({"$match": {"maxrev": {"$gte": float(min_revenue)}}})
+        cifs = [d["_id"] async for d in db.norm_financials.aggregate(grp, allowDiskUse=True) if d.get("_id")]
+        q["identity.cif"] = {"$in": cifs}
     ids = await db.master_companies.distinct("master_id", q)
     if limit and limit > 0:
         ids = ids[:limit]
+    n_workers = SR.clamp_workers(workers)
+    criteria = {"cnae_section": cnae_section, "only_with_financials": only_with_financials,
+                "min_revenue": min_revenue, "limit": limit, "workers": n_workers}
+    if dry_run:
+        return {"dry_run": True, "companies": len(ids), "criteria": criteria}
     run_id = "sigrec_" + uuid.uuid4().hex[:12]
-    asyncio.create_task(SR.run_recompute(run_id, ids))
-    return {"run_id": run_id, "companies": len(ids), "status": "started",
+    asyncio.create_task(SR.run_recompute(run_id, ids, workers=n_workers))
+    return {"run_id": run_id, "companies": len(ids), "status": "started", "criteria": criteria,
             "poll": f"/api/v1/signal-intelligence/recompute/{run_id}"}
 
 

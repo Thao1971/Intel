@@ -33,6 +33,40 @@ def test_empty_run_completes():
     assert res["status"] == "completed" and res["total"] == 0 and res["processed"] == 0
 
 
+def test_workers_run_in_parallel_up_to_the_limit_and_process_everything_once():
+    seen, running, peak = [], 0, 0
+    async def analyze(mid):
+        nonlocal running, peak
+        running += 1; peak = max(peak, running)
+        await asyncio.sleep(0.01)
+        seen.append(mid); running -= 1
+        return {"signals": [1]}
+    ids = [f"m{i}" for i in range(30)]
+    res = asyncio.run(SR.run_recompute("r3", ids, store=MemStore(), analyze=analyze, workers=5, heartbeat_every=10))
+    assert res["status"] == "completed" and res["processed"] == 30 and res["with_signals"] == 30
+    assert sorted(seen) == sorted(ids) and len(seen) == 30       # ninguna empresa dos veces ni saltada
+    assert 2 <= peak <= 5                                          # hubo paralelismo y no superó el límite
+
+
+def test_a_failing_company_does_not_stop_the_other_workers():
+    async def analyze(mid):
+        if mid in ("m1", "m7"): raise RuntimeError("x")
+        return {"signals": [1]}
+    res = asyncio.run(SR.run_recompute("r4", [f"m{i}" for i in range(12)], store=MemStore(), analyze=analyze, workers=4))
+    assert res["status"] == "completed" and res["processed"] == 12 and res["errors"] == 2 and res["with_signals"] == 10
+
+
+def test_workers_are_clamped():
+    assert SR.clamp_workers(None) == 1 and SR.clamp_workers("x") == 1 and SR.clamp_workers(0) == 1
+    assert SR.clamp_workers(5) == 5 and SR.clamp_workers(999) == SR.MAX_WORKERS
+
+
+def test_more_workers_than_companies_is_fine():
+    async def analyze(mid): return {"signals": [1]}
+    res = asyncio.run(SR.run_recompute("r5", ["a", "b"], store=MemStore(), analyze=analyze, workers=12))
+    assert res["processed"] == 2 and res["with_signals"] == 2
+
+
 if __name__ == "__main__":  # ejecución sin pytest
     failed = 0
     for name, fn in sorted(globals().items()):

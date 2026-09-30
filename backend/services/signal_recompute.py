@@ -9,10 +9,22 @@ ingresos negativos o las sucesiones que dejan de cumplir el criterio de tamaño 
 El estado del trabajo se guarda en `signal_recompute_runs` (una fila por ejecución).
 """
 
+import asyncio
 from datetime import datetime, timezone
 from typing import Awaitable, Callable, Dict, List, Optional
 
 HEARTBEAT_EVERY = 100
+# Tope de empresas analizadas a la vez. El tiempo por empresa es sobre todo latencia hacia Mongo, así que
+# paralelizar lo acorta casi en proporción; el tope evita saturar la base de datos compartida.
+MAX_WORKERS = 12
+
+
+def clamp_workers(value) -> int:
+    try:
+        n = int(value)
+    except (TypeError, ValueError):
+        return 1
+    return max(1, min(n, MAX_WORKERS))
 
 
 def _now() -> str:
@@ -38,17 +50,22 @@ async def _default_analyze(master_id: str):
 
 async def run_recompute(run_id: str, master_ids: List[str], *, store=None,
                         analyze: Optional[Callable[[str], Awaitable]] = None,
-                        heartbeat_every: int = HEARTBEAT_EVERY) -> Dict:
-    """Recalcula y persiste las señales de cada empresa. Un error en una empresa no aborta el lote."""
+                        heartbeat_every: int = HEARTBEAT_EVERY, workers: int = 1) -> Dict:
+    """Recalcula y persiste las señales de cada empresa. Un error en una empresa no aborta el lote.
+    Con `workers` > 1 analiza varias empresas a la vez (cada una es independiente)."""
     store = store or _DbStore()
     analyze = analyze or _default_analyze
+    workers = clamp_workers(workers)
     total = len(master_ids)
     done = with_signals = errors = 0
     first_errors: List[Dict] = []
     await store.update(run_id, {"run_id": run_id, "status": "running", "total": total, "processed": 0,
-                                "with_signals": 0, "errors": 0, "started_at": _now()})
-    try:
-        for mid in master_ids:
+                                "with_signals": 0, "errors": 0, "workers": workers, "started_at": _now()})
+    pending = iter(master_ids)   # compartido: cada worker toma la siguiente empresa (sin await entre next y uso)
+
+    async def worker() -> None:
+        nonlocal done, with_signals, errors
+        for mid in pending:
             try:
                 r = await analyze(mid)
                 if r and r.get("signals"):
@@ -61,10 +78,17 @@ async def run_recompute(run_id: str, master_ids: List[str], *, store=None,
             if done % heartbeat_every == 0:
                 await store.update(run_id, {"processed": done, "with_signals": with_signals, "errors": errors,
                                             "updated_at": _now()})
+
+    tasks = [asyncio.ensure_future(worker()) for _ in range(min(workers, max(total, 1)))]
+    try:
+        await asyncio.gather(*tasks)
         status = "completed"
     except Exception as e:  # noqa: BLE001 — fallo inesperado del propio trabajo
         status = "failed"
         first_errors.append({"error": f"{type(e).__name__}: {str(e)[:160]}"})
+        for t in tasks:
+            t.cancel()
+        await asyncio.gather(*tasks, return_exceptions=True)
     result = {"status": status, "total": total, "processed": done, "with_signals": with_signals,
               "errors": errors, "first_errors": first_errors, "finished_at": _now()}
     await store.update(run_id, result)
