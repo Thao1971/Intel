@@ -131,7 +131,7 @@ async def sync_status():
     t0 = time.time()
 
     # ── Legacy intelligence modules (sector/geo/cross) — backward compat ─────
-    modules = ["sector_intelligence", "geo_intelligence", "cross_intelligence"]
+    modules = ["sector_intelligence", "geo_intelligence", "cross_intelligence", "economic_intelligence"]
     status = {}
     for mod in modules:
         doc = await db.intelligence_sync_log.find_one({"module": mod}, {"_id": 0})
@@ -144,6 +144,7 @@ async def sync_status():
     status["sector_intelligence"]["current_count"] = await db.sector_intelligence.count_documents({})
     status["geo_intelligence"]["current_count"] = await db.geo_intelligence.count_documents({})
     status["cross_intelligence"]["current_count"] = await db.sector_geo_cross.count_documents({})
+    status["economic_intelligence"]["current_count"] = await db.economic_metrics.count_documents({})
 
     # ── Dynamic source breakdown — derived from the engine, never hardcoded ──
     source_names = engine_info.get_all_sources()
@@ -160,6 +161,7 @@ async def sync_status():
             "sector_intelligence": "Diario — 04:00 Madrid",
             "geo_intelligence": "Diario — 04:05 Madrid",
             "cross_intelligence": "Diario — 04:10 Madrid",
+            "economic_intelligence": "Diario — 04:15 Madrid",
         },
         "sources": sources,
     }

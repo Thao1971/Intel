@@ -103,6 +103,7 @@ async def valuation_intake(identifier: str, user=Depends(get_current_user)):
         "kpis": profile.get("kpis") or {},
         "evolution": profile.get("evolution") or {},
         "financial_quality": profile.get("financial_quality") or {},
+        "iberinform_ratios": profile.get("iberinform_ratios") or {},
         "comparables": profile.get("comparables") or {},
         "valuation": profile.get("valuation") or {},
         "assessment": profile.get("assessment") or {},

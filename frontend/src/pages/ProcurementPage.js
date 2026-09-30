@@ -44,11 +44,25 @@ export default function ProcurementPage() {
   const handleSync = async () => {
     setSyncing(true);
     try {
-      const { data: result } = await api.post('/public-procurement/sync-placsp');
+      let { data: result } = await api.post('/public-procurement/sync-placsp');
+      if (result.status === 'running') {
+        // Corre en segundo plano en el backend: consultamos el estado (max 15 min)
+        let st = null;
+        for (let i = 0; i < 300; i++) {
+          await new Promise(r => setTimeout(r, 3000));
+          st = (await api.get('/public-procurement/sync-placsp-state')).data;
+          if (st.status !== 'running') break;
+        }
+        if (!st || st.status === 'running') {
+          toast.info('El sync de PLACSP sigue en curso, recarga en unos minutos');
+          return;
+        }
+        result = st.result || {};
+      }
       if (result.status === 'error') {
         toast.error('Error sincronizando PLACSP: ' + (result.message || (result.errors || []).join(', ')));
       } else {
-        toast.success(`PLACSP sincronizado: ${result.total_imported ?? 0} contratos importados`);
+        toast.success(`PLACSP sincronizado: ${result.imported ?? result.total_imported ?? 0} contratos importados`);
       }
       await load();
     } catch (e) {

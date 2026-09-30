@@ -119,7 +119,7 @@ export default function CNMVPage() {
       const { data: r } = await api.post('/cnmv/match-companies');
       toast.success(`Match: ${r.matched} de ${r.total_checked} (${r.match_rate_pct}%)`);
       loadData();
-    } catch { toast.error('Error matching'); }
+    } catch (e) { toast.error(e?.response?.data?.detail || 'Error matching'); }
   };
 
   const kpis = data?.kpis || {};

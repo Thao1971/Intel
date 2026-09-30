@@ -2,6 +2,7 @@
 
 import asyncio
 import time
+from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, Depends, Query, UploadFile, File
 from typing import Optional, Dict
 from database import db
@@ -11,6 +12,7 @@ from services.procurement_connector import parse_and_ingest_csv, INITIAL_CPV_SCO
 import logging
 
 logger = logging.getLogger(__name__)
+_bg_tasks: set = set()
 
 router = APIRouter(prefix="/api/v1/public-procurement", tags=["public_procurement"])
 
@@ -334,16 +336,52 @@ async def sync_placsp_endpoint(
     max_files: int = Query(None, description="Limit atom files per ZIP (for testing)"),
     user=Depends(get_current_user),
 ):
-    """Sync REAL data from PLACSP official ZIPs (Atom XML CODICE 2.07)."""
+    """Lanza el sync REAL de PLACSP (ZIPs oficiales, Atom XML CODICE 2.07) en segundo plano.
+
+    Evita el Proxy Read Timeout de 120 s. Resultado: GET /public-procurement/sync-placsp-state
+    (status: idle | running | done; `result` = respuesta de sync_placsp).
+    """
+    year_list = [int(y.strip()) for y in years.split(",")] if years else None
+
+    current = await db.placsp_sync_state.find_one({"_id": "current"})
+    if current and current.get("status") == "running":
+        try:
+            age = (datetime.now(timezone.utc) - datetime.fromisoformat(current["started_at"].replace("Z", "+00:00"))).total_seconds()
+        except (KeyError, ValueError):
+            age = 9999
+        if age < 3600:  # un "running" de >1 h se considera huerfano
+            return {"status": "running", "started_at": current["started_at"]}
+
+    started_at = now_iso()
+    await db.placsp_sync_state.replace_one(
+        {"_id": "current"}, {"_id": "current", "status": "running", "started_at": started_at}, upsert=True)
+    task = asyncio.create_task(_run_placsp_sync(year_list, dataset, max_files, started_at))
+    _bg_tasks.add(task)
+    task.add_done_callback(_bg_tasks.discard)
+    return {"status": "running", "started_at": started_at}
+
+
+async def _run_placsp_sync(year_list, dataset, max_files, started_at):
     from services.placsp_connector import sync_placsp
+    try:
+        result = await sync_placsp(years=year_list, dataset=dataset, max_files=max_files)
+        _invalidate_procurement_caches()
+    except Exception as e:
+        logger.error(f"PLACSP sync failed: {e}")
+        result = {"status": "error", "message": str(e)[:200], "errors": [str(e)[:200]]}
+    await db.placsp_sync_state.replace_one(
+        {"_id": "current"},
+        {"_id": "current", "status": "done", "started_at": started_at,
+         "finished_at": now_iso(), "result": result},
+        upsert=True,
+    )
 
-    year_list = None
-    if years:
-        year_list = [int(y.strip()) for y in years.split(",")]
 
-    result = await sync_placsp(years=year_list, dataset=dataset, max_files=max_files)
-    _invalidate_procurement_caches()
-    return result
+@router.get("/sync-placsp-state")
+async def sync_placsp_state(user=Depends(get_current_user)):
+    """Estado del ultimo sync lanzado con POST /sync-placsp."""
+    doc = await db.placsp_sync_state.find_one({"_id": "current"}, {"_id": 0})
+    return doc or {"status": "idle"}
 
 
 # ══════════════════════════════════════════

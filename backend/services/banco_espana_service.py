@@ -17,6 +17,8 @@ import csv
 import io
 import re
 import httpx
+from datetime import datetime, timezone
+from pymongo import UpdateOne
 from typing import Optional, List, Dict
 from database import db
 from models import new_id, now_iso
@@ -126,7 +128,7 @@ async def fetch_latest_indicators() -> List[Dict]:
     return results
 
 
-async def fetch_historical_csv(csv_id: str = "be0115") -> Dict:
+async def fetch_historical_csv(csv_id: str = "be0115", recent_months: Optional[int] = None) -> Dict:
     """Fetch and parse historical data from BDE CSV dataset."""
     config = CSV_SOURCES.get(csv_id)
     if not config:
@@ -134,6 +136,7 @@ async def fetch_historical_csv(csv_id: str = "be0115") -> Dict:
 
     async with httpx.AsyncClient(timeout=30, follow_redirects=True) as client:
         r = await client.get(config["url"], headers={"Accept": "text/csv"})
+        r.raise_for_status()
 
     content = r.text
     if content.startswith("<!DOCTYPE") or content.startswith("<html"):
@@ -157,8 +160,12 @@ async def fetch_historical_csv(csv_id: str = "be0115") -> Dict:
         return {"status": "error", "error": "No target series found in CSV"}
 
     now = now_iso()
-    inserted = 0
-    updated = 0
+    ops = []
+    cutoff = None
+    if recent_months:
+        d = datetime.now(timezone.utc)
+        total = d.year * 12 + (d.month - 1) - recent_months
+        cutoff = f"{total // 12}-{total % 12 + 1:02d}-01"
 
     for line in lines[4:]:
         parts = line.split(",")
@@ -171,7 +178,7 @@ async def fetch_historical_csv(csv_id: str = "be0115") -> Dict:
 
         # Parse date: "ENE 2024" → "2024-01-01"
         parsed_date = _parse_bde_date(date_str)
-        if not parsed_date:
+        if not parsed_date or (cutoff and parsed_date[:10] < cutoff):
             continue
 
         for col_idx, indicator_key in col_map.items():
@@ -187,7 +194,7 @@ async def fetch_historical_csv(csv_id: str = "be0115") -> Dict:
 
             config = INDICATOR_MAP[indicator_key]
 
-            result = await db.macro_indicators.update_one(
+            ops.append(UpdateOne(
                 {"indicator_key": indicator_key, "date": parsed_date, "source": "banco_espana"},
                 {"$set": {
                     "source": "banco_espana",
@@ -202,19 +209,20 @@ async def fetch_historical_csv(csv_id: str = "be0115") -> Dict:
                     "period": date_str,
                     "display_priority": config.get("display_priority", 10),
                     "homepage": config.get("homepage", False),
-                    "source_url": config["url"] if "url" in config else CSV_SOURCES[csv_id]["url"],
+                    "source_url": CSV_SOURCES[csv_id]["url"],
                     "last_updated_at": now,
                     "status": "ok",
                 }},
-                upsert=True
-            )
-            if result.upserted_id:
-                inserted += 1
-            else:
-                updated += 1
+                upsert=True,
+            ))
 
-    # Compute changes (YoY, MoM) for all indicators
-    await _compute_changes()
+    inserted = updated = 0
+    if ops:
+        res = await db.macro_indicators.bulk_write(ops, ordered=False)
+        inserted = res.upserted_count
+        updated = res.matched_count
+
+    # _compute_changes() lo ejecuta refresh_all_indicators una sola vez
 
     return {"status": "completed", "csv": csv_id, "inserted": inserted, "updated": updated}
 
@@ -302,7 +310,11 @@ async def refresh_all_indicators(user_email: str = "system") -> Dict:
                 api_updated += 1
 
         # 2. Fetch historical from CSV
-        csv_result = await fetch_historical_csv("be0115")
+        # Carga completa solo la primera vez; despues, ultimos 36 meses
+        already = await db.macro_indicators.count_documents({"source": "banco_espana"})
+        csv_result = await fetch_historical_csv("be0115", recent_months=36 if already > 500 else None)
+        if csv_result.get("status") == "error":
+            raise RuntimeError(csv_result.get("error", "CSV BDE error"))
 
         # 3. Compute changes
         await _compute_changes()

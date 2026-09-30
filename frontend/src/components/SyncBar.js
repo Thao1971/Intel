@@ -66,7 +66,20 @@ export function SyncBar({ module, syncEndpoint, onSyncComplete }) {
   const handleSync = async () => {
     setSyncing(true);
     try {
-      await api.post(syncEndpoint);
+      const { data: started } = await api.post(syncEndpoint);
+      if (started?.status === 'running') {
+        // Endpoint en segundo plano: consultamos sync-status hasta que termine (max 5 min)
+        let info = null;
+        for (let i = 0; i < 100; i++) {
+          await new Promise(r => setTimeout(r, 3000));
+          const { data } = await api.get('/public/intelligence/sync-status');
+          info = data.modules?.[module] || null;
+          setSyncInfo(info);
+          if (info && info.status !== 'running') break;
+        }
+        if (!info || info.status === 'running') { toast.info('La sincronizacion sigue en curso'); setSyncing(false); return; }
+        if (info.status === 'failed') { toast.error('Error sincronizando'); setSyncing(false); return; }
+      }
       toast.success('Sincronizacion completada');
       await loadStatus();
       onSyncComplete?.();

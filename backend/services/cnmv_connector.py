@@ -89,7 +89,7 @@ async def sync_cnmv_entities(entity_types: List[str] = None, max_pages_per_type:
                             total_by_type[etype] = imported
                             logger.info(f"  {config['label']}: {imported} entities")
                     except Exception as e:
-                        err = f"{etype}: {str(e)[:100]}"
+                        err = f"{etype}: {str(e)[:200]}"
                         errors.append(err)
                         logger.error(f"CNMV error: {err}")
 
@@ -99,7 +99,12 @@ async def sync_cnmv_entities(entity_types: List[str] = None, max_pages_per_type:
             fatal_error = str(e)[:300]
             logger.error(f"CNMV sync fatal error: {fatal_error}")
 
-    status = "error" if fatal_error else ("completed" if not errors else "partial")
+    # Si NO se importo nada y hubo errores, es un fallo total, no un "partial"
+    # (antes el toast decia "0 entidades (con avisos)" como si fuera un exito).
+    if fatal_error or (errors and total_imported == 0):
+        status = "error"
+    else:
+        status = "completed" if not errors else "partial"
 
     await db.cnmv_sync_logs.insert_one({
         "log_id": new_id(),
@@ -121,8 +126,13 @@ async def sync_cnmv_entities(entity_types: List[str] = None, max_pages_per_type:
     }
     if fatal_error:
         result["message"] = fatal_error
+    elif status == "error":
+        result["message"] = "; ".join(errors)[:300]
     return result
 
+
+from services.playwright_runtime import launch_chromium
+from pymongo import UpdateOne
 
 CNMV_LAUNCH_ARGS = ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"]
 CNMV_BROWSER_RECYCLE_EVERY = 30
@@ -145,7 +155,7 @@ async def _scrape_listing(p, entity_id: int, max_pages: int) -> List[Dict]:
     pg = 1
     nav_count = 0
 
-    browser = await p.chromium.launch(headless=True, args=CNMV_LAUNCH_ARGS)
+    browser = await launch_chromium(p, CNMV_LAUNCH_ARGS)
     page = await browser.new_page()
 
     try:
@@ -153,7 +163,7 @@ async def _scrape_listing(p, entity_id: int, max_pages: int) -> List[Dict]:
             if nav_count > 0 and nav_count % CNMV_BROWSER_RECYCLE_EVERY == 0:
                 await page.close()
                 await browser.close()
-                browser = await p.chromium.launch(headless=True, args=CNMV_LAUNCH_ARGS)
+                browser = await launch_chromium(p, CNMV_LAUNCH_ARGS)
                 page = await browser.new_page()
 
             url = f"{CNMV_BASE}/mostrarlistados?id={entity_id}&page={pg}&lang=es"
@@ -343,36 +353,53 @@ async def get_cnmv_stats() -> Dict:
 
 
 async def match_cnmv_to_companies() -> Dict:
-    """Match CNMV entities against companies_master by NIF."""
+    """Match CNMV entities against companies_master by NIF.
+
+    Antes: por cada entidad (2160) un find_one con $or sobre companies_master
+    (sin indice = escaneo completo de la coleccion cada vez) + un update_one, todo
+    secuencial -> minutos y error/timeout. Ahora: 1 consulta con $in para traer las
+    empresas candidatas, match en memoria y 1 bulk_write.
+    """
     now = now_iso()
-    matched = 0
-    total = 0
+    entities = await db.cnmv_entities.find({}, {"_id": 0, "nif": 1, "entity_id": 1}).to_list(20000)
+    total = len(entities)
 
-    entities = await db.cnmv_entities.find({}, {"_id": 0, "nif": 1, "entity_id": 1}).to_list(5000)
+    def _norm(v):
+        return (v or "").strip().upper()
 
-    for e in entities:
-        total += 1
-        nif = e.get("nif", "")
-        if not nif:
-            continue
+    nifs = {_norm(e.get("nif")) for e in entities if _norm(e.get("nif"))}
+    nif_list = list(nifs | {e["nif"] for e in entities if e.get("nif")})
 
-        # Match by CIF/NIF in companies_master
-        company = await db.companies_master.find_one(
-            {"$or": [{"cif": nif}, {"cif_normalized": nif}]},
-            {"_id": 0, "master_company_id": 1, "legal_name": 1}
+    by_nif = {}
+    if nif_list:
+        cursor = db.companies_master.find(
+            {"$or": [{"cif": {"$in": nif_list}}, {"cif_normalized": {"$in": nif_list}}]},
+            {"_id": 0, "master_company_id": 1, "legal_name": 1, "cif": 1, "cif_normalized": 1},
         )
+        async for c in cursor:
+            for k in (_norm(c.get("cif")), _norm(c.get("cif_normalized"))):
+                if k and k not in by_nif:
+                    by_nif[k] = c
 
-        if company:
-            await db.cnmv_entities.update_one(
-                {"nif": nif},
-                {"$set": {
-                    "matched_company_id": company["master_company_id"],
-                    "matched_company_name": company.get("legal_name"),
-                    "match_source": "nif_exact",
-                    "matched_at": now,
-                }}
-            )
-            matched += 1
+    ops = []
+    matched = 0
+    for e in entities:
+        nif = e.get("nif") or ""
+        company = by_nif.get(_norm(nif))
+        if not company:
+            continue
+        ops.append(UpdateOne(
+            {"nif": nif},
+            {"$set": {
+                "matched_company_id": company["master_company_id"],
+                "matched_company_name": company.get("legal_name"),
+                "match_source": "nif_exact",
+                "matched_at": now,
+            }},
+        ))
+        matched += 1
+    if ops:
+        await db.cnmv_entities.bulk_write(ops, ordered=False)
 
     return {
         "status": "completed",

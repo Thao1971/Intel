@@ -10,10 +10,13 @@ from models import now_iso
 from auth_utils import get_current_user
 from services.banco_espana_service import refresh_all_indicators, INDICATOR_MAP
 from services.macro_intelligence import compute_semantic_signal, compute_macro_context
+import asyncio
 import time
 import logging
+from datetime import datetime, timezone
 
 logger = logging.getLogger(__name__)
+_bg_tasks: set = set()
 
 router = APIRouter(tags=["macro_intelligence"])
 
@@ -251,11 +254,32 @@ async def intelligence_financing_context():
 
 @router.post("/api/v1/admin/data-sources/banco-espana/refresh")
 async def admin_refresh(user=Depends(get_current_user)):
+    """Lanza el refresco en segundo plano (evita el Proxy Read Timeout de 120 s).
+
+    El cliente consulta GET .../banco-espana/status hasta que status != "running".
+    """
     email = user.get("email", user.get("id"))
-    result = await refresh_all_indicators(email)
-    if result.get("status") == "error":
-        raise HTTPException(502, result.get("error", "Error actualizando indicadores Banco de España"))
-    return result
+    current = await db.data_provider_status.find_one({"provider": "banco_espana"}, {"_id": 0})
+    if current and current.get("status") == "running" and current.get("started_at"):
+        # Ignora un "running" huerfano de hace mas de 10 min (proceso reiniciado)
+        started = current["started_at"]
+        try:
+            age = (datetime.now(timezone.utc) - datetime.fromisoformat(started.replace("Z", "+00:00"))).total_seconds()
+        except ValueError:
+            age = 9999
+        if age < 600:
+            return {"status": "running", "started_at": started}
+
+    started_at = now_iso()
+    await db.data_provider_status.update_one(
+        {"provider": "banco_espana"},
+        {"$set": {"status": "running", "started_at": started_at, "last_error": None}},
+        upsert=True,
+    )
+    task = asyncio.create_task(refresh_all_indicators(email))
+    _bg_tasks.add(task)
+    task.add_done_callback(_bg_tasks.discard)
+    return {"status": "running", "started_at": started_at}
 
 
 @router.get("/api/v1/admin/data-sources/banco-espana/status")

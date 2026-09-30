@@ -38,7 +38,22 @@ export default function BMEPage() {
   const handleSync = async () => {
     setSyncing(true);
     try {
-      const { data: r } = await api.post('/bme-markets/sync');
+      let { data: r } = await api.post('/bme-markets/sync');
+      if (r.status === 'running') {
+        // Corre en segundo plano en el backend: consultamos el estado (max 10 min)
+        let st = null;
+        for (let i = 0; i < 200; i++) {
+          await new Promise(res => setTimeout(res, 3000));
+          st = (await api.get('/bme-markets/sync-state')).data;
+          if (st.status !== 'running') break;
+        }
+        if (!st || st.status === 'running') {
+          toast.info('El sync de BME sigue en curso, recarga en unos minutos');
+          setSyncing(false);
+          return;
+        }
+        r = st.result || {};
+      }
       if (r.status === 'error') {
         toast.error(`Error sincronizando BME: ${r.message || 'fallo desconocido'}`);
       } else if (r.status === 'partial') {

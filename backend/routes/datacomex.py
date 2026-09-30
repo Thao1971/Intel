@@ -12,10 +12,13 @@ from services.datacomex_connector import (
     rebuild_signals, rebuild_cnae_mappings, generate_seed_trade_data,
 )
 from services.taric_cnae_mapping import TARIC_CHAPTERS
+import asyncio
 import time
 import logging
+from datetime import datetime, timezone
 
 logger = logging.getLogger(__name__)
+_bg_tasks: set = set()
 
 router = APIRouter(prefix="/api/v1/datacomex", tags=["datacomex"])
 
@@ -278,24 +281,55 @@ async def sync(
     years: str = Query(None, description="Comma-separated years, e.g. '2023,2024,2025'"),
     user=Depends(get_current_user),
 ):
-    """Sync REAL data from DataComex via Playwright + rebuild all downstream layers."""
+    """Lanza el sync REAL de DataComex (Playwright + rebuild) en segundo plano.
+
+    Evita el Proxy Read Timeout de 120 s. Resultado: GET /datacomex/sync-state
+    (status: running | done) con el mismo formato {sync, rebuild} que devolvia antes este endpoint.
+    """
+    year_list = [int(y.strip()) for y in years.split(",")] if years else None
+
+    current = await db.datacomex_sync_state.find_one({"_id": "current"})
+    if current and current.get("status") == "running":
+        try:
+            age = (datetime.now(timezone.utc) - datetime.fromisoformat(current["started_at"].replace("Z", "+00:00"))).total_seconds()
+        except (KeyError, ValueError):
+            age = 9999
+        if age < 1200:  # un "running" de >20 min se considera huerfano
+            return {"status": "running", "started_at": current["started_at"]}
+
+    started_at = now_iso()
+    await db.datacomex_sync_state.replace_one(
+        {"_id": "current"}, {"_id": "current", "status": "running", "started_at": started_at}, upsert=True)
+    task = asyncio.create_task(_run_sync(year_list, started_at))
+    _bg_tasks.add(task)
+    task.add_done_callback(_bg_tasks.discard)
+    return {"status": "running", "started_at": started_at}
+
+
+async def _run_sync(year_list, started_at):
     from services.datacomex_playwright import sync_via_playwright, post_sync_rebuild
-
-    year_list = None
-    if years:
-        year_list = [int(y.strip()) for y in years.split(",")]
-
-    sync_result = await sync_via_playwright(years=year_list)
-
-    rebuild_result = None
-    if sync_result["status"] in ("completed", "unchanged"):
+    try:
+        sync_result = await sync_via_playwright(years=year_list)
+        rebuild_result = None
         if sync_result["status"] == "completed":
             rebuild_result = await post_sync_rebuild()
+        result = {"sync": sync_result, "rebuild": rebuild_result}
+    except Exception as e:
+        logger.error(f"DataComex sync failed: {e}")
+        result = {"sync": {"status": "error", "error": str(e)[:200]}, "rebuild": None}
+    await db.datacomex_sync_state.replace_one(
+        {"_id": "current"},
+        {"_id": "current", "status": "done", "started_at": started_at,
+         "finished_at": now_iso(), "result": result},
+        upsert=True,
+    )
 
-    return {
-        "sync": sync_result,
-        "rebuild": rebuild_result,
-    }
+
+@router.get("/sync-state")
+async def sync_state(user=Depends(get_current_user)):
+    """Estado del ultimo sync lanzado con POST /sync."""
+    doc = await db.datacomex_sync_state.find_one({"_id": "current"}, {"_id": 0})
+    return doc or {"status": "idle"}
 
 
 @router.get("/sync-health")

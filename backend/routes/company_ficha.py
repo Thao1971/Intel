@@ -19,6 +19,7 @@ from services.service_auth import require_service_key
 from borme.parser import normalize_company_name
 from services.data_layer.master import control_synergy as CS
 from services.data_layer.normalize import strip_accents, normalize_cif
+from services import officer_utils as OU
 from services.engines.financial import engine as FE
 from services.engines.investment import fragmentation as FRAG
 from routes.company_intelligence import _build as _build_identity
@@ -560,203 +561,7 @@ _CONC_LABELS_ES = {"highly_concentrated": "Muy concentrado",
 _TREND_LABELS_ES = {"down": "A la baja", "up": "Al alza", "flat": "Estable", "stable": "Estable"}
 
 # Roles de gobierno (norm_officers): 192 variantes, mayoría en inglés → canon ES.
-_ROLE_ES = {
-    "Representative": "Representante",
-    "Sole Director": "Administrador único",
-    "Joint And Several Director": "Administrador solidario",
-    "Director": "Consejero",
-    "Joint Director": "Administrador mancomunado",
-    "Chairperson": "Presidente",
-    "Secretary": "Secretario",
-    "Auditor": "Auditor de cuentas",
-    "Director Member": "Vocal del consejo",
-    "Joint And Several Chief Executive Officer": "Consejero delegado solidario",
-    "Chief Executive Officer": "Consejero delegado",
-    "Delegate Joint Director": "Consejero delegado mancomunado",
-    "Joint And Several Representative": "Representante solidario",
-    "Controlling Committee Member": "Miembro de la comisión de control",
-    "Member": "Vocal",
-    "Member Of The Committee": "Miembro de la comisión",
-    "Vice-Chairperson": "Vicepresidente",
-    "Member Of The Controlling Committee": "Miembro de la comisión de control",
-    "Accounts Auditor": "Auditor de cuentas",
-    "Committee Member": "Miembro de la comisión",
-    "Professional Partner": "Socio profesional",
-    "Bankruptcy Administrator": "Administrador concursal",
-    "Non-Director Secretary": "Secretario no consejero",
-    "Representative Art. 143 Rrm": "Representante (art. 143 RRM)",
-    "Partner": "Socio",
-    "Joint Representative": "Representante mancomunado",
-    "Depositary Entity": "Entidad depositaria",
-    "Managing Entity": "Entidad gestora",
-    "Alternate Auditor": "Auditor suplente",
-    "Vice-Secretary": "Vicesecretario",
-    "Liquidator": "Liquidador",
-    "Manager": "Gerente",
-    "Sole Shareholder": "Socio único",
-    "Joint Accounts Auditor": "Auditor de cuentas conjunto",
-    "Committee Chairperson": "Presidente de la comisión",
-    "Joint And Joint And Several Delegate Director": "Consejero delegado mancomunado y solidario",
-    "Member Of The Board": "Vocal del consejo",
-    "Sole Chief Executive Officer": "Consejero delegado único",
-    "Supervisor": "Supervisor",
-    "Non-Director Vice-Secretary": "Vicesecretario no consejero",
-    "Director Secretary": "Consejero secretario",
-    "Alternate Director": "Consejero suplente",
-    "Secretary To The Controlling Committee": "Secretario de la comisión de control",
-    "Depositary": "Depositario",
-    "Chairperson Of The Controlling Committee": "Presidente de la comisión de control",
-    "Advisor": "Asesor",
-    "Alternate": "Suplente",
-    "Attorney": "Apoderado",
-    "Vice-Chairperson Of The Board": "Vicepresidente del consejo",
-    "Chairperson Of The Board": "Presidente del consejo",
-    "Chairperson Of The Board Of Directors": "Presidente del consejo de administración",
-    "Board Of Directors' Member": "Vocal del consejo de administración",
-    "Board": "Consejo de administración",
-    "Treasurer": "Tesorero",
-    "Accountant": "Contador",
-
-    # HARDENING · traducción 134 roles ingleses sin mapear (Daniel 2026-09-09):
-    # de los 192 valores distintos de `role` en `norm_officers`, estos 134 no
-    # tenían traducción y se mostraban en inglés crudo en la UI. R15: solo se
-    # traduce un valor real ya existente, terminología de derecho societario
-    # español — no se inventa ningún dato.
-    "Member Of The Board Of Directors": "Miembro del Consejo de Dirección",
-    "Committee Secretary": "Secretario del Comité",
-    "Commissioner Member": "Miembro de la Comisión",
-    "Member Of The Shareholders' Meeting": "Miembro de la Junta de Socios/Accionistas",
-    "Alternate Accounts Auditor": "Auditor de Cuentas Suplente",
-    "Joint And Several Liquidator": "Liquidador Solidario",
-    "Secretary To The Committee": "Secretario del Comité",
-    "Delegate": "Delegado",
-    "Participants' Advocate": "Defensor del Partícipe",
-    "Joint And Joint And Several Representative": "Representante Mancomunado y Solidario",
-    "Accounting Register": "Registro Contable",
-    "Suspension Of Payments Supervisor": "Interventor de la Suspensión de Pagos",
-    "Developer": "Promotor",
-    "Member Of The Executive Committee": "Miembro de la Comisión Ejecutiva",
-    "Legal Counsel": "Asesor Jurídico",
-    "Commissioner": "Comisionado",
-    "Permanent Representative": "Representante Permanente",
-    "Alternate Controlling Commissioner": "Interventor de Control Suplente",
-    "Commission": "Comisión",
-    "Officer": "Apoderado",
-    "Group Accounts Auditor": "Auditor de Cuentas del Grupo",
-    "Bankruptcy Administrator Representative": "Representante del Administrador Concursal",
-    "Vice-Chairperson Of The Controlling Committee": "Vicepresidente del Comité de Control",
-    "Member Of The Governing Council": "Miembro del Consejo Rector",
-    "Creditor Commissioner": "Comisionado de Acreedores",
-    "Delegate Commissioner Member": "Miembro Comisionado Delegado",
-    "Judicial Director": "Administrador Judicial",
-    "Principal Auditor": "Auditor Principal",
-    "Member Of The Rector Committee": "Miembro del Comité Rector",
-    "Vice-Chairperson Of The Board Of Directors": "Vicepresidente del Consejo de Administración",
-    "Permanent Commissioner": "Comisionado Permanente",
-    "Vice-Chairperson Of The Committee": "Vicepresidente del Comité",
-    "Risk Committee Member": "Miembro del Comité de Riesgos",
-    "Alternate Joint Director": "Administrador Mancomunado Suplente",
-    "Secretary To The Board Of Directors": "Secretario del Consejo de Administración",
-    "Secretary To The Board": "Secretario del Consejo",
-    "Member Of The Audit Committee": "Miembro del Comité de Auditoría",
-    "Executive Committee Member": "Miembro de la Comisión Ejecutiva",
-    "Creditors? Commission": "Comisión de Acreedores",
-    "Bankruptcy Liquidator": "Liquidador Concursal",
-    "Sole Manager": "Gerente Único",
-    "Joint Liquidator": "Liquidador Mancomunado",
-    "Executive Commissioner": "Comisionado Ejecutivo",
-    "Controlling Committee": "Comité de Control",
-    "Vice-Secretary To The Board Of Directors": "Vicesecretario del Consejo de Administración",
-    "Sole Liquidator": "Liquidador Único",
-    "Member Of The Liquidation Committee": "Miembro de la Comisión Liquidadora",
-    "Liquidation Commissioner": "Comisionado de Liquidación",
-    "Judicial Supervisor": "Interventor Judicial",
-    "General Director": "Director General",
-    "Commissioner Secretary": "Secretario Comisionado",
-    "Bankruptcy Commissioner": "Comisionado Concursal",
-    "Second Vice-Chairperson": "Segundo Vicepresidente",
-    "Salesperson": "Comercial",
-    "Managing Director": "Director Gerente",
-    "Founder": "Fundador",
-    "Commissioner Chairperson": "Presidente Comisionado",
-    "Chairperson Of The Shareholders' Meeting": "Presidente de la Junta de Socios/Accionistas",
-    "Bankruptcy Depositary": "Depositario Concursal",
-    "Vice-Secretary To The Board": "Vicesecretario del Consejo",
-    "Unspecified Director": "Administrador sin Especificar",
-    "Risk Commissioner": "Comisionado de Riesgos",
-    "Rector Chief Executive Officer": "Director Ejecutivo del Consejo Rector",
-    "Monitoring Commissioner": "Comisionado de Seguimiento",
-    "First Vice-Chairperson": "Primer Vicepresidente",
-    "Controlling Committee Chairperson": "Presidente del Comité de Control",
-    "Controlling Commission": "Comisión de Control",
-    "Branch Representative": "Representante de Sucursal",
-    "Alternate Member": "Vocal Suplente",
-    "Vice-Secretary To The Controlling Committee": "Vicesecretario del Comité de Control",
-    "Vice-Commissioner": "Vicecomisionado",
-    "Syndicated Bondholders Commissioner": "Comisario del Sindicato de Obligacionistas",
-    "Secretary To The Shareholders' Meeting": "Secretario de la Junta de Socios/Accionistas",
-    "Monitoring Commissioner Secretary": "Secretario de la Comisión de Seguimiento",
-    "Member Of The Management Committee": "Miembro del Comité de Dirección",
-    "Liquidation Commissioner Member": "Miembro Comisionado de Liquidación",
-    "Legal Advisor": "Asesor Legal",
-    "Executive Commissioner Member": "Miembro Comisionado Ejecutivo",
-    "Executive Chairperson": "Presidente Ejecutivo",
-    "Chairperson Of The Executive Committee": "Presidente de la Comisión Ejecutiva",
-    "Board Of Directors' Treasurer": "Tesorero del Consejo de Administración",
-    "Alternate Joint And Several Director": "Administrador Solidario Suplente",
-    "Vice-Secretary To The Committee": "Vicesecretario del Comité",
-    "Vice-Secretary Of The Controlling Committee": "Vicesecretario del Comité de Control",
-    "Secretary To The Rector Committee": "Secretario del Comité Rector",
-    "Secretary To The Governing Council": "Secretario del Consejo Rector",
-    "Secretary To The Executive Committee": "Secretario de la Comisión Ejecutiva",
-    "Rector Commission": "Comisión Rectora",
-    "Recovery Committee": "Comité de Recuperación",
-    "Oversight Commissioner": "Comisionado de Supervisión",
-    "Non-Director Vice-Chairperson": "Vicepresidente No Consejero",
-    "Monitoring Commissioner Chairperson": "Presidente de la Comisión de Seguimiento",
-    "Managing Committee Member": "Miembro del Comité de Dirección",
-    "Honorary Chairperson": "Presidente Honorario",
-    "General Secretary": "Secretario General",
-    "Committee": "Comité",
-    "Board Of Directors' Accountant": "Contable del Consejo de Administración",
-    "Alternate Rector Commission": "Comisión Rectora Suplente",
-    "Alternate Joint Accounts Auditor": "Auditor de Cuentas Mancomunado Suplente",
-    "Alternate Commissioner": "Comisionado Suplente",
-    "Vice-Chairperson Of The Executive Committee": "Vicepresidente de la Comisión Ejecutiva",
-    "Second Member": "Segundo Vocal",
-    "General Chairperson": "Presidente General",
-    "First Member": "Primer Vocal",
-    "Chairperson Of The Governing Council": "Presidente del Consejo Rector",
-    "Chairperson Of The Audit Committee": "Presidente del Comité de Auditoría",
-    "Audit Committee Chairperson": "Presidente del Comité de Auditoría",
-    "Audit Commission": "Comisión de Auditoría",
-    "Assistant Senior Manager": "Subdirector",
-    "Assistant Chief Executive Officer": "Consejero Delegado Adjunto",
-    "Vice-Chairperson Of The Rector Committee": "Vicepresidente del Comité Rector",
-    "Technical Personnel": "Personal Técnico",
-    "Tax Representative": "Representante Fiscal",
-    "Syndicated Bondholders Secretary": "Secretario del Sindicato de Obligacionistas",
-    "Secretary To The Management Committee": "Secretario del Comité de Dirección",
-    "Secretary To The Audit Committee": "Secretario del Comité de Auditoría",
-    "Secretary Director": "Consejero Secretario",
-    "Second Vice-Secretary": "Segundo Vicesecretario",
-    "Provisional Director": "Administrador Provisional",
-    "Principal Accounts Auditor": "Auditor de Cuentas Principal",
-    "Manager Partner": "Socio Gerente",
-    "Intervention Mediator": "Mediador de Intervención",
-    "General Representative": "Representante General",
-    "Executive Vice-Chairperson": "Vicepresidente Ejecutivo",
-    "Executive Committee Chairperson": "Presidente de la Comisión Ejecutiva",
-    "Director Chairperson": "Presidente Consejero",
-    "Delegate Bankruptcy Assistant": "Auxiliar Delegado Concursal",
-    "Chief Director": "Director Jefe",
-    "Chairperson Of The Rector Committee": "Presidente del Comité Rector",
-    "Chairperson Of The Managing Committee": "Presidente del Comité de Dirección",
-    "Chairperson Of The Liquidation Committee": "Presidente de la Comisión Liquidadora",
-    "Branch Officer": "Apoderado de Sucursal",
-    "Bondholders Commissioner": "Comisario de Obligacionistas",
-    "Alternate Representative": "Representante Suplente",
-}
+_ROLE_ES = OU.ROLE_ES
 
 
 def _role_es(role: Optional[str]) -> Optional[str]:
@@ -771,30 +576,12 @@ def _role_es(role: Optional[str]) -> Optional[str]:
 # `dd/mm/yyyy` (minoría). Sin esto el frontend no podía parsear el primer
 # formato y caía a mostrar el año de la ENTREGA (`year`, uniformemente 2024 en
 # toda la colección), no el año real de nombramiento.
-_MONTH_ABBR_EN = {
-    "JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6,
-    "JUL": 7, "AUG": 8, "SEP": 9, "OCT": 10, "NOV": 11, "DEC": 12,
-}
-
-
 def _parse_officer_date(raw: Optional[str]) -> Optional[str]:
     """Normaliza `appointment_date` a ISO `YYYY-MM-DD`. R15: solo reformatea un
     valor real ya existente — nunca inventa ni corrige una fecha; si el
-    formato no es reconocible devuelve `None` (degradación honesta)."""
-    if not raw:
-        return None
-    raw = raw.strip()
-    m = re.match(r"^(\d{2})/(\d{2})/(\d{4})$", raw)
-    if m:
-        day, month, year = m.groups()
-        return f"{year}-{month}-{day}"
-    m = re.match(r"^(\d{2})([A-Za-z]{3})(\d{4})$", raw)
-    if m:
-        day, mon_abbr, year = m.groups()
-        month = _MONTH_ABBR_EN.get(mon_abbr.upper())
-        if month:
-            return f"{year}-{month:02d}-{day}"
-    return None
+    formato no es reconocible devuelve `None` (degradación honesta).
+    La lectura vive en `services/officer_utils.py` (compartida con el motor de sucesión)."""
+    return OU.officer_date_iso(raw)
 
 
 # Clasificación de los 60 valores de `role` mapeados en `_ROLE_ES` en 4 grupos,

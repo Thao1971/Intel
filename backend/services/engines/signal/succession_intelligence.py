@@ -41,6 +41,7 @@ from datetime import datetime, timezone
 from typing import Dict, List, Optional, Tuple
 
 from database import db
+from services import officer_utils as OU
 
 SUCCESSION_PROFILE_VERSION = "succession-v1"
 
@@ -51,10 +52,8 @@ MIN_SUCCESSOR_GAP_YEARS = 2.0
 
 
 def _parse_date(raw: Optional[str]) -> Optional[datetime]:
-    try:
-        return datetime.strptime((raw or "").strip(), "%d/%m/%Y").replace(tzinfo=timezone.utc)
-    except Exception:
-        return None
+    # Antes solo entendía dd/mm/yyyy (4 de 88.122 filas): ahora también DDMONYYYY, el formato real.
+    return OU.parse_officer_date(raw)
 
 
 async def _officers_for(cif_normalized: Optional[str]) -> List[Dict]:
@@ -66,47 +65,17 @@ async def _officers_for(cif_normalized: Optional[str]) -> List[Dict]:
 
 
 def administrator_tenure(officers: List[Dict]) -> Optional[Dict]:
-    """Canonical tenure computation (moved here from borme_bridge.py in E2 — single
-    source of truth). Same logic as Q1: oldest-appointed Administrador* wins.
-
-    E2 tightening (found via smoke testing, not a design change to the gate itself):
-    Iberinform's `norm_officers` can carry a non-natural-person "administrador"
-    (a company acting as administrator of another company — a real, valid Spanish
-    corporate-law pattern, e.g. `ESTYOFI`). Such an entity has no succession risk in
-    the human sense, so it's excluded from the tenure pool via `_looks_like_person` —
-    the same heuristic already used for the family-surname proxy, applied here to
-    avoid a bogus long-tenured "administrator" record silently dominating the gate.
-    """
-    admins = [o for o in officers if any(k in (o.get("role") or "").upper() for k in ADMIN_ROLE_KEYWORDS)
-              and _looks_like_person(o.get("person_name"))]
-    best = None
-    for o in admins:
-        d = _parse_date(o.get("appointment_date"))
-        if not d:
-            continue
-        tenure_years = round((datetime.now(timezone.utc) - d).days / 365.25, 1)
-        if best is None or tenure_years > best["tenure_years"]:
-            best = {"person_name": o.get("person_name"), "person_role": o.get("role"),
-                    "appointment_date": o.get("appointment_date"), "tenure_years": tenure_years,
-                    "_appointment_dt": d}
-    return best
+    """Antigüedad del administrador persona física más antiguo. Lógica en `officer_utils` (roles en
+    inglés y español, fechas dd/mm/yyyy y DDMONYYYY); se mantiene aquí como punto de entrada estable."""
+    return OU.administrator_tenure(officers)
 
 
 def _admin_count(officers: List[Dict]) -> int:
-    names = {o.get("person_name") for o in officers
-             if any(k in (o.get("role") or "").upper() for k in ADMIN_ROLE_KEYWORDS) and o.get("person_name")}
-    return len(names)
+    return OU.admin_count(officers)
 
 
 def _looks_like_person(name: Optional[str]) -> bool:
-    if not name:
-        return False
-    tokens = name.strip().split()
-    if len(tokens) < 2:
-        return False  # single-token entries are usually corporate shorthand, not a person
-    if any(t.rstrip(".").upper() in NON_PERSON_HINTS for t in tokens):
-        return False
-    return True
+    return OU.looks_like_person(name)
 
 
 def _surname_tokens(name: str) -> List[str]:
@@ -137,7 +106,7 @@ def _successor_candidate(officers: List[Dict], admin_appointment: Optional[datet
     best = None
     for o in officers:
         role = (o.get("role") or "").upper()
-        if any(k in role for k in ADMIN_ROLE_KEYWORDS):
+        if OU.is_administrator_role(o.get("role")):
             continue  # only a non-administrator role counts as a "successor candidate"
         d = _parse_date(o.get("appointment_date"))
         if not d or d <= admin_appointment:
@@ -162,9 +131,8 @@ async def _company_age_years(master_id: Optional[str]) -> Optional[float]:
     )
     if not ev or not ev.get("publication_date"):
         return None
-    try:
-        d = datetime.strptime(ev["publication_date"], "%Y-%m-%d").replace(tzinfo=timezone.utc)
-    except Exception:
+    d = OU.parse_borme_date(ev["publication_date"])   # YYYYMMDD real (antes solo se leía YYYY-MM-DD)
+    if d is None:
         return None
     return round((datetime.now(timezone.utc) - d).days / 365.25, 1)
 
@@ -215,7 +183,7 @@ async def build_profile(master: Dict) -> Optional[Dict]:
         reasons.append("administrador único (estructura no profesionalizada)")
     if standalone:
         score += 15
-        reasons.append("empresa sin matriz ni grupo societario (Q2)")
+        reasons.append("empresa sin matriz ni grupo societario registrados (Q2)")
     if family_overlap:
         score += 15
         reasons.append(f"apellidos compartidos entre cargos (proxy, no confirma parentesco): {shared_surnames}")

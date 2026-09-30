@@ -11,7 +11,13 @@ from auth_utils import get_current_user
 from services.economic_intelligence import (
     rebuild_economic_metrics, rebuild_economic_signals, get_cnae_economic_profile,
 )
+import asyncio
+import logging
 import time
+from datetime import datetime, timezone
+
+logger = logging.getLogger(__name__)
+_bg_tasks: set = set()
 
 router = APIRouter(prefix="/api/v1/economic-intelligence", tags=["economic_intelligence"])
 
@@ -128,15 +134,47 @@ async def stats():
 
 @router.post("/rebuild")
 async def rebuild(user=Depends(get_current_user)):
-    """Rebuild all economic metrics + signals from sources."""
-    t0 = time.time()
+    """Lanza la reconstruccion en segundo plano (evita el Proxy Read Timeout de 120 s).
 
-    metrics_result = await rebuild_economic_metrics()
-    signals_result = await rebuild_economic_signals()
+    Progreso/resultado: GET /api/v1/public/intelligence/sync-status ->
+    modules.economic_intelligence.status = running | completed | failed.
+    """
+    current = await db.intelligence_sync_log.find_one({"module": "economic_intelligence"}, {"_id": 0})
+    if current and current.get("status") == "running" and current.get("started_at"):
+        try:
+            age = (datetime.now(timezone.utc) - datetime.fromisoformat(current["started_at"].replace("Z", "+00:00"))).total_seconds()
+        except ValueError:
+            age = 9999
+        if age < 900:  # un "running" de >15 min se considera huerfano
+            return {"status": "running", "started_at": current["started_at"]}
 
-    return {
-        "status": "completed",
-        "metrics": metrics_result,
-        "signals": signals_result,
-        "processing_time_ms": round((time.time() - t0) * 1000, 1),
-    }
+    started_at = now_iso()
+    await db.intelligence_sync_log.update_one(
+        {"module": "economic_intelligence"},
+        {"$set": {"module": "economic_intelligence", "status": "running",
+                  "started_at": started_at, "trigger": "manual"}},
+        upsert=True,
+    )
+    task = asyncio.create_task(_run_rebuild())
+    _bg_tasks.add(task)
+    task.add_done_callback(_bg_tasks.discard)
+    return {"status": "running", "started_at": started_at}
+
+
+async def _run_rebuild():
+    try:
+        metrics = await rebuild_economic_metrics()
+        signals = await rebuild_economic_signals()
+        await db.intelligence_sync_log.update_one(
+            {"module": "economic_intelligence"},
+            {"$set": {"status": "completed", "entries": metrics.get("total_metrics", 0),
+                      "signals": signals.get("signals_generated", 0),
+                      "synced_at": now_iso(), "trigger": "manual"},
+             "$unset": {"error": ""}},
+        )
+    except Exception as e:
+        logger.error(f"Economic rebuild failed: {e}")
+        await db.intelligence_sync_log.update_one(
+            {"module": "economic_intelligence"},
+            {"$set": {"status": "failed", "error": str(e)[:200], "synced_at": now_iso(), "trigger": "manual"}},
+        )

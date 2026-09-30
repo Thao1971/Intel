@@ -2,6 +2,13 @@
 
 > Registro de cambios de arquitectura de la plataforma Agency Tool (compartida: Valuo.pro + arroba.com + Platform Console).
 
+## 2026-09-30 — ZIP unificado `LOTES_11_A_19` (Preview) ✅
+- Aplicado sobre `/app` respetando rutas (merge: sobrescribe existentes + añade nuevos). Sin tocar `.env` ni la base de datos. Sin commit/push/reset. (ZIP sin SHA256SUMS; sha256 informativo `c838b295…a7d6`.)
+- **35 ficheros: 25 sobrescritos, 10 nuevos** (backend routes/services/engines/signal/tests + frontend pages/SyncBar).
+- **Nuevos (10)**: `backend/services/{officer_utils,opportunity_view,opportunity_criteria,borme_matching,signal_recompute,playwright_runtime}.py` + 4 tests (`test_borme_matching`, `test_opportunity_criteria`, `test_opportunity_view`, `test_signal_recompute`).
+- **Validación**: py_compile 25/25 OK; backend+frontend reiniciados y RUNNING; openapi 200; sin ImportError; 4 tests nuevos 41/41 passed. `playwright_runtime.py` (nuevo) auto-lanza `playwright install chromium` cuando falta (comportamiento propio del ZIP, no fallo). Errores en log NVIDIA 410 y CNMV/BME sin chromium son pre-existentes/ajenos.
+
+
 ## 2026-09-29 — Delta `ARROBA_INTEL_DELTA_VALORACION_SCENARIOS` (Preview) ✅
 - **SHA-256 del ZIP verificado** (`56ba4d1f…e1ff`). 3 archivos (1 modificado + 2 nuevos), aplicados sin tocar nada más. Sin commit/push/reset.
 - **NUEVO `services/my_space_valuation_scenarios.py`**: CRUD (crear/listar/leer/borrar, sin update) de escenarios de valoración editados a mano, privados por `owner_id`. Límite 200/usuario. Colección nueva `my_space_valuation_scenarios`, no leída por ningún motor/job.

@@ -26,6 +26,37 @@ YEARS_TO_FETCH = 6  # Last 6 years
 MAX_RETRIES = 2
 
 
+async def _install_chromium() -> str:
+    """Instala el Chromium de Playwright (el binario no viaja con `pip install`)."""
+    import asyncio, sys
+    proc = await asyncio.create_subprocess_exec(
+        sys.executable, "-m", "playwright", "install", "chromium",
+        stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.STDOUT)
+    try:
+        out, _ = await asyncio.wait_for(proc.communicate(), timeout=300)
+    except asyncio.TimeoutError:
+        proc.kill()
+        raise RuntimeError("playwright install chromium: timeout 300 s")
+    if proc.returncode != 0:
+        raise RuntimeError(f"playwright install chromium fallo: {out.decode(errors='ignore')[-300:]}")
+    return out.decode(errors="ignore")[-200:]
+
+
+async def _launch_browser(p):
+    """Lanza Chromium; si el binario no existe (contenedor redesplegado sin
+    `playwright install`), lo instala una vez y reintenta."""
+    args = ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"]
+    try:
+        return await p.chromium.launch(headless=True, args=args)
+    except Exception as e:
+        if "Executable doesn't exist" not in str(e):
+            raise
+        logger.warning("DataComex: Chromium no instalado, ejecutando 'playwright install chromium'...")
+        await _install_chromium()
+        return await p.chromium.launch(headless=True, args=args)
+
+
+
 async def sync_via_playwright(years: List[int] = None) -> Dict:
     """Fetch real trade data from DataComex via Playwright.
     
@@ -50,8 +81,7 @@ async def sync_via_playwright(years: List[int] = None) -> Dict:
 
     try:
         async with async_playwright() as p:
-            browser = await p.chromium.launch(headless=True, args=[
-                "--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"])
+            browser = await _launch_browser(p)
             page = await browser.new_page()
 
             logger.info("DataComex sync: loading page...")

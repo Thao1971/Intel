@@ -54,14 +54,29 @@ export default function DataComexPage() {
       // OJO: el backend devuelve { sync: {...}, rebuild: {...} } anidado, no
       // los campos en el nivel superior. Leer data.records_imported directamente
       // siempre daba "undefined" — daba igual si el sync habia funcionado o no.
-      const { data } = await api.post('/datacomex/sync?years=2022,2023,2024,2025');
+      let { data } = await api.post('/datacomex/sync?years=2022,2023,2024,2025');
+      if (data.status === 'running') {
+        // El sync corre en segundo plano en el backend: consultamos /sync-state (max 10 min)
+        let st = null;
+        for (let i = 0; i < 200; i++) {
+          await new Promise(r => setTimeout(r, 3000));
+          st = (await api.get('/datacomex/sync-state')).data;
+          if (st.status !== 'running') break;
+        }
+        if (!st || st.status === 'running') {
+          toast.info('El sync de DataComex sigue en curso, recarga en unos minutos');
+          setSyncing(false);
+          return;
+        }
+        data = st.result || {};
+      }
       const s = data.sync || {};
       if (s.status === 'error') {
         toast.error(`Error sincronizando DataComex: ${s.error || 'fallo desconocido'}`);
       } else if (s.status === 'unchanged') {
         toast.success('DataComex ya estaba actualizado (sin cambios)');
       } else {
-        toast.success(`Sync: ${s.records_imported ?? 0} registros importados`);
+        toast.success(`Sync: ${s.records ?? s.records_imported ?? 0} registros importados`);
       }
       loadDashboard();
     } catch (e) {

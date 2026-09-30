@@ -10,7 +10,8 @@ from typing import Dict, List
 
 COMPOSITES_VERSION = "comp-v1"
 
-# requires = ALL must be present (passed) · optional = reinforce if present
+# requires = ALL must be present (passed) · optional = reinforce if present ·
+# excludes = (optional key, additive within comp-v1) if ANY is present the composite does NOT fire
 COMPOSITES = {
     "opportunity.consolidation_candidate": dict(
         requires=["growth.sustained", "financial.margin_strong", "ownership.consolidator"],
@@ -28,6 +29,20 @@ COMPOSITES = {
         severity="risk", polarity="negative",
         actions=["investigate", "request_due_diligence", "consult_advisor"],
         description="Net loss + high leverage -> potential distress / turnaround target."),
+    # Beta (2026-09): tesis adicionales, aditivas dentro de comp-v1 (ver `excludes`).
+    "opportunity.operational_turnaround": dict(
+        requires=["financial.margin_weak", "operational.productivity_low"],
+        optional=["market.underperforms_peers"],
+        excludes=["financial.net_loss", "financial.negative_equity"],
+        severity="opportunity", polarity="neutral",
+        actions=["analyze", "compare", "value", "add_to_watchlist"],
+        description="Weak margin + low productivity, without net loss or negative equity -> operational-improvement target."),
+    "opportunity.group_subsidiary": dict(
+        requires=["ownership.group_member"],
+        optional=["ownership.foreign_parent", "corporate.group_change"],
+        severity="opportunity", polarity="neutral",
+        actions=["analyze", "investigate", "add_to_watchlist"],
+        description="Member of a corporate group -> possible carve-out / reorganisation target."),
     "opportunity.expansion_opportunity": dict(
         requires=["growth.revenue_surge", "operational.productivity_high"],
         optional=["growth.ebitda_expansion"], severity="opportunity", polarity="positive",
@@ -53,6 +68,8 @@ def build(base_signals: List[Dict]) -> List[Dict]:
     for ctype, spec in COMPOSITES.items():
         if not all(req in by_type for req in spec["requires"]):
             continue
+        if any(x in by_type for x in spec.get("excludes", [])):
+            continue
         components = [by_type[t] for t in spec["requires"]] + \
                      [by_type[t] for t in spec.get("optional", []) if t in by_type]
         dims = _agg_dims(components)
@@ -68,6 +85,7 @@ def build(base_signals: List[Dict]) -> List[Dict]:
             "evidence": {"components": comp_ids, "component_types": comp_types},
             "rule": {"id": ctype, "expression": "ALL(requires) present",
                      "requires": spec["requires"], "optional": spec.get("optional", []),
+                     "excludes": spec.get("excludes", []),
                      "composites_version": COMPOSITES_VERSION, "passed": True},
             "recommended_actions": spec["actions"],
             "explanation": spec["description"] + " Evidencia: " + ", ".join(comp_types) + ".",

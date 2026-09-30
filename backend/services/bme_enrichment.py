@@ -13,6 +13,8 @@ from datetime import datetime, timezone, timedelta
 
 logger = logging.getLogger(__name__)
 
+from services.playwright_runtime import launch_chromium
+
 # URL patterns for detail pages
 GROWTH_DETAIL = "https://www.bmegrowth.es/esp/Ficha/{name}_{isin}.aspx"
 SCALEUP_DETAIL = "https://www.bolsasymercados.es/MTF_Equity/bme-scaleup/esp/Ficha/{name}_{isin}.aspx"
@@ -87,8 +89,7 @@ async def run_full_enrichment(max_companies: int = 300, batch_size: int = 5) -> 
 
     try:
         async with async_playwright() as p:
-            browser = await p.chromium.launch(headless=True, args=[
-                "--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"])
+            browser = await launch_chromium(p)
             page = await browser.new_page()
 
             for i, company in enumerate(companies):

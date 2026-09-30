@@ -33,10 +33,14 @@ from pymongo import UpdateOne
 from database import db
 from models import now_iso
 from borme.parser import normalize_company_name
+from services.data_layer.normalize import name_key
+from services import borme_matching as BM
 from services.engines.signal import taxonomy as T
 from services.engines.signal import thresholds as TH
 from services.engines.signal import actions as A
 from services.engines.signal import succession_intelligence as SI
+from services import officer_utils as OU
+from services import opportunity_criteria as CR
 
 BRIDGE_VERSION = "borme-signal-bridge-v1"
 LOOKBACK_MONTHS = 24
@@ -66,9 +70,8 @@ def _recency_boost(publication_date: Optional[str]) -> float:
     """More recent events read as more urgent/impactful (bounded, D2-style)."""
     if not publication_date:
         return 0.0
-    try:
-        d = datetime.strptime(publication_date, "%Y-%m-%d").replace(tzinfo=timezone.utc)
-    except Exception:
+    d = OU.parse_borme_date(publication_date)   # el formato real es YYYYMMDD
+    if d is None:
         return 0.0
     days = (datetime.now(timezone.utc) - d).days
     if days <= 30:
@@ -80,7 +83,7 @@ def _recency_boost(publication_date: Optional[str]) -> float:
 
 def _cutoff_date() -> str:
     d = datetime.now(timezone.utc) - timedelta(days=30 * LOOKBACK_MONTHS)
-    return d.strftime("%Y-%m-%d")
+    return d.strftime("%Y%m%d")   # mismo formato que `publication_date` de los eventos (YYYYMMDD)
 
 
 ADMIN_ROLE_KEYWORDS = SI.ADMIN_ROLE_KEYWORDS  # covers "Administrador Único", "Administrador Solidario", etc.
@@ -165,6 +168,44 @@ async def link_events_to_master(limit_companies: int = 500) -> Dict:
             "companies_remaining": remaining, "bridge_version": BRIDGE_VERSION}
 
 
+async def link_new_events(limit_events: int = 20000, recheck: bool = False) -> Dict:
+    """Enlace POR EVENTOS: examina los eventos sin `master_id` que aún no se han mirado y los empareja con
+    una empresa del Master por nombre normalizado (ver services/borme_matching.py). Idempotente y pensado
+    para ejecutarse a diario: cada evento se examina una sola vez (`link_checked_at`). Con `recheck=True`
+    se vuelven a examinar todos los no enlazados (p. ej. tras cargar empresas nuevas en el Master)."""
+    await ensure_indexes()
+    if recheck:
+        await db.borme_events.update_many({"master_id": {"$exists": False}}, {"$unset": {"link_checked_at": 1}})
+    events = await db.borme_events.find(
+        {"master_id": {"$exists": False}, "link_checked_at": {"$exists": False}},
+        {"_id": 0, "idempotency_key": 1, "company_name_normalized": 1, "registry_province": 1,
+         "event_text_raw": 1},
+    ).limit(limit_events).to_list(limit_events)
+    keys = {name_key(e.get("company_name_normalized")) for e in events} - {None}
+    masters_by_key: Dict[str, List[Dict]] = {}
+    if keys:
+        async for m in db.master_companies.find(
+                {"name_key": {"$in": list(keys)}},
+                {"_id": 0, "master_id": 1, "name_key": 1, "location.provincia": 1, "identity.cif": 1}):
+            masters_by_key.setdefault(m["name_key"], []).append({
+                "master_id": m["master_id"], "provincia": (m.get("location") or {}).get("provincia"),
+                "cif": ((m.get("identity") or {}).get("cif") or "").strip()})
+    links, stats = BM.match_events(events, masters_by_key, name_key)
+    now = now_iso()
+    ops = [UpdateOne({"idempotency_key": l["idempotency_key"]},
+                     {"$set": {"master_id": l["master_id"], "match_confidence": l["confidence"],
+                               "match_method": l["method"], "linked_at": now, "link_checked_at": now}})
+           for l in links]
+    linked_keys = {l["idempotency_key"] for l in links}
+    ops += [UpdateOne({"idempotency_key": e["idempotency_key"]}, {"$set": {"link_checked_at": now}})
+            for e in events if e["idempotency_key"] not in linked_keys]
+    if ops:
+        await db.borme_events.bulk_write(ops, ordered=False)
+    remaining = await db.borme_events.count_documents(
+        {"master_id": {"$exists": False}, "link_checked_at": {"$exists": False}})
+    return {**stats, "events_remaining": remaining, "bridge_version": BRIDGE_VERSION}
+
+
 async def recent_events_for_master(master_id: str) -> List[Dict]:
     return await db.borme_events.find(
         {"master_id": master_id, "publication_date": {"$gte": _cutoff_date()}}, {"_id": 0},
@@ -229,8 +270,8 @@ def _succession_signal(mid: str, admin: Dict, threshold: float, threshold_source
     urgency = _clamp01(meta["base_urgency"] + (0.25 if corroborated else 0.0)
                        + (0.1 if stagnating else 0.0) - (0.15 if successor else 0.0))
     raw = f"{mid}|{stype}|{source_version}|{engine_version}|{TH.THRESHOLDS_VERSION}"
-    explanation = (f"Administrador ({admin['person_role']}) con {admin['tenure_years']} años de antigüedad "
-                   f"(alta {admin['appointment_date']}, Iberinform) en empresa sin matriz ni grupo societario.")
+    explanation = (f"{OU.role_es(admin['person_role'])} con {admin['tenure_years']} años de antigüedad "
+                   f"(alta {admin['appointment_date']}, Iberinform) en empresa sin matriz ni grupo societario registrados.")
     if corroborated:
         explanation += f" Corroborado por {len(corroborating_cessations)} cese registrado en BORME."
     if profile:
@@ -312,15 +353,23 @@ async def evaluate(master: Dict, source_version: str, engine_version: str) -> Li
     own = master.get("ownership") or {}
     is_standalone = not (own.get("parents") or own.get("group_id"))
     if is_standalone:
-        admin = await _administrator_tenure(master.get("cif_normalized"))
-        if admin:
-            thr, thr_src, thr_base = await TH.resolve("opportunity.succession_signal")
-            if admin["tenure_years"] >= thr:
-                # E2: enrich the Q1 signal with the fuller profile (admin_count, family
-                # overlap, successor candidate, company age, financial cross-reference).
-                # Never blocks: if the profile can't be built the signal still fires on
-                # the tenure gate alone, exactly as it did before E2.
-                profile = await SI.build_profile(master)
-                out.append(_succession_signal(mid, admin, thr, thr_src, thr_base, cessations,
-                                               source_version, engine_version, profile=profile))
+        # Puerta endurecida (ver services/opportunity_criteria.py y officer_utils.succession_gate):
+        # tamaño >= suelo de ingresos, administrador único y antigüedad >= 25 años (o el umbral
+        # configurado si es mayor). Antes bastaba con 15 años, y ni roles en inglés ni fechas
+        # DDMONYYYY se reconocían, por lo que casi nunca se activaba.
+        officers = await SI._officers_for(master.get("cif_normalized"))
+        thr, thr_src, thr_base = await TH.resolve("opportunity.succession_signal")
+        revenue = ((master.get("financials") or {}).get("latest") or {}).get("revenue")
+        gate = OU.succession_gate(officers, revenue,
+                                  min_revenue=CR.configured_min_revenue()[0],
+                                  min_tenure_years=CR.SUCCESSION_MIN_TENURE_YEARS,
+                                  base_threshold=thr)
+        if gate["passed"]:
+            a = gate["admin"]
+            admin = {"person_role": a["person_role"], "appointment_date": a["appointment_date"],
+                     "tenure_years": a["tenure_years"]}
+            # E2: enriquece con el perfil completo; nunca bloquea la señal.
+            profile = await SI.build_profile(master)
+            out.append(_succession_signal(mid, admin, gate["threshold"], thr_src, thr_base, cessations,
+                                           source_version, engine_version, profile=profile))
     return out

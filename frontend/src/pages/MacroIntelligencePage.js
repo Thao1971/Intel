@@ -104,9 +104,17 @@ export default function MacroIntelligencePage() {
   const handleRefresh = async () => {
     setRefreshing(true);
     try {
-      // El backend ahora devuelve un error HTTP real (antes respondia 200 OK con
-      // status:"error" y este toast de exito se mostraba igualmente).
+      // El refresco corre en segundo plano en el backend (tarda > 120 s de proxy si
+      // se espera en la propia peticion): lanzamos y consultamos /status.
       await api.post('/admin/data-sources/banco-espana/refresh');
+      let st = null;
+      for (let i = 0; i < 90; i++) {
+        await new Promise(r => setTimeout(r, 2000));
+        st = (await api.get('/admin/data-sources/banco-espana/status')).data;
+        if (st.status !== 'running') break;
+      }
+      if (!st || st.status === 'running') { toast.info('La actualizacion sigue en curso, recarga en unos minutos'); return; }
+      if (st.status === 'error') { toast.error(st.last_error || 'Error al actualizar'); return; }
       toast.success('Indicadores actualizados');
       const [indR, sigR] = await Promise.all([api.get('/public/macro-indicators'), api.get('/public/macro/signals')]);
       setData(indR.data); setSignals(sigR.data);

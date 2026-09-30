@@ -87,6 +87,23 @@ def _cagr(series_vals: List):
     return round((last / first) ** (1 / n) - 1, 4)
 
 
+def _revenue_growth(new, old):
+    """Crecimiento interanual de ingresos. None si alguno de los dos ejercicios es negativo:
+    los ingresos no pueden serlo (dato erróneo) y con base negativa `(new-old)/abs(old)`
+    daría un porcentaje absurdo (p. ej. -13.205 € -> 526.515 € = +4.087%)."""
+    if (new is not None and new < 0) or (old is not None and old < 0):
+        return None
+    return _pct_change(new, old)
+
+
+def _revenue_cagr(series_vals: List):
+    """CAGR de ingresos. None si algún ejercicio informado es <= 0: antes esos ejercicios se
+    ignoraban en silencio y el CAGR se calculaba entre los extremos, sobre una serie rota."""
+    if any(v <= 0 for v in series_vals if v is not None):
+        return None
+    return _cagr(series_vals)
+
+
 def _embed(s: str) -> str:
     """Encaja una frase completa dentro de otra: cláusula principal (antes de ':'),
     minúscula inicial y sin punto final."""
@@ -182,9 +199,9 @@ def compute_kpis(series: List[Dict], employees: Optional[int]) -> Dict:
         "net_debt": nd,
         "net_debt_ebitda": R._safe_div(nd, latest.get("ebitda")),
         "total_assets": latest.get("total_assets"),
-        "revenue_growth_yoy": _pct_change(latest.get("revenue"), prev.get("revenue")),
+        "revenue_growth_yoy": _revenue_growth(latest.get("revenue"), prev.get("revenue")),
         "ebitda_growth_yoy": _pct_change(latest.get("ebitda"), prev.get("ebitda")),
-        "revenue_cagr": _cagr([s.get("revenue") for s in series]),
+        "revenue_cagr": _revenue_cagr([s.get("revenue") for s in series]),
         "ebitda_margin": R._safe_div(latest.get("ebitda"), latest.get("revenue")),
         "net_margin": R._safe_div(latest.get("net_income"), latest.get("revenue")),
         "roe": R._safe_div(latest.get("net_income"), latest.get("equity")),
@@ -200,7 +217,7 @@ def compute_kpis(series: List[Dict], employees: Optional[int]) -> Dict:
 def compute_evolution(series: List[Dict]) -> Dict:
     if len(series) < 2:
         return {"trend": "insufficient_history", "years": len(series), "points": []}
-    rev_growth = _pct_change(series[0].get("revenue"), series[1].get("revenue"))
+    rev_growth = _revenue_growth(series[0].get("revenue"), series[1].get("revenue"))
     ebitda_growth = _pct_change(series[0].get("ebitda"), series[1].get("ebitda"))
     trend = "stable"
     if rev_growth is not None:

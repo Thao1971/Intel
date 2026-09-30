@@ -9,6 +9,7 @@ Datasets available:
   - Plataformas agregadas: ~1.7M entries (2016-present)
 """
 
+import asyncio
 import logging
 import os
 import io
@@ -79,7 +80,8 @@ async def sync_placsp(years: List[int] = None, dataset: str = "menores",
                 errors.append(f"{year}: download failed")
                 continue
 
-            contracts = _parse_zip(zip_data, max_files=max_files)
+            # CPU-bound: fuera del event loop para no congelar el resto de la API
+            contracts = await asyncio.to_thread(_parse_zip, zip_data, max_files=max_files)
             logger.info(f"PLACSP {year}: parsed {len(contracts)} contracts")
 
             if contracts:

@@ -5,6 +5,8 @@ Transaction engines, external APIs) obtains ALL signal intelligence here, never 
 master_companies directly. Protected with the service API key (X-API-Key).
 """
 
+import asyncio
+import uuid
 from typing import Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, Depends
@@ -18,6 +20,9 @@ from services.engines.signal import persistence as P
 from services.engines.signal import borme_bridge as BB
 from services.engines.signal import baselines as BL
 from services.engines.signal import succession_intelligence as SI
+from services import opportunity_view as OV
+from services import opportunity_criteria as CR
+from services import signal_recompute as SR
 from services.service_auth import require_service_key
 from routes import engine_schemas as S
 
@@ -237,6 +242,156 @@ async def _list_opportunities(cnae_section: Optional[str], provincia: Optional[s
             "engine_version": sig_engine.ENGINE_VERSION}
 
 
+_CNAE_LABELS: Optional[Dict[str, str]] = None
+
+
+async def _cnae_label_map() -> Dict[str, str]:
+    """Etiquetas de sector en español (cnae_catalog: secciones, divisiones y grupos). Se cargan una vez."""
+    global _CNAE_LABELS
+    if _CNAE_LABELS is None:
+        _CNAE_LABELS = {d["code"]: d["label"]
+                        async for d in db.cnae_catalog.find({}, {"_id": 0, "code": 1, "label": 1})
+                        if d.get("code") and d.get("label")}
+    return _CNAE_LABELS
+
+
+def _sector_label(classification: Dict, labels: Dict[str, str]) -> Optional[str]:
+    for code in (classification.get("cnae_code"), classification.get("cnae_division"),
+                 classification.get("cnae_section")):
+        if code and code in labels:
+            return labels[code]
+    return None
+
+
+_SECTOR_GROWTH_CACHE: Dict = {"at": 0.0, "data": {}}
+_SECTOR_GROWTH_TTL_S = 3600
+
+
+async def _sector_growth_baselines() -> Dict[str, Dict]:
+    """Respaldo de la comparativa: p50/p75 del crecimiento interanual de ingresos por SECCIÓN CNAE (sin
+    distinguir tamaño), calculado al vuelo sobre `master_companies` con >=2 ejercicios de ingresos
+    positivos. Solo secciones con muestra >= BL.MIN_SAMPLE_SIZE. Caché de 1 h en proceso; si falla, {} y
+    la tarjeta se queda con la comparativa por sector y tamaño (o sin comparativa). Sin escrituras."""
+    import time
+    if time.time() - _SECTOR_GROWTH_CACHE["at"] < _SECTOR_GROWTH_TTL_S:
+        return _SECTOR_GROWTH_CACHE["data"]
+    data: Dict[str, Dict] = {}
+    try:
+        pipeline = [
+            {"$match": {"financials.history.1": {"$exists": True}, "classification.cnae_section": {"$ne": None}}},
+            {"$project": {"_id": 0, "sec": "$classification.cnae_section",
+                          "h": {"$slice": [{"$sortArray": {"input": "$financials.history", "sortBy": {"year": -1}}}, 2]}}},
+            {"$addFields": {"r0": {"$arrayElemAt": ["$h.revenue", 0]}, "r1": {"$arrayElemAt": ["$h.revenue", 1]}}},
+            {"$match": {"r0": {"$gt": 0}, "r1": {"$gt": 0}}},
+            {"$addFields": {"yoy": {"$divide": [{"$subtract": ["$r0", "$r1"]}, "$r1"]}}},
+            {"$group": {"_id": "$sec", "n": {"$sum": 1},
+                        "p": {"$percentile": {"input": "$yoy", "p": [0.5, 0.75], "method": "approximate"}}}},
+        ]
+        async for d in db.master_companies.aggregate(pipeline):
+            if d["n"] >= BL.MIN_SAMPLE_SIZE and d.get("p") and len(d["p"]) == 2:
+                data[d["_id"]] = {"p50": round(d["p"][0], 4), "p75": round(d["p"][1], 4), "sample_size": d["n"]}
+    except Exception:
+        data = {}
+    _SECTOR_GROWTH_CACHE.update(at=time.time(), data=data)
+    return data
+
+
+async def _opportunities_enriched(level: str, sort: str, provincia: Optional[str],
+                                  cnae_section: Optional[str], signal_types: Optional[List[str]],
+                                  sort_by_dimension: str, limit: int,
+                                  mandate: Optional[Dict] = None, offset: int = 0,
+                                  min_revenue: Optional[float] = None) -> Dict:
+    """Listado por EMPRESA (no por señal) con nivel, serie, comparativa y prosa CF: ver
+    services/opportunity_view.py. Consultas por lotes (señales, empresas, riesgos, baselines):
+    cuatro viajes a la base, sin N+1. Las señales de oportunidad activas son ~700 (cota 5000)."""
+    from datetime import date
+    # Suelo de ingresos: el del mandato si lo tiene; si no, el configurado / por defecto (opportunity_criteria).
+    floor, floor_source = CR.effective_min_revenue(mandate, min_revenue)
+    dim = sort_by_dimension if sort_by_dimension in ("impact", "confidence", "urgency", "persistence") else "impact"
+    # Las situaciones especiales (potential_distress) llevan severity "risk": se incluyen por tipo.
+    q = {"status": "active", "$or": [{"severity": "opportunity"},
+                                     {"signal_type": "opportunity.potential_distress"}]}
+    if signal_types:
+        q["signal_type"] = {"$in": signal_types}
+    by_master: Dict[str, List[Dict]] = {}
+    for s in await db.signals.find(q, {"_id": 0}).to_list(5000):
+        by_master.setdefault(s["master_id"], []).append(s)
+    ids = list(by_master)
+
+    masters: Dict[str, Dict] = {}
+    async for m in db.master_companies.find(
+            {"master_id": {"$in": ids}},
+            {"_id": 0, "master_id": 1, "cif_normalized": 1, "identity.legal_name": 1, "classification": 1,
+             "location": 1, "financials.latest": 1, "financials.history": 1}):
+        masters[m["master_id"]] = m
+
+    blocked = set(await db.signals.distinct("master_id", {
+        "status": "active", "master_id": {"$in": ids},
+        "$or": [{"severity": {"$in": ["risk", "critical"]}},
+                {"signal_type": {"$in": list(OV.BLOCKING_SIGNAL_TYPES)}}]}))
+
+    baselines: Dict = {}
+    async for b in db.sector_size_baselines.find({"metric": "revenue_growth_yoy"}, {"_id": 0}).sort("computed_at", 1):
+        baselines[(b.get("sector"), b.get("size_band"))] = b   # la última versión calculada sobrescribe
+
+    labels = await _cnae_label_map()
+    sector_baselines = await _sector_growth_baselines()
+    expected_year = date.today().year - 1
+    cards = []
+    for mid, sigs in by_master.items():
+        m = masters.get(mid)
+        if not m:
+            continue
+        cls = m.get("classification") or {}
+        if provincia and (m.get("location") or {}).get("provincia") != provincia:
+            continue
+        # Señal principal: compuesta primero; luego la dimensión pedida; a igualdad, la más persistente
+        # (una lectura multianual pesa más que un pico de un año).
+        # Las señales dependientes del tamaño (sucesión) no se muestran por debajo del suelo.
+        revenue = ((m.get("financials") or {}).get("latest") or {}).get("revenue")
+        if not CR.meets_size_floor(revenue, floor):
+            sigs = [s for s in sigs if s["signal_type"] not in CR.SIZE_GATED_SIGNAL_TYPES]
+            if not sigs:
+                continue
+        primary = max(sigs, key=lambda s: (bool(s.get("is_composite")) and s["signal_type"] != "opportunity.potential_distress",
+                                           (s.get("dimensions") or {}).get(dim) or 0,
+                                           (s.get("dimensions") or {}).get("persistence") or 0))
+        band = BL.size_band_for(((m.get("financials") or {}).get("latest") or {}).get("revenue"))
+        cards.append(OV.build_card(
+            primary=primary, all_types=[s["signal_type"] for s in sigs], master=m, band=band,
+            baseline=baselines.get((cls.get("cnae_section"), band)),
+            sector_label=_sector_label(cls, labels), has_blocking_risk=mid in blocked,
+            expected_year=expected_year, min_revenue=floor,
+            sector_baseline=sector_baselines.get(cls.get("cnae_section"))))
+
+    # Sectores disponibles (con el resto de filtros aplicados salvo el propio sector) para el desplegable.
+    sec_counts: Dict[str, int] = {}
+    for c in cards:
+        if c.get("cnae_section"):
+            sec_counts[c["cnae_section"]] = sec_counts.get(c["cnae_section"], 0) + 1
+    sectors = sorted(({"code": k, "label": labels.get(k) or k, "count": v} for k, v in sec_counts.items()),
+                     key=lambda x: (-x["count"], x["label"]))
+    if cnae_section:
+        cards = [c for c in cards if c.get("cnae_section") == cnae_section]
+    counts = {lv: 0 for lv in OV.LEVEL_ORDER}
+    for c in cards:
+        counts[c["level"]] += 1
+    if level in OV.LEVEL_ORDER:
+        cards = [c for c in cards if c["level"] == level]
+    if sort == "recent":
+        cards.sort(key=lambda c: c["signal"].get("first_detected_at") or "", reverse=True)
+    else:
+        cards.sort(key=lambda c: (OV.LEVEL_ORDER[c["level"]],
+                                  -((c["signal"].get("dimensions") or {}).get(dim) or 0), c["name"] or ""))
+    page = cards[offset:offset + limit]
+    return {"level_counts": counts, "sectors": sectors, "count": len(page), "matching": len(cards), "offset": offset,
+            "sorted_by": "recent" if sort == "recent" else f"relevance/{dim}",
+            "opportunities": page, "engine_version": sig_engine.ENGINE_VERSION,
+            "criteria": {"min_revenue_eur": floor, "source": floor_source,
+                         "mandate_id": (mandate or {}).get("mandate_id"),
+                         "succession_min_tenure_years": CR.SUCCESSION_MIN_TENURE_YEARS}}
+
+
 async def _opportunities_feed(days: int, limit: int, cnae_section: Optional[str],
                                provincia: Optional[str]) -> Dict:
     """Shared query logic behind GET /opportunities/feed (X-API-Key) and
@@ -384,6 +539,33 @@ async def opportunities_feed_view(days: int = 7, limit: int = 50, cnae_section: 
     return await _opportunities_feed(days, limit, cnae_section, provincia)
 
 
+@router.get("/opportunities/enriched/view")
+async def opportunities_enriched_view(level: str = "all", sort: str = "relevance",
+                                      provincia: Optional[str] = None, cnae_section: Optional[str] = None,
+                                      signal_types: Optional[str] = None, sort_by_dimension: str = "impact",
+                                      limit: int = 30, offset: int = 0, mandate_id: Optional[str] = None,
+                                      min_revenue: Optional[float] = None,
+                                      user=Depends(get_current_user)):
+    """Beta — listado por EMPRESA con nivel (opportunity | candidate | indicio | verify), serie de
+    ingresos, comparativa con su sector y tamaño, cautelas y titular en prosa CF. Aditivo: no altera
+    /opportunities ni /opportunities/view. `level_counts` cuenta empresas (tras provincia/sector).
+    Suelo de ingresos (nivel Oportunidad y sucesión): 1 M€ por defecto, configurable con
+    ARROBA_MIN_REVENUE_EUR, y sobrescrito por `mandate_id` (su `revenue_min`); ver `criteria` en la respuesta.
+    Paginación: `limit` (máx. 100) y `offset`; `matching` es el total tras los filtros.
+    `min_revenue` (euros) sobrescribe el suelo: es lo que envía el front de Beta con el mandato de compra del
+    usuario (a través de la pasarela no se debe usar `mandate_id`, que no comprueba la propiedad del mandato)."""
+    types = [t.strip() for t in signal_types.split(",") if t.strip()] if signal_types else None
+    mandate = None
+    if mandate_id:
+        from services.engines.recommendation import mandates as M
+        mandate = await M.get_mandate(mandate_id)
+        if mandate is None:
+            raise HTTPException(status_code=404, detail="mandate not found")
+    return await _opportunities_enriched(level, sort, provincia, cnae_section, types,
+                                         sort_by_dimension, max(1, min(limit, 100)), mandate, max(0, offset),
+                                         min_revenue)
+
+
 @router.get("/catalog/view", responses=_ok(S.SignalCatalogResponse))
 async def catalog_view(user=Depends(get_current_user)):
     """Same as GET /catalog, JWT-gated — lets the frontend show human-readable signal
@@ -429,6 +611,40 @@ async def get_signal_view(signal_id: str, user=Depends(get_current_user)):
     if not s:
         raise HTTPException(404, "signal not found")
     return s
+
+
+@router.post("/recompute")
+async def recompute_signals(limit: Optional[int] = None, cnae_section: Optional[str] = None,
+                            _key=Depends(require_service_key)):
+    """Recalcula y persiste las señales (solo señales, sin el bootstrap completo). Acotable con `cnae_section`
+    y/o `limit` para probarlo antes de lanzarlo sobre todo el universo. Devuelve un `run_id` para consultar
+    el avance en GET /recompute/{run_id}. Cierra las señales que ya no se cumplen (`disappeared`)."""
+    q: Dict = {"status": "active"}
+    if cnae_section:
+        q["classification.cnae_section"] = cnae_section
+    ids = await db.master_companies.distinct("master_id", q)
+    if limit and limit > 0:
+        ids = ids[:limit]
+    run_id = "sigrec_" + uuid.uuid4().hex[:12]
+    asyncio.create_task(SR.run_recompute(run_id, ids))
+    return {"run_id": run_id, "companies": len(ids), "status": "started",
+            "poll": f"/api/v1/signal-intelligence/recompute/{run_id}"}
+
+
+@router.get("/recompute/{run_id}")
+async def recompute_status(run_id: str, _key=Depends(require_service_key)):
+    doc = await db.signal_recompute_runs.find_one({"run_id": run_id}, {"_id": 0})
+    if not doc:
+        raise HTTPException(status_code=404, detail="run not found")
+    return doc
+
+
+@router.post("/borme/link-new-events")
+async def borme_link_new_events(limit_events: int = 20000, recheck: bool = False,
+                                _key=Depends(require_service_key)):
+    """Enlace por EVENTOS de BORME con el Master (idempotente, diario). Sustituye en la práctica al enlace
+    por empresa, cuya marca de "revisada" se puso antes de que llegaran los eventos."""
+    return await BB.link_new_events(limit_events=max(1, min(limit_events, 100000)), recheck=recheck)
 
 
 @router.post("/history", responses=_ok(S.SignalHistoryResponse))

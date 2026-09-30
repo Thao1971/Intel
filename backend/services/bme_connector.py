@@ -16,6 +16,8 @@ from models import new_id, now_iso
 
 logger = logging.getLogger(__name__)
 
+from services.playwright_runtime import launch_chromium
+
 BME_GROWTH_URL = "https://www.bmegrowth.es/esp/Listado.aspx"
 BME_SCALEUP_URL = "https://www.bolsasymercados.es/MTF_Equity/bme-scaleup/esp/Listado.aspx"
 BME_GROWTH_DETAIL_BASE = "https://www.bmegrowth.es/esp"
@@ -54,8 +56,7 @@ async def sync_bme(markets: List[str] = None) -> Dict:
     if not fatal_error:
         try:
             async with async_playwright() as p:
-                browser = await p.chromium.launch(headless=True, args=[
-                    "--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"])
+                browser = await launch_chromium(p)
                 page = await browser.new_page()
 
                 for market in markets:
