@@ -19,7 +19,7 @@ from services import opportunity_criteria as CR
 # riesgo, para compradores oportunistas); "verify" queda aparte: dato no fiable.
 LEVEL_ORDER = {"opportunity": 0, "candidate": 1, "indicio": 2, "special": 3, "verify": 4}
 LEVEL_LABEL_ES = {
-    "opportunity": "Tesis completa",
+    "opportunity": "Oportunidad potencial",
     "candidate": "Candidata",
     "indicio": "Indicio",
     "special": "Situación especial",

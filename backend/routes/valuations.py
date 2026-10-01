@@ -14,7 +14,10 @@ from services.engines.valuation.company_inputs import save_company_inputs
 from services.category_valuations import (
     rebuild_valuations, get_cached_valuations, get_valuation_summary,
 )
+import logging
 import time
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/valuations", tags=["valuations"])
 
@@ -135,13 +138,26 @@ async def advanced_valuation_calculate(req: AdvancedValuationRequest, request: R
     try:
         result = calculate_advanced(profile, req.model_dump(), generated_at)
     except ValueError as exc:
+        logger.warning("advanced valuation rejected for %s: %s", req.identifier, exc)
         raise HTTPException(422, str(exc)) from exc
+    except Exception as exc:
+        logger.exception("advanced valuation failed for %s", req.identifier)
+        raise HTTPException(500, f"advanced_calculation_failed: {type(exc).__name__}: {exc}") from exc
     run_id = f"avr_{uuid4().hex}"
-    await db.valuation_advanced_runs.insert_one({
-        "_id": run_id, "run_id": run_id, "user_id": owner_id,
-        "identifier": req.identifier, "created_at": generated_at,
-        "request": req.model_dump(), "profile": result,
-    })
+    stored_request = req.model_dump()
+    # Las claves de financial_overrides llevan puntos ("2024.income_statement.revenue"):
+    # Mongo las rechaza en versiones antiguas, asi que se guardan como lista.
+    stored_request["financial_overrides"] = [
+        {"path": path, "value": value} for path, value in req.financial_overrides.items()]
+    try:
+        await db.valuation_advanced_runs.insert_one({
+            "_id": run_id, "run_id": run_id, "user_id": owner_id,
+            "identifier": req.identifier, "created_at": generated_at,
+            "request": stored_request, "profile": result,
+        })
+    except Exception as exc:
+        logger.exception("advanced valuation could not be persisted for %s", req.identifier)
+        raise HTTPException(500, f"advanced_persist_failed: {type(exc).__name__}: {exc}") from exc
     return {**_meta(t0), "run_id": run_id, "profile": result}
 
 

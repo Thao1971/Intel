@@ -2,6 +2,13 @@
 
 > Registro de cambios de arquitectura de la plataforma Agency Tool (compartida: Valuo.pro + arroba.com + Platform Console).
 
+## 2026-10-01 — Unificado `LOTES_28_29_30_31_32` (entrega final Intel 30/09) (Preview) ✅
+- Acumulado (41 ficheros: 36 código + 5 LEEME). Clasificación vs estado actual: **34 idénticos** (ya aplicados), **2 sobrescritos**, 0 nuevos. NO incluye auth.py/company_screener.py/reconciliation.py/contract.py/my_space.py/my_space_valuation_scenarios.py → sin revertir deltas previos. Sin commit/push/reset, sin .env/DB. (sha256 informativo `c3e335bf…1fda3`.)
+- **Lote 30 — `routes/valuations.py`**: valoración avanzada endurecida: try/except con error real (`advanced_calculation_failed`/`advanced_persist_failed`) + logging; persiste `financial_overrides` como lista `[{path,value}]` (evita claves con puntos que Mongo rechaza). 
+- **Lote 32 — `services/opportunity_view.py`**: etiqueta ES del nivel `opportunity` cambia "Tesis completa" → **"Oportunidad potencial"**.
+- **Validación Preview**: py_compile OK; `test_opportunity_view`+`test_signal_recompute` 24/24; backend RUNNING (openapi 200); no-regresión valoración (summary/by-category/intake/market-references 200; v2 B28184687=available, B28031458=screen_grade); `enriched/view` level_label_es="Oportunidad potencial". Errores NVIDIA 410 y `$vectorSearch` solo-Atlas son pre-existentes/ajenos.
+
+
 ## 2026-09-30 — Delta `ARROBA_INTEL_ANALIZAR_SECTORES` (Preview) ✅
 - 1 fichero **SOBRESCRITO**: `backend/services/engines/sector_market/aggregates.py`. 0 nuevos. Sin LEEME. Sin commit/push/reset. (sha256 informativo `ab470da1…e679a`.)
 - **Cambio**: `get_ranking` deja de devolver ranking vacío para siempre cuando los agregados no se han calculado nunca (sin filas ni meta): lanza `rebuild_sector_aggregates()` en segundo plano (una sola vez a la vez, guardado en `_rebuild_task`) y añade `building: true/false` a la respuesta. Añade imports `asyncio`/`logging`.
