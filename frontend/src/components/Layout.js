@@ -102,6 +102,7 @@ const navSections = [
 const platformSection = {
   label: 'PLATAFORMA',
   items: [
+    { path: '/ai-usage', label: 'Consumo de IA', icon: Cpu },
     { path: '/settings', label: 'Configuración', icon: Settings },
     { path: '/api-docs', label: 'API Docs', icon: BookOpen },
   ],

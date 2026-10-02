@@ -544,7 +544,7 @@ async def opportunities_enriched_view(level: str = "all", sort: str = "relevance
                                       provincia: Optional[str] = None, cnae_section: Optional[str] = None,
                                       signal_types: Optional[str] = None, sort_by_dimension: str = "impact",
                                       limit: int = 30, offset: int = 0, mandate_id: Optional[str] = None,
-                                      min_revenue: Optional[float] = None,
+                                      min_revenue: Optional[float] = None, lang: Optional[str] = None,
                                       user=Depends(get_current_user)):
     """Beta — listado por EMPRESA con nivel (opportunity | candidate | indicio | verify), serie de
     ingresos, comparativa con su sector y tamaño, cautelas y titular en prosa CF. Aditivo: no altera
@@ -553,7 +553,9 @@ async def opportunities_enriched_view(level: str = "all", sort: str = "relevance
     ARROBA_MIN_REVENUE_EUR, y sobrescrito por `mandate_id` (su `revenue_min`); ver `criteria` en la respuesta.
     Paginación: `limit` (máx. 100) y `offset`; `matching` es el total tras los filtros.
     `min_revenue` (euros) sobrescribe el suelo: es lo que envía el front de Beta con el mandato de compra del
-    usuario (a través de la pasarela no se debe usar `mandate_id`, que no comprueba la propiedad del mandato)."""
+    usuario (a través de la pasarela no se debe usar `mandate_id`, que no comprueba la propiedad del mandato).
+    `lang` (`es` por defecto, `en`): idioma de la redacción (titular, cautelas, comparativa, tareas). Los campos
+    conservan su nombre (`*_es`); con `en` su contenido sale en inglés."""
     types = [t.strip() for t in signal_types.split(",") if t.strip()] if signal_types else None
     mandate = None
     if mandate_id:
@@ -561,9 +563,13 @@ async def opportunities_enriched_view(level: str = "all", sort: str = "relevance
         mandate = await M.get_mandate(mandate_id)
         if mandate is None:
             raise HTTPException(status_code=404, detail="mandate not found")
-    return await _opportunities_enriched(level, sort, provincia, cnae_section, types,
-                                         sort_by_dimension, max(1, min(limit, 100)), mandate, max(0, offset),
-                                         min_revenue)
+    token = OV.use_lang(lang)
+    try:
+        return await _opportunities_enriched(level, sort, provincia, cnae_section, types,
+                                             sort_by_dimension, max(1, min(limit, 100)), mandate, max(0, offset),
+                                             min_revenue)
+    finally:
+        OV.reset_lang(token)
 
 
 @router.get("/catalog/view", responses=_ok(S.SignalCatalogResponse))

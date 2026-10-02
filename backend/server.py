@@ -62,6 +62,8 @@ from routes.financial_intelligence import (router as financial_intelligence_rout
                                              inputs_router as financial_inputs_router)
 from routes.company_ficha import router as company_ficha_router
 from routes.cron_prewarm import router as cron_prewarm_router
+from routes.ai_usage import router as ai_usage_router
+from routes.territory_workspace import router as territory_workspace_router
 from routes.investment_intelligence import router as investment_intelligence_router
 from routes.signal_intelligence import router as signal_intelligence_router
 from routes.semantic_intelligence import router as semantic_intelligence_router
@@ -178,6 +180,8 @@ app.include_router(financial_intelligence_router)
 app.include_router(financial_inputs_router)
 app.include_router(company_ficha_router)
 app.include_router(cron_prewarm_router)
+app.include_router(ai_usage_router)
+app.include_router(territory_workspace_router)
 app.include_router(investment_intelligence_router)
 app.include_router(signal_intelligence_router)
 app.include_router(semantic_intelligence_router)
@@ -634,6 +638,11 @@ INITIAL_TAXONOMY = [
 
 @app.on_event("startup")
 async def startup():
+    try:  # consumo de IA: un único punto que mide todas las llamadas a modelos
+        from services import ai_usage as _ai_usage
+        _ai_usage.install()
+    except Exception:  # noqa: BLE001 — la medición nunca debe impedir arrancar
+        pass
     # Defer ALL heavy initialization (index creation, seeds, warmups, schedulers)
     # to a background task so uvicorn starts accepting traffic immediately.
     # This prevents the temporary 520/502 window on redeploys, which was caused by

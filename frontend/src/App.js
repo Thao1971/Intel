@@ -13,6 +13,7 @@ import TaxonomyPage from "@/pages/TaxonomyPage";
 import ReviewPage from "@/pages/ReviewPage";
 import SettingsPage from "@/pages/SettingsPage";
 import ApiDocsPage from "@/pages/ApiDocsPage";
+import AIUsagePage from "@/pages/AIUsagePage";
 import HubPage from "@/pages/hub/HubPage";
 import ManualPage from "@/pages/ManualPage";
 import BormePage from "@/pages/BormePage";
@@ -124,6 +125,7 @@ function AppRoutes() {
         <Route path="settings" element={<SettingsPage />} />
         <Route path="manual" element={<ManualPage />} />
         <Route path="api-docs" element={<ApiDocsPage />} />
+        <Route path="ai-usage" element={<AIUsagePage />} />
         <Route path="ai-chat" element={<AIChatPage />} />
         <Route path="copilot" element={<CopilotPage />} />
 
