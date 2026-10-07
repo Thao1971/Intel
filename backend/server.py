@@ -1430,7 +1430,7 @@ async def _auto_populate_strategic_sources_bg():
     Server is fully functional during this time (with partial data).
     """
     cnmv_count = await db.cnmv_entities.count_documents({})
-    placsp_count = await db.public_procurement_contracts.count_documents({})
+    placsp_count = await db.public_procurement_contracts.count_documents({}, hint="_id_")
     dcx_real = await db.datacomex_raw_data.count_documents({"source": "datacomex_real"})
 
     if cnmv_count > 0 and placsp_count > 1000 and dcx_real > 0:
@@ -1580,7 +1580,7 @@ async def _auto_populate_strategic_sources():
             logger.warning(f"DataComex Playwright failed ({e}), seed already in place")
 
     # PLACSP (download ZIP ~120MB + parse, ~3-5 min)
-    placsp_count = await db.public_procurement_contracts.count_documents({})
+    placsp_count = await db.public_procurement_contracts.count_documents({}, hint="_id_")
     if placsp_count < 1000:
         logger.info(f"PLACSP: only {placsp_count} contracts, starting auto-sync...")
         try:
@@ -1591,7 +1591,7 @@ async def _auto_populate_strategic_sources():
             logger.error(f"PLACSP auto-sync failed: {e}")
 
     # Rebuild Economic Intelligence if any new sources were added
-    new_placsp = await db.public_procurement_contracts.count_documents({})
+    new_placsp = await db.public_procurement_contracts.count_documents({}, hint="_id_")
     new_cnmv = await db.cnmv_entities.count_documents({})
     if new_placsp > placsp_count or new_cnmv > cnmv_count:
         logger.info("Rebuilding Economic Intelligence after strategic source sync...")

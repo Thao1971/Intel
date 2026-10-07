@@ -99,7 +99,7 @@ async def sync_placsp(years: List[int] = None, dataset: str = "menores",
     # Compute checksum
     checksum = None
     if total_imported > 0:
-        count = await db.public_procurement_contracts.count_documents({})
+        count = await db.public_procurement_contracts.count_documents({}, hint="_id_")
         checksum = hashlib.sha256(f"{count}:{now}".encode()).hexdigest()[:16]
 
     # Status: previously any run with `errors` was labeled "partial" even when

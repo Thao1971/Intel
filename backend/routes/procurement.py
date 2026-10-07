@@ -42,7 +42,7 @@ async def _total_contracts() -> int:
     try:
         return await db.public_procurement_contracts.estimated_document_count()
     except Exception:
-        return await db.public_procurement_contracts.count_documents({})
+        return await db.public_procurement_contracts.count_documents({}, hint="_id_")
 
 
 def _invalidate_procurement_caches():
@@ -231,7 +231,11 @@ async def list_contracts(
     if company_id:
         query["matched_company_id"] = company_id
 
-    total = await db.public_procurement_contracts.count_documents(query)
+    # Empty searches still require an exact total. Use the existing covering
+    # index; filtered searches retain the planner's choice of index.
+    total = await db.public_procurement_contracts.count_documents(
+        query, **({"hint": "_id_"} if not query else {})
+    )
     contracts = await db.public_procurement_contracts.find(query, {"_id": 0}).sort("award_date", -1).skip(offset).limit(limit).to_list(limit)
     return {"contracts": contracts, "total": total}
 

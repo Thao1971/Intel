@@ -215,7 +215,7 @@ async def parse_and_ingest_csv(csv_content: str, source_url: str, user_email: st
         {"$set": {
             "status": "ok",
             "last_sync_at": now,
-            "records_count": await db.public_procurement_contracts.count_documents({}),
+            "records_count": await db.public_procurement_contracts.count_documents({}, hint="_id_"),
             "last_error": None,
             "updated_at": now,
         }},
